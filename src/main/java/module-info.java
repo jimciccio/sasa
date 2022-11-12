@@ -8,6 +8,8 @@ module ferranti.bikerbikus {
     requires org.testng;
     requires org.controlsfx.controls;
     requires java.desktop;
+	requires jdatepicker;
+
 
     opens ferranti.bikerbikus to javafx.fxml;
     opens ferranti.bikerbikus.models to javafx.base;
