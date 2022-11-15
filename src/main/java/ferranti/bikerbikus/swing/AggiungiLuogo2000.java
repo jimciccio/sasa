@@ -6,8 +6,7 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class AggiungiLuogo2000 extends ModificaLuogoController1 {
     private JPanel panel1;
@@ -43,8 +42,8 @@ public class AggiungiLuogo2000 extends ModificaLuogoController1 {
 
         this.frame=frame;
 
-        frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setContentPane(panel1);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
