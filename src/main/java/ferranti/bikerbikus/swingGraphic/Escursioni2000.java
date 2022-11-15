@@ -30,7 +30,6 @@ public class Escursioni2000 extends EscursioniController1 {
     Action delete;
     Action join;
 
-
     JButton button = new JButton();
 
     String columns[] = {"Giorno", "Ora", "Luogo", "Difficoltà", "Accompagnatore", "Prenotazione"};
@@ -76,7 +75,6 @@ public class Escursioni2000 extends EscursioniController1 {
         });
 
 
-
         delete = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -100,7 +98,6 @@ public class Escursioni2000 extends EscursioniController1 {
                 }
             }
         };
-
 
         join = new AbstractAction()
         {
@@ -155,17 +152,13 @@ public class Escursioni2000 extends EscursioniController1 {
 
             loadEscursioni();
             setValue(join, delete);
-
     }
-
 
     public void search(){
 
         if(isNumber(yearsTextField.getText())){
-            System.out.println("il mese è"+monthBox.getSelectedIndex());
             onActionSpecificMonth(monthBox.getSelectedIndex()+1,Integer.parseInt(yearsTextField.getText()));
                 setValue(join, delete);
-
 
         }else{
             JOptionPane.showMessageDialog(null,"La data inserita non è valida!");

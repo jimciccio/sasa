@@ -13,24 +13,20 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-
 public class Lezioni2000 extends LezioniController1 {
     private JPanel panel1;
     private JTable table1;
     private JLabel nomeJLabel;
     private JLabel monthLabel;
     private JLabel yearLabel;
-
     private JButton backButton;
     private JButton addLessonButton;
     private JButton searchButton;
-
     private JTextField yearsTextField;
     private JComboBox monthBox;
 
     Action delete;
     Action join;
-
 
     JButton button = new JButton();
 
@@ -69,7 +65,6 @@ public class Lezioni2000 extends LezioniController1 {
             }
         });
 
-
         delete = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -93,7 +88,6 @@ public class Lezioni2000 extends LezioniController1 {
                 }
             }
         };
-
 
         join = new AbstractAction()
         {
@@ -133,14 +127,12 @@ public class Lezioni2000 extends LezioniController1 {
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
 
-
         monthBox.setModel(modelCombo);
 
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
 
         item();
-
     }
 
     public void item(){
@@ -153,7 +145,6 @@ public class Lezioni2000 extends LezioniController1 {
             setValue(join);
         }
     }
-
 
     public void search(){
 

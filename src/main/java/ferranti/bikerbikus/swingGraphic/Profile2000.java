@@ -20,6 +20,8 @@ public class Profile2000 extends AreaPersonaleController1 {
     private JTable table1;
     private JButton logOutButton;
     private JButton manageUsersButton;
+    private JLabel tipoJLabel;
+
 
     DefaultComboBoxModel modelType = new DefaultComboBoxModel();
 
@@ -180,7 +182,6 @@ public class Profile2000 extends AreaPersonaleController1 {
 
         typeCombo.setModel(modelType);
         typeCombo.setSelectedItem(modelType.getElementAt(0));
-
         item((String) typeCombo.getSelectedItem());
 
     }
@@ -279,7 +280,6 @@ public class Profile2000 extends AreaPersonaleController1 {
                     AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzo(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzoFinale(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().isBefore(LocalDateTime.now()) ? "Terminated" : "Active"});
         }
     }
-
 
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {

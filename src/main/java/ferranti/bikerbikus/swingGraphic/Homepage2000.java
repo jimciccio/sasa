@@ -2,7 +2,6 @@ package ferranti.bikerbikus.swingGraphic;
 
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -64,8 +63,6 @@ public class Homepage2000 {
                 new Profile2000().mostra(frame);
             }
         });
-
-
     }
 
     public void mostra(JFrame frame){

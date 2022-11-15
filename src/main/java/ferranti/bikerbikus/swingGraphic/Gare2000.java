@@ -64,7 +64,6 @@ public class Gare2000 extends GareController1 {
             }
         });
 
-
         join = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -102,7 +101,6 @@ public class Gare2000 extends GareController1 {
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
 
-
         monthBox.setModel(modelCombo);
 
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
@@ -115,7 +113,6 @@ public class Gare2000 extends GareController1 {
             super.loadGare();
             setValue();
     }
-
 
     public void search(){
 
@@ -133,7 +130,6 @@ public class Gare2000 extends GareController1 {
         monthLabel.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearLabel.setText(Integer.toString(getCurrentYearMonth().getYear()));
 
-
         for (int i = 0; i < GareController1.gare.size(); i++) {
 
             model.addRow(new Object[]{Utils.uppercase(GareController1.gare.get(i).getData().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " "
@@ -143,7 +139,6 @@ public class Gare2000 extends GareController1 {
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, join, 3, 3, 0);
         buttonColumn.setMnemonic(KeyEvent.VK_D);
-        System.out.println("ha finito set value");
     }
 
     static boolean isNumber(String s)

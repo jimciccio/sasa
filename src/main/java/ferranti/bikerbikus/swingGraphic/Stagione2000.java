@@ -47,7 +47,6 @@ public class Stagione2000 extends StagioneController1 {
 
     JFrame frame;
 
-
     public Stagione2000(Stagione stagione) {
 
         this.stagione = stagione;
@@ -58,7 +57,6 @@ public class Stagione2000 extends StagioneController1 {
                 new Campionati2000().mostra(frame);
             }
         });
-
 
         join = new AbstractAction()
         {
@@ -88,15 +86,12 @@ public class Stagione2000 extends StagioneController1 {
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         item();
-
     }
 
     public void item(){
-
       loadStagione(stagione);
       loadClassifica(stagione);
       setValue(join);
-
     }
 
 
@@ -112,14 +107,12 @@ public class Stagione2000 extends StagioneController1 {
         ButtonColumn buttonColumn = new ButtonColumn(table2, action1, 4, 1, 0);
         buttonColumn.setMnemonic(KeyEvent.VK_D);
 
-
         for (int i = 0; i < StagioneController1.utente.size(); i++) {
 
             modelRank.addRow(new Object[]{StagioneController1.utente.get(i).getPosizioneFinale(), StagioneController1.utente.get(i).getNome(),
                     StagioneController1.utente.get(i).getCognome(), StagioneController1.utente.get(i).getGare(), StagioneController1.utente.get(i).getPunteggio()});
         }
     }
-
 
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
@@ -159,7 +152,6 @@ public class Stagione2000 extends StagioneController1 {
         d.add(scroll);
         d.setSize(600,600);
         d.setLocationRelativeTo(null);
-
         d.setVisible(true);
     }
 }

@@ -9,7 +9,6 @@ module ferranti.bikerbikus {
     requires org.controlsfx.controls;
     requires java.desktop;
 
-
     opens ferranti.bikerbikus to javafx.fxml;
     opens ferranti.bikerbikus.models to javafx.base;
     exports ferranti.bikerbikus;
