@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
@@ -18,7 +17,6 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
     private JLabel nomeJLabel;
     private JTable table1;
     private JTable table2;
-    private static JDialog d;
 
 
     Action modifyBuyable;
@@ -48,21 +46,15 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
 
     public ModificaBicicletta2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Shop2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Shop2000().mostra(frame));
 
 
         modifyBuyable = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-                DialogExample(modelRow,0);
-
+                int modelRow = Integer.parseInt( e.getActionCommand() );
+                dialogExample(modelRow,0);
             }
         };
 
@@ -70,9 +62,8 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-                DialogExample(modelRow,1);
-
+                int modelRow = Integer.parseInt( e.getActionCommand() );
+                dialogExample(modelRow,1);
             }
         };
     }
@@ -84,16 +75,14 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         table2.setModel(modelRentable);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
         item();
-
     }
 
     public void item(){
@@ -111,25 +100,20 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
 
             modelBuyable.addRow(new Object[]{ModificaBiciclettaController1.bicicletteVendita.get(i).getModello(), ModificaBiciclettaController1.bicicletteVendita.get(i).getCaratteristiche(),
                     ModificaBiciclettaController1.bicicletteVendita.get(i).getPrezzo(), ModificaBiciclettaController1.bicicletteVendita.get(i).getDisponibili(), ModificaBiciclettaController1.bicicletteVendita.get(i).getId()});
-
         }
 
-        ButtonColumn ButtonColumnModifyBuyable = new ButtonColumn(table1, modifyBuyable, 4, 2, 0);
-        ButtonColumnModifyBuyable.setMnemonic(KeyEvent.VK_D);
+        ButtonColumn buttonColumnModifyBuyable = new ButtonColumn(table1, modifyBuyable, 4, 2, 0);
+        buttonColumnModifyBuyable.setMnemonic(KeyEvent.VK_D);
 
         for (int i = 0; i < ModificaBiciclettaController1.bicicletteNoleggiate.size(); i++) {
 
             modelRentable.addRow(new Object[]{ModificaBiciclettaController1.bicicletteNoleggiate.get(i).getModello(), ModificaBiciclettaController1.bicicletteNoleggiate.get(i).getCaratteristiche(),
                     ModificaBiciclettaController1.bicicletteNoleggiate.get(i).getPrezzo(), ModificaBiciclettaController1.bicicletteNoleggiate.get(i).getStatus(), ModificaBiciclettaController1.bicicletteNoleggiate.get(i).getId()});
-
         }
 
-        ButtonColumn ButtonColumnModifyRentable = new ButtonColumn(table2, modifyRentable, 4, 2, 0);
-        ButtonColumnModifyRentable.setMnemonic(KeyEvent.VK_D);
-
+        ButtonColumn buttonColumnModifyRentable = new ButtonColumn(table2, modifyRentable, 4, 2, 0);
+        buttonColumnModifyRentable.setMnemonic(KeyEvent.VK_D);
     }
-
-
 
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
@@ -137,15 +121,16 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         }
     }
 
-    private static JCheckBox manuCheck;
 
-    public  void DialogExample(int id, int counter) {
+    public void dialogExample(int id, int counter) {
         JButton btnOk;
         JButton btnCancel;
         JTextField modBox;
         JTextField carBox;
         JTextField prezzoBox;
         JTextField dispBox;
+        JDialog d;
+        JCheckBox manuCheck = new JCheckBox();
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Modifica bicicletta ", true);
@@ -240,8 +225,6 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
                 gbc.gridy = 3;
                 panel.add(manutenzioneLabel,gbc);
 
-                manuCheck = new JCheckBox();
-
                 gbc.gridwidth = 2;
                 gbc.gridx = 1;
                 gbc.gridy = 3;
@@ -254,45 +237,38 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
                 gbc.gridy = 3;
                 panel.add(manutenzioneLabel,gbc);
 
-                manuCheck = new JCheckBox();
                 manuCheck.setSelected(true);
                 gbc.gridwidth = 2;
                 gbc.gridx = 1;
                 gbc.gridy = 3;
                 panel.add(manuCheck,gbc);
 
-            }else if(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getStatus().equals("Noleggiata")){
-
             }
         }
 
         btnOk = new JButton("Ok");
 
-        btnOk.addActionListener (new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                if(counter==0){
-                    if(modBox.getText().equals(ModificaBiciclettaController1.bicicletteVendita.get(id).getModello()) && carBox.getText().equals(ModificaBiciclettaController1.bicicletteVendita.get(id).getCaratteristiche()) && prezzoBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteVendita.get(id).getPrezzo())) && dispBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteVendita.get(id).getDisponibili()))) {
-                        JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
-                    }else{
-                        ModificaBiciclettaController1.modBiciNuova(ModificaBiciclettaController1.bicicletteVendita.get(id).getId(), modBox.getText(),
-                                carBox.getText(), Integer.valueOf(prezzoBox.getText()), Integer.valueOf(dispBox.getText()));
-                        setValue();
-                        d.setVisible(false);
-                        d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-                    }
+        btnOk.addActionListener (e -> {
+            if(counter==0){
+                if(modBox.getText().equals(ModificaBiciclettaController1.bicicletteVendita.get(id).getModello()) && carBox.getText().equals(ModificaBiciclettaController1.bicicletteVendita.get(id).getCaratteristiche()) && prezzoBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteVendita.get(id).getPrezzo())) && dispBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteVendita.get(id).getDisponibili()))) {
+                    JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
                 }else{
-                    int finalCheck = Boolean.TRUE.equals(manuCheck.isSelected()) ? 1 : 0;
-                    if(modBox.getText().equals(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getModello()) && carBox.getText().equals(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getCaratteristiche()) && prezzoBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getPrezzo())) &&  finalCheck ==  ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getManutenzione()) {
-                        JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
-                    }else{
-                        ModificaBiciclettaController1.modBiciNoleggiata(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getId(), modBox.getText(),
-                                carBox.getText(), Integer.valueOf(prezzoBox.getText()), manuCheck.isSelected());
-                        setValue();
-                        d.setVisible(false);
-                        d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-                    }
+                    ModificaBiciclettaController1.modBiciNuova(ModificaBiciclettaController1.bicicletteVendita.get(id).getId(), modBox.getText(),
+                            carBox.getText(), Integer.parseInt(prezzoBox.getText()), Integer.parseInt(dispBox.getText()));
+                    setValue();
+                    d.setVisible(false);
+                    d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
+                }
+            }else{
+                int finalCheck = Boolean.TRUE.equals(manuCheck.isSelected()) ? 1 : 0;
+                if(modBox.getText().equals(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getModello()) && carBox.getText().equals(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getCaratteristiche()) && prezzoBox.getText().equals(Integer.toString(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getPrezzo())) &&  finalCheck ==  ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getManutenzione()) {
+                    JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
+                }else{
+                    ModificaBiciclettaController1.modBiciNoleggiata(ModificaBiciclettaController1.bicicletteNoleggiate.get(id).getId(), modBox.getText(),
+                            carBox.getText(), Integer.parseInt(prezzoBox.getText()), manuCheck.isSelected());
+                    setValue();
+                    d.setVisible(false);
+                    d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
                 }
             }
         });
@@ -302,13 +278,9 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener ( new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                d.setVisible(false);
-                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-            }
+        btnCancel.addActionListener (e -> {
+            d.setVisible(false);
+            d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 1;

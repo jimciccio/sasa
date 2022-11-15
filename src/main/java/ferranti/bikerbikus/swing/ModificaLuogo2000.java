@@ -6,8 +6,6 @@ import ferranti.bikerbikus.utils.Utils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 public class ModificaLuogo2000 extends ModificaLuogoController1 {
@@ -16,7 +14,6 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
     private JButton backButton;
     private JLabel nomeJLabel;
     private JButton modifyButton;
-    private static JDialog d;
 
 
     JButton button = new JButton();
@@ -34,19 +31,9 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
 
     public ModificaLuogo2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Recensioni2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Recensioni2000().mostra(frame));
 
-        modifyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogExample(table1.getSelectedRow());
-            }
-        });
+        modifyButton.addActionListener(e -> dialogExample(table1.getSelectedRow()));
     }
 
     public void mostra(JFrame frame){
@@ -55,10 +42,10 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         table1.setModel(modelPlace);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
@@ -89,9 +76,11 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         }
     }
 
-    public  void DialogExample(int id) {
+    public  void dialogExample(int id) {
         JButton btnOk;
         JButton btnCancel;
+        JDialog d;
+
 
 
         JFrame f= new JFrame();
@@ -148,21 +137,17 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
 
         btnOk = new JButton("Ok");
 
-        btnOk.addActionListener (new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
+        btnOk.addActionListener (e -> {
 
-                if( nameField.getText().equals(ModificaLuogoController1.luoghi.get(id).getNome()) && descriptionField.getText().equals(ModificaLuogoController1.luoghi.get(id).getDescrizione()) &&  difficultyField.getText().equals(Integer.toString(ModificaLuogoController1.luoghi.get(id).getDifficolta()))){
+            if( nameField.getText().equals(ModificaLuogoController1.luoghi.get(id).getNome()) && descriptionField.getText().equals(ModificaLuogoController1.luoghi.get(id).getDescrizione()) &&  difficultyField.getText().equals(Integer.toString(ModificaLuogoController1.luoghi.get(id).getDifficolta()))){
 
-                    JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
-                }else{
-                    modLuogo(ModificaLuogoController1.luoghi.get(id).getId(), nameField.getText(), descriptionField.getText(), Integer.parseInt(difficultyField.getText()));
-                    setValue();
-                    d.setVisible(false);
-                    d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-                    JOptionPane.showMessageDialog(null," Modifica effettuata");
-                }
+                JOptionPane.showMessageDialog(null,"Modifica almeno un dato!");
+            }else{
+                modLuogo(ModificaLuogoController1.luoghi.get(id).getId(), nameField.getText(), descriptionField.getText(), Integer.parseInt(difficultyField.getText()));
+                setValue();
+                d.setVisible(false);
+                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
+                JOptionPane.showMessageDialog(null," Modifica effettuata");
             }
         });
         gbc.gridwidth = 1;
@@ -171,13 +156,9 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener ( new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                d.setVisible(false);
-                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-            }
+        btnCancel.addActionListener (e -> {
+            d.setVisible(false);
+            d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 2;

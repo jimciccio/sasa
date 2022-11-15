@@ -4,12 +4,9 @@ import ferranti.bikerbikus.controllers1.RecensioniController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
 
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +22,6 @@ public class Recensioni2000 extends RecensioniController1 {
     private JButton modifyReviewsButton;
     private JButton modifyPlaceButton;
     private JButton addPlaceButton;
-    private static JDialog d;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE; // example '2011-12-03'
 
 
@@ -52,53 +48,22 @@ public class Recensioni2000 extends RecensioniController1 {
     };
     String[] months = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
-    DefaultComboBoxModel modelCombo = new DefaultComboBoxModel(months);
+    DefaultComboBoxModel<String> modelCombo = new DefaultComboBoxModel<>(months);
     JFrame frame;
 
     public Recensioni2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Escursioni2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Escursioni2000().mostra(frame));
 
-        addReviewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogExample(table1.getSelectedRow());
-            }
-        });
+        addReviewButton.addActionListener(e -> dialogExample(table1.getSelectedRow()));
 
-        displayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        displayButton.addActionListener(e -> setValue2(table1.getSelectedRow()));
 
-                setValue2(table1.getSelectedRow());
-            }
-        });
+        modifyReviewsButton.addActionListener(e -> new ModificaRecensioni2000().mostra(frame));
 
-        modifyReviewsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ModificaRecensioni2000().mostra(frame);
-            }
-        });
+        addPlaceButton.addActionListener(e -> new AggiungiLuogo2000().mostra(frame));
 
-        addPlaceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AggiungiLuogo2000().mostra(frame);
-            }
-        });
-
-        modifyPlaceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ModificaLuogo2000().mostra(frame);
-            }
-        });
+        modifyPlaceButton.addActionListener(e -> new ModificaLuogo2000().mostra(frame));
     }
 
     public void mostra(JFrame frame){
@@ -108,10 +73,10 @@ public class Recensioni2000 extends RecensioniController1 {
         table2.setModel(modelReview);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
@@ -121,10 +86,10 @@ public class Recensioni2000 extends RecensioniController1 {
 
     public void item(){
             loadLuoghi();
-            setValue(delete);
+            setValue();
     }
 
-    public void setValue(Action action1){
+    public void setValue(){
         deleteAllRows(modelPlace);
 
         for (int i = 0; i < RecensioniController1.luoghi.size(); i++) {
@@ -154,9 +119,11 @@ public class Recensioni2000 extends RecensioniController1 {
         }
     }
 
-    public  void DialogExample(int id) {
+    public  void dialogExample(int id) {
         JButton btnOk;
         JButton btnCancel;
+        JDialog d;
+
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Add a review to "+RecensioniController1.luoghi.get(id).getNome(), true);
@@ -221,42 +188,34 @@ public class Recensioni2000 extends RecensioniController1 {
 
         btnOk = new JButton("Ok");
 
-        btnOk.addActionListener (new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                    if (dateField.getText().equals("") || descriptionField.getText().equals("") || starField.getText().equals("")) {
+        btnOk.addActionListener (e -> {
+                if (dateField.getText().equals("") || descriptionField.getText().equals("") || starField.getText().equals("")) {
 
-                        JOptionPane.showMessageDialog(null, "Inserisci tutti i dati!");
+                    JOptionPane.showMessageDialog(null, "Inserisci tutti i dati!");
 
-                    } else {
-                        if(checkDate(dateField.getText())) {
-                            LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
+                } else {
+                    if(checkDate(dateField.getText())) {
+                        LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
 
-                            recensisciLuogo(RecensioniController1.luoghi.get(id).getId(), descriptionField.getText(), LocalDate.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()), Double.valueOf(starField.getText()));
-                            setValue2(id);
-                            d.setVisible(false);
-                            d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-                            JOptionPane.showMessageDialog(null, "Recensione inserita");
-                        }else{
-                            JOptionPane.showMessageDialog(null," Data non valida!");
-                        }
+                        recensisciLuogo(RecensioniController1.luoghi.get(id).getId(), descriptionField.getText(), LocalDate.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()), Double.valueOf(starField.getText()));
+                        setValue2(id);
+                        d.setVisible(false);
+                        d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
+                        JOptionPane.showMessageDialog(null, "Recensione inserita");
+                    }else{
+                        JOptionPane.showMessageDialog(null," Data non valida!");
                     }
                 }
-        });
+            });
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = 3;
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener ( new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                d.setVisible(false);
-                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-            }
+        btnCancel.addActionListener (e -> {
+            d.setVisible(false);
+            d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 1;
@@ -273,10 +232,6 @@ public class Recensioni2000 extends RecensioniController1 {
 
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
 
-        if(validator.isValid(stringa) ){
-            return true;
-        }else{
-            return false;
-        }
+        return validator.isValid(stringa);
     }
 }

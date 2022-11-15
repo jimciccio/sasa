@@ -6,8 +6,7 @@ import ferranti.bikerbikus.models.*;
 import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,57 +17,44 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
     private JButton backButton;
     private JButton addButton;
     private JLabel nomeJLabel;
-    private JComboBox hourCombo;
-    private JComboBox championCombo;
-    private JPanel pickerPanel;
+    private JComboBox<LocalTime> hourCombo;
+    private JComboBox<Stagione> championCombo;
     private JTextField dateField;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
 
     JFrame frame;
 
-    DefaultComboBoxModel modelHour = new DefaultComboBoxModel();
-    DefaultComboBoxModel modelChampion = new DefaultComboBoxModel();
+    DefaultComboBoxModel<LocalTime> modelHour = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<Stagione> modelChampion = new DefaultComboBoxModel<>();
 
     public AggiungiGara2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Gare2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Gare2000().mostra(frame));
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addButton.addActionListener(e -> {
 
-                if(checkFields()){
+            if(checkFields()){
 
-                    LocalTime hours= (LocalTime) hourCombo.getModel().getSelectedItem();
-                    LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
+                LocalTime hours= (LocalTime) hourCombo.getModel().getSelectedItem();
+                LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
 
+                int hoursInt = hours.getHour();
+                int minute = hours.getMinute();
 
-                    int hoursInt = hours.getHour();
-                    int minute = hours.getMinute();
+                Stagione stagione = (Stagione) championCombo.getSelectedItem();
 
-                    Stagione stagione = (Stagione) championCombo.getSelectedItem();
+                Gara gara = new Gara();
 
+                gara.setData(LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), hoursInt,minute));
 
-                    Gara gara = new Gara();
+                gara.setStagione(stagione);
 
-
-                    gara.setData(LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), hoursInt,minute));
-
-                    gara.setStagione(stagione);
-
-
-                    if (AggiungiGaraController1.onActionConferma(gara)) {
-                        JOptionPane.showMessageDialog(null,"Gara creata con successo!");
-                        new Gare2000().mostra(frame);
-                    } else {
-                        JOptionPane.showMessageDialog(null,"Non è stato possibile inserire la gara");
-                    }
+                if (AggiungiGaraController1.onActionConferma(gara)) {
+                    JOptionPane.showMessageDialog(null,"Gara creata con successo!");
+                    new Gare2000().mostra(frame);
+                } else {
+                    JOptionPane.showMessageDialog(null,"Non è stato possibile inserire la gara");
                 }
             }
         });
@@ -80,10 +66,10 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
         this.frame=frame;
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
 
         nomeJLabel.setText(

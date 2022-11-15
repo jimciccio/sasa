@@ -9,8 +9,7 @@ import ferranti.bikerbikus.utils.Utils;
 
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 
 public class AggiungiBicicletta2000 extends AggiungiBiciclettaController1 {
@@ -29,53 +28,44 @@ public class AggiungiBicicletta2000 extends AggiungiBiciclettaController1 {
 
         public AggiungiBicicletta2000() {
 
-            backButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new Shop2000().mostra(frame);
-                }
-            });
+            backButton.addActionListener(e -> new Shop2000().mostra(frame));
 
 
 
-            addButton.addActionListener(new ActionListener() {
+            addButton.addActionListener(e -> {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
+                if(checkFields()){
 
-                    if(checkFields()){
-
-                        if(rentableCheck.isSelected()){
-                            BiciclettaNoleggio biciclettaNoleggio = new BiciclettaNoleggio();
-                            biciclettaNoleggio.setModello(modelTxt.getText());
-                            biciclettaNoleggio.setCaratteristiche(carTxt.getText());
-                            biciclettaNoleggio.setPrezzo(Integer.parseInt(priceTxt.getText()));
-                            biciclettaNoleggio.setNoleggiabile(1);
-                            onActionConfermaNoleggiabile(biciclettaNoleggio);
-                            JOptionPane.showMessageDialog(null,"La bicicletta noleggiabile è stata inserita!");
-                            new Shop2000().mostra(frame);
-
-                        }else{
-                            BiciclettaVendita biciclettaVendita = new BiciclettaVendita();
-                            biciclettaVendita.setModello(modelTxt.getText());
-                            biciclettaVendita.setCaratteristiche(carTxt.getText());
-                            biciclettaVendita.setPrezzo(Integer.parseInt(priceTxt.getText()));
-                            biciclettaVendita.setDisponibili(Integer.parseInt(quantityTxt.getText()));
-
-                            if(checkBiciclettaNuova(biciclettaVendita)){
-                                JOptionPane.showMessageDialog(null,"La bicicletta è gia esistente!");
-
-                            }else{
-                                onActionConfermaNuova(biciclettaVendita);
-                                JOptionPane.showMessageDialog(null,"La nuova bicicletta è stata inserita!");
-                                new Shop2000().mostra(frame);
-
-                            }
-                        }
+                    if(rentableCheck.isSelected()){
+                        BiciclettaNoleggio biciclettaNoleggio = new BiciclettaNoleggio();
+                        biciclettaNoleggio.setModello(modelTxt.getText());
+                        biciclettaNoleggio.setCaratteristiche(carTxt.getText());
+                        biciclettaNoleggio.setPrezzo(Integer.parseInt(priceTxt.getText()));
+                        biciclettaNoleggio.setNoleggiabile(1);
+                        onActionConfermaNoleggiabile(biciclettaNoleggio);
+                        JOptionPane.showMessageDialog(null,"La bicicletta noleggiabile è stata inserita!");
+                        new Shop2000().mostra(frame);
 
                     }else{
-                        JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
+                        BiciclettaVendita biciclettaVendita = new BiciclettaVendita();
+                        biciclettaVendita.setModello(modelTxt.getText());
+                        biciclettaVendita.setCaratteristiche(carTxt.getText());
+                        biciclettaVendita.setPrezzo(Integer.parseInt(priceTxt.getText()));
+                        biciclettaVendita.setDisponibili(Integer.parseInt(quantityTxt.getText()));
+
+                        if(checkBiciclettaNuova(biciclettaVendita)){
+                            JOptionPane.showMessageDialog(null,"La bicicletta è gia esistente!");
+
+                        }else{
+                            onActionConfermaNuova(biciclettaVendita);
+                            JOptionPane.showMessageDialog(null,"La nuova bicicletta è stata inserita!");
+                            new Shop2000().mostra(frame);
+
+                        }
                     }
+
+                }else{
+                    JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
                 }
             });
 
@@ -88,10 +78,10 @@ public class AggiungiBicicletta2000 extends AggiungiBiciclettaController1 {
             this.frame=frame;
 
             frame.setContentPane(panel1);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.pack();
             frame.setVisible(true);
-            frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+            frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
 
             nomeJLabel.setText(

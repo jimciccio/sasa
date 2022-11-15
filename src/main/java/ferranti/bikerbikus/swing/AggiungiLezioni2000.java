@@ -9,6 +9,7 @@ import ferranti.bikerbikus.utils.Utils;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -24,56 +25,47 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
     private JLabel nomeJLabel;
     private JComboBox<TipoLezione> typeCombo;
     private JCheckBox privateCheck;
-    private JComboBox masterCombo;
+    private JComboBox<Utente> masterCombo;
     private JComboBox<LocalTime> hourCombo;
-    private JPanel pickerPanel;
     private JTextField dateField;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     JFrame frame;
 
-    DefaultComboBoxModel modelHour = new DefaultComboBoxModel();
-    DefaultComboBoxModel modelType = new DefaultComboBoxModel();
-    DefaultComboBoxModel modelMaster = new DefaultComboBoxModel();
+    DefaultComboBoxModel<LocalTime> modelHour = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<TipoLezione> modelType = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<Utente> modelMaster = new DefaultComboBoxModel<>();
 
     public AggiungiLezioni2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Lezioni2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Lezioni2000().mostra(frame));
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addButton.addActionListener(e -> {
 
-                if(checkFields()){
+            if(checkFields()){
 
-                    LocalTime hours= (LocalTime) hourCombo.getModel().getSelectedItem();
-                    LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
+                LocalTime hours= (LocalTime) hourCombo.getModel().getSelectedItem();
+                LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
 
 
-                    int hoursInt = hours.getHour();
-                    int minute = hours.getMinute();
-                    TipoLezione tipo = (TipoLezione) typeCombo.getSelectedItem();
-                    Utente master = (Utente) masterCombo.getSelectedItem();
+                int hoursInt = hours.getHour();
+                int minute = hours.getMinute();
+                TipoLezione tipo = (TipoLezione) typeCombo.getSelectedItem();
+                Utente master = (Utente) masterCombo.getSelectedItem();
 
-                    Lezione lezione = new Lezione();
+                Lezione lezione = new Lezione();
 
-                    lezione.setData(LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), hoursInt,minute));
+                lezione.setData(LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), hoursInt,minute));
 
-                    lezione.setTipo(tipo);
-                    lezione.setPrivata(privateCheck.isSelected());
-                    lezione.setMaestro(master);
+                lezione.setTipo(tipo);
+                lezione.setPrivata(privateCheck.isSelected());
+                lezione.setMaestro(master);
 
-                    if (AggiungiLezioneController1.onActionConferma(lezione)) {
-                        JOptionPane.showMessageDialog(null,"Lezione creata con successo!");
-                        new Lezioni2000().mostra(frame);
-                    } else {
-                        JOptionPane.showMessageDialog(null,"Non è stato possibile inserire la lezione");
-                    }
+                if (AggiungiLezioneController1.onActionConferma(lezione)) {
+                    JOptionPane.showMessageDialog(null,"Lezione creata con successo!");
+                    new Lezioni2000().mostra(frame);
+                } else {
+                    JOptionPane.showMessageDialog(null,"Non è stato possibile inserire la lezione");
                 }
             }
         });
@@ -85,10 +77,10 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
         this.frame=frame;
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
 
         nomeJLabel.setText(

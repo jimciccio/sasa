@@ -6,10 +6,9 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 
 public class GestisciUtenti2000 extends ManageUsersController1 {
     private JPanel panel1;
@@ -33,18 +32,13 @@ public class GestisciUtenti2000 extends ManageUsersController1 {
 
     public GestisciUtenti2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
         upgrade = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
+                int modelRow = Integer.parseInt( e.getActionCommand() );
                 upgradeUser(ManageUsersController1.utenti.get(modelRow).getId());
                 item();
             }
@@ -58,10 +52,10 @@ public class GestisciUtenti2000 extends ManageUsersController1 {
         table1.setModel(model);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));

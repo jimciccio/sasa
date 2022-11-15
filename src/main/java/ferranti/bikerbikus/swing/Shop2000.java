@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -24,8 +23,7 @@ public class Shop2000 extends ShopController1 {
     private JTable table2;
     private JButton addBikeButton;
     private JButton modifyBikeButton;
-    private static JDialog d;
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE; // example '2011-12-03'
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
 
     Action buy;
@@ -55,32 +53,17 @@ public class Shop2000 extends ShopController1 {
 
     public Shop2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
-        addBikeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AggiungiBicicletta2000().mostra(frame);
-            }
-        });
+        addBikeButton.addActionListener(e -> new AggiungiBicicletta2000().mostra(frame));
 
-        modifyBikeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ModificaBicicletta2000().mostra(frame);
-            }
-        });
+        modifyBikeButton.addActionListener(e -> new ModificaBicicletta2000().mostra(frame));
 
         buy = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
+                int modelRow = Integer.parseInt( e.getActionCommand() );
                 ShopController1.buyBicicletta(modelRow);
             }
         };
@@ -89,10 +72,8 @@ public class Shop2000 extends ShopController1 {
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-                //ShopController1.rentBicicletta(modelRow, );
-                DialogExample(modelRow);
-
+                int modelRow = Integer.parseInt( e.getActionCommand() );
+                dialogExample(modelRow);
             }
         };
     }
@@ -104,10 +85,10 @@ public class Shop2000 extends ShopController1 {
         table2.setModel(modelRent);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
@@ -157,10 +138,12 @@ public class Shop2000 extends ShopController1 {
         }
     }
 
-    public  void DialogExample(int id) {
+    public  void dialogExample(int id) {
 
         JButton btnOk;
         JButton btnCancel;
+        JDialog d;
+
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Fino a quando vuoi noleggiare ", true);
@@ -196,23 +179,19 @@ public class Shop2000 extends ShopController1 {
 
         btnOk = new JButton("Ok");
 
-        btnOk.addActionListener (new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                if(dateField.getText().equals("")){
-                    JOptionPane.showMessageDialog(null,"Inserisci una data!");
-                }else if(checkDate(dateField.getText())){
-                    LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
+        btnOk.addActionListener (e -> {
+            if(dateField.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Inserisci una data!");
+            }else if(checkDate(dateField.getText())){
+                LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
 
-                    rentBicicletta(id, LocalDate.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()));
-                    setValue();
-                    d.setVisible(false);
-                    d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
+                rentBicicletta(id, LocalDate.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()));
+                setValue();
+                d.setVisible(false);
+                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
 
-                }else{
-                    JOptionPane.showMessageDialog(null,"Inserisci una data valida!");
-                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Inserisci una data valida!");
             }
         });
         gbc.gridwidth = 1;
@@ -221,13 +200,9 @@ public class Shop2000 extends ShopController1 {
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener ( new ActionListener()
-        {
-            public void actionPerformed( ActionEvent e )
-            {
-                d.setVisible(false);
-                d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-            }
+        btnCancel.addActionListener (e -> {
+            d.setVisible(false);
+            d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 1;
@@ -245,10 +220,6 @@ public class Shop2000 extends ShopController1 {
 
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
 
-        if(validator.isValid(stringa) ){
-            return true;
-        }else{
-            return false;
-        }
+        return validator.isValid(stringa);
     }
 }

@@ -3,6 +3,7 @@ package ferranti.bikerbikus.swing;
 import ferranti.bikerbikus.controllers1.RegisterController1;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,20 +20,12 @@ public class Register2000 extends RegisterController1 {
 
     public Register2000() {
 
-        logInButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Login2000().mostra(frame);
-            }
-        });
+        logInButton.addActionListener(e -> new Login2000().mostra(frame));
 
-        signInButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        signInButton.addActionListener(e -> {
 
-                onActionRegister(nameTxt.getText(), surnameTxt.getText(), emailTxt.getText(), passwordTxt.getText());
-                new Homepage2000().mostra(frame);
-            }
+            onActionRegister(nameTxt.getText(), surnameTxt.getText(), emailTxt.getText(), passwordTxt.getText());
+            new Homepage2000().mostra(frame);
         });
 
     }
@@ -42,9 +35,9 @@ public class Register2000 extends RegisterController1 {
         this.frame=frame;
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
     }
 }

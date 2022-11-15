@@ -6,6 +6,7 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,20 +37,10 @@ public class Campionati2000 extends CampionatiController1 {
 
     public Campionati2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
 
-        addSeason.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AggiungiStagione2000().mostra(frame);
-            }
-        });
+        addSeason.addActionListener(e -> new AggiungiStagione2000().mostra(frame));
 
         join = new AbstractAction()
         {
@@ -69,10 +60,10 @@ public class Campionati2000 extends CampionatiController1 {
         table1.setModel(model);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));

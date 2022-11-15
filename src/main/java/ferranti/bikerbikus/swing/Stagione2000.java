@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class Stagione2000 extends StagioneController1 {
@@ -22,21 +21,19 @@ public class Stagione2000 extends StagioneController1 {
     private JLabel seasonName;
     private JTable table1;
     private JTable table2;
-    private static JDialog d;
+    String surname = "Cognome";
 
     Action join;
 
     JButton button = new JButton();
 
-    String[] columnsRank = {"#", "Nome", "Cognome", "Gare", "Punti"};
+    String[] columnsRank = {"#", "Nome", surname, "Gare", "Punti"};
     DefaultTableModel modelRank = new DefaultTableModel(columnsRank, 0){
         @Override
-        public boolean isCellEditable(int row, int column) {
-            return column == 4;
-        }
+        public boolean isCellEditable(int row, int column) {return column == 4;}
     };
 
-    String[] columnsRace = {"Data", "Partecipanti", "Nome", "Cognome", "Dettagli"};
+    String[] columnsRace = {"Data", "Partecipanti", "Nome", surname, "Dettagli"};
 
     DefaultTableModel modelRace = new DefaultTableModel(columnsRace, 0){
         @Override
@@ -51,20 +48,15 @@ public class Stagione2000 extends StagioneController1 {
 
         this.stagione = stagione;
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Campionati2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Campionati2000().mostra(frame));
 
         join = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
 
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-                DialogExample(StagioneController1.gare.get(modelRow).getId(), modelRow);
+                int modelRow = Integer.parseInt( e.getActionCommand() );
+                dialogExample(StagioneController1.gare.get(modelRow).getId(), modelRow);
             }
         };
     }
@@ -77,10 +69,10 @@ public class Stagione2000 extends StagioneController1 {
         table2.setModel(modelRace);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         seasonName.setText("Campionato " + stagione.getCampionato().getNome() + " - Stagione " + stagione.getNome());
         nomeJLabel.setText(
@@ -121,15 +113,17 @@ public class Stagione2000 extends StagioneController1 {
     }
 
 
-    public static void DialogExample(int id, int counter) {
+    public static void dialogExample(int id, int counter) {
         JFrame f= new JFrame();
+        JDialog d;
+
         d = new JDialog(f , "Gara del "+ Utils.formatTimeDayMonthYear(StagioneController1.gare.get(counter).getData().getDayOfMonth(), StagioneController1.gare.get(counter).getData().getMonthValue(), StagioneController1.gare.get(counter).getData().getYear()), true);
         d.setLayout( new FlowLayout() );
 
         JTable tab = new JTable();
         JScrollPane scroll = new JScrollPane(tab);
 
-        String columnsRace[] = {"Nome", "Cognome", "Posizione", "Ps1", "Ps2", "Ps3", "Finale", "Punti"};
+        String[] columnsRace = {"Nome", "Cognome", "Posizione", "Ps1", "Ps2", "Ps3", "Finale", "Punti"};
 
         DefaultTableModel mod = new DefaultTableModel(columnsRace, 0){
             @Override
@@ -142,7 +136,6 @@ public class Stagione2000 extends StagioneController1 {
         if(StagioneController1.loadClassificaGara(id)){
 
             for (int i = 0; i < StagioneController1.utenteGara.size(); i++) {
-                System.out.println("in for"+ StagioneController1.utenteGara.get(i).getNome());
                 mod.addRow(new Object[]{StagioneController1.utenteGara.get(i).getNome(), StagioneController1.utenteGara.get(i).getCognome(),
                         StagioneController1.utenteGara.get(i).getPosizioneGara(), StagioneController1.utenteGara.get(i).getPs1(), StagioneController1.utenteGara.get(i).getPs2(),
                         StagioneController1.utenteGara.get(i).getPs3(), StagioneController1.utenteGara.get(i).getTempo(), StagioneController1.utenteGara.get(i).getPunteggio()});

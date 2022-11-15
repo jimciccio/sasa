@@ -6,8 +6,8 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -19,7 +19,7 @@ public class Escursioni2000 extends EscursioniController1 {
     private JTable table1;
     private JButton reviewButton;
     private JButton addExcursionButton;
-    private JComboBox monthBox;
+    private JComboBox<String> monthBox;
     private JTextField yearsTextField;
     private JButton searchButton;
     private JLabel monthLabel;
@@ -41,53 +41,32 @@ public class Escursioni2000 extends EscursioniController1 {
     };
     String[] months = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
-    DefaultComboBoxModel modelCombo = new DefaultComboBoxModel(months);
+    DefaultComboBoxModel<String> modelCombo = new DefaultComboBoxModel<>(months);
     JFrame frame;
 
     public Escursioni2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                search();
-            }
-        });
+        searchButton.addActionListener(e -> search());
 
-        addExcursionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AggiungiEscursioni2000().mostra(frame);
-            }
-        });
+        addExcursionButton.addActionListener(e -> new AggiungiEscursioni2000().mostra(frame));
 
-        reviewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Recensioni2000().mostra(frame);
-            }
-        });
+        reviewButton.addActionListener(e -> new Recensioni2000().mostra(frame));
 
 
         delete = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
+                int modelRow = Integer.parseInt( e.getActionCommand() );
 
-                if(Escursioni2000.escursioni.get(modelRow).getData().isBefore(LocalDateTime.now())){
+                if(EscursioniController1.escursioni.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"L'escursione è scaduta");
                 }else{
                     button.setEnabled(true);
-                    System.out.println("pannello"+modelRow);
-                    if(eliminaEscursione(Escursioni2000.escursioni.get(modelRow).getId())){
+                    if(eliminaEscursione(EscursioniController1.escursioni.get(modelRow).getId())){
                         JOptionPane.showMessageDialog(null,"Escursione eliminata con successo! Gli utenti che hanno prenotato l'escursione saranno avvisati.");
                         model.setRowCount(0);
                         item();
@@ -103,15 +82,15 @@ public class Escursioni2000 extends EscursioniController1 {
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
+                int modelRow = Integer.parseInt( e.getActionCommand() );
 
-                if(Escursioni2000.escursioni.get(modelRow).getData().isBefore(LocalDateTime.now())){
+                if(EscursioniController1.escursioni.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"L'escursione è scaduta");
 
                 }else{
                     button.setEnabled(true);
-                    if(prenotaEscursione(Escursioni2000.escursioni.get(modelRow).getId())){
+                    if(prenotaEscursione(EscursioniController1.escursioni.get(modelRow).getId())){
                         JOptionPane.showMessageDialog(null,"Escursione prenotata con successo! Gli utenti che hanno prenotato la lezione saranno avvisati.");
                         model.setRowCount(0);
                         item();
@@ -130,10 +109,10 @@ public class Escursioni2000 extends EscursioniController1 {
         table1.setModel(model);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
@@ -173,12 +152,10 @@ public class Escursioni2000 extends EscursioniController1 {
 
         for (int i = 0; i < EscursioniController1.escursioni.size(); i++) {
 
-            model.addRow(new Object[]{EscursioniController1.escursioni.get(i).getData().getDayOfMonth(), Utils.formatTime(EscursioniController1.escursioni.get(i).getData().getHour(), Escursioni2000.escursioni.get(i).getData().getMinute()),
-                    Escursioni2000.escursioni.get(i).getLuogo().getNome(), Escursioni2000.escursioni.get(i).getLuogo().getDifficolta(), Escursioni2000.escursioni.get(i).getAccompagnatore(), Escursioni2000.escursioni.get(i).getId()});
+            model.addRow(new Object[]{EscursioniController1.escursioni.get(i).getData().getDayOfMonth(), Utils.formatTime(EscursioniController1.escursioni.get(i).getData().getHour(), EscursioniController1.escursioni.get(i).getData().getMinute()),
+                    EscursioniController1.escursioni.get(i).getLuogo().getNome(), EscursioniController1.escursioni.get(i).getLuogo().getDifficolta(), EscursioniController1.escursioni.get(i).getAccompagnatore(), EscursioniController1.escursioni.get(i).getId()});
 
         }
-
-
 
         ButtonColumnExcursion buttonColumn = new ButtonColumnExcursion(table1, action1, action2, 5, EscursioniController1.escursioni);
         buttonColumn.setMnemonic(KeyEvent.VK_D);
@@ -187,7 +164,7 @@ public class Escursioni2000 extends EscursioniController1 {
     static boolean isNumber(String s)
     {
         for (int i = 0; i < s.length(); i++)
-            if (Character.isDigit(s.charAt(i)) == false)
+            if (!Character.isDigit(s.charAt(i)))
                 return false;
 
         return true;

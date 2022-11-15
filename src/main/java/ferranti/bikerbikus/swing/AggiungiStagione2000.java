@@ -7,8 +7,7 @@ import ferranti.bikerbikus.models.Stagione;
 import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,10 +15,7 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
     private JPanel panel1;
     private JButton backButton;
     private JLabel nomeJLabel;
-    private JLabel tipoJLabel;
-    private JComboBox championshipCombo;
-    private JPanel pickerPanelEnd;
-    private JPanel pickerPanelStart;
+    private JComboBox<Campionato> championshipCombo;
     private JButton addButton;
     private JTextField dateFieldStart;
     private JTextField dateFieldEnd;
@@ -27,40 +23,32 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
 
     JFrame frame;
 
-    DefaultComboBoxModel modelChampionship = new DefaultComboBoxModel();
+    DefaultComboBoxModel<Campionato> modelChampionship = new DefaultComboBoxModel<>();
 
     public AggiungiStagione2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Campionati2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Campionati2000().mostra(frame));
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addButton.addActionListener(e -> {
 
-                if(checkFields()){
-                    Campionato cam = (Campionato) championshipCombo.getSelectedItem();
-                    LocalDate localDateStart = LocalDate.parse(dateFieldStart.getText(), dateFormatter);
-                    LocalDate localDateEnd = LocalDate.parse(dateFieldEnd.getText(), dateFormatter);
+            if(checkFields()){
+                Campionato cam = (Campionato) championshipCombo.getSelectedItem();
+                LocalDate localDateStart = LocalDate.parse(dateFieldStart.getText(), dateFormatter);
+                LocalDate localDateEnd = LocalDate.parse(dateFieldEnd.getText(), dateFormatter);
 
 
 
-                    Stagione stagione = new Stagione();
-                    stagione.setNome(Integer.toString(localDateStart.getYear()));
-                    stagione.setDataInizio(LocalDate.of(localDateStart.getYear(), localDateStart.getMonthValue(), localDateStart.getDayOfMonth()));
-                    stagione.setDataFine(LocalDate.of(localDateEnd.getYear(), localDateEnd.getMonthValue(), localDateEnd.getDayOfMonth()));
-                    stagione.setCampionato(cam);
+                Stagione stagione = new Stagione();
+                stagione.setNome(Integer.toString(localDateStart.getYear()));
+                stagione.setDataInizio(LocalDate.of(localDateStart.getYear(), localDateStart.getMonthValue(), localDateStart.getDayOfMonth()));
+                stagione.setDataFine(LocalDate.of(localDateEnd.getYear(), localDateEnd.getMonthValue(), localDateEnd.getDayOfMonth()));
+                stagione.setCampionato(cam);
 
-                    if (AggiungiStagioneController1.onActionConferma(stagione)) {
-                        JOptionPane.showMessageDialog(null,"Stagione creata con successo!");
-                        new Campionati2000().mostra(frame);
-                    } else {
-                        JOptionPane.showMessageDialog(null,"Non è stato possibile creare la stagione");
-                    }
+                if (AggiungiStagioneController1.onActionConferma(stagione)) {
+                    JOptionPane.showMessageDialog(null,"Stagione creata con successo!");
+                    new Campionati2000().mostra(frame);
+                } else {
+                    JOptionPane.showMessageDialog(null,"Non è stato possibile creare la stagione");
                 }
             }
         });
@@ -72,10 +60,10 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
         this.frame=frame;
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
 
         nomeJLabel.setText(

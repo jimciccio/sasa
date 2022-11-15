@@ -6,8 +6,8 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -21,7 +21,7 @@ public class Gare2000 extends GareController1 {
     private JLabel monthLabel;
     private JLabel yearLabel;
     private JTable table1;
-    private JComboBox monthBox;
+    private JComboBox<String> monthBox;
     private JTextField yearsTextField;
     private JButton searchButton;
 
@@ -38,39 +38,24 @@ public class Gare2000 extends GareController1 {
     };
     String[] months = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
-    DefaultComboBoxModel modelCombo = new DefaultComboBoxModel(months);
+    DefaultComboBoxModel<String> modelCombo = new DefaultComboBoxModel<>(months);
     JFrame frame;
 
     public Gare2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                search();
-            }
-        });
+        searchButton.addActionListener(e -> search());
 
-        addRacesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AggiungiGara2000().mostra(frame);
-            }
-        });
+        addRacesButton.addActionListener(e -> new AggiungiGara2000().mostra(frame));
 
         join = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
+                int modelRow = Integer.parseInt( e.getActionCommand() );
 
-                if(Gare2000.gare.get(modelRow).getData().isBefore(LocalDateTime.now())){
+                if(GareController1.gare.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"La gara è scaduta");
 
@@ -93,10 +78,10 @@ public class Gare2000 extends GareController1 {
         table1.setModel(model);
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
@@ -117,7 +102,6 @@ public class Gare2000 extends GareController1 {
     public void search(){
 
         if(isNumber(yearsTextField.getText())){
-            System.out.println("il mese è"+monthBox.getSelectedIndex());
             onActionSpecificMonth(monthBox.getSelectedIndex()+1,Integer.parseInt(yearsTextField.getText()));
             item();
         }else{
@@ -144,9 +128,8 @@ public class Gare2000 extends GareController1 {
     static boolean isNumber(String s)
     {
         for (int i = 0; i < s.length(); i++)
-            if (Character.isDigit(s.charAt(i)) == false)
+            if (!Character.isDigit(s.charAt(i)))
                 return false;
-
         return true;
     }
 

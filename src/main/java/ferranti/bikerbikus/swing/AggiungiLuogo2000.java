@@ -5,6 +5,7 @@ import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,26 +22,18 @@ public class AggiungiLuogo2000 extends ModificaLuogoController1 {
 
     public AggiungiLuogo2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        backButton.addActionListener(e -> new Recensioni2000().mostra(frame));
+
+        addButton.addActionListener(e -> {
+
+            if(checkFields()){
+
+                onActionConferma(nameField.getText(), descriptionField.getText(), difficultyField.getText());
+                JOptionPane.showMessageDialog(null,"Luogo creato con successo!");
                 new Recensioni2000().mostra(frame);
-            }
-        });
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if(checkFields()){
-
-                    onActionConferma(nameField.getText(), descriptionField.getText(), difficultyField.getText());
-                    JOptionPane.showMessageDialog(null,"Luogo creato con successo!");
-                    new Recensioni2000().mostra(frame);
-
-                }else{
-                    JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
-                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
             }
         });
     }
@@ -51,10 +44,10 @@ public class AggiungiLuogo2000 extends ModificaLuogoController1 {
         this.frame=frame;
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
 
         nomeJLabel.setText(

@@ -5,8 +5,7 @@ import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,23 +13,26 @@ public class Profile2000 extends AreaPersonaleController1 {
     private JPanel panel1;
     private JLabel nomeJLabel;
     private JButton backButton;
-    private JComboBox typeCombo;
+    private JComboBox<String> typeCombo;
     private JButton displayButton;
     private JButton cancelButton;
     private JTable table1;
     private JButton logOutButton;
     private JButton manageUsersButton;
-    private JLabel tipoJLabel;
+    String day = "Giorno";
+    String status = "Status";
+    String lezioni = "Lezioni";
 
 
-    DefaultComboBoxModel modelType = new DefaultComboBoxModel();
 
-    String[] columnsLesson = {"Giorno", "Ora", "Tipo", "Privata", "Maestro", "Status"};
-    String[] columnsRace = {"Giorno", "Ora", "Nome", "Stagione"};
-    String[] columnsExcursion = {"Giorno", "Ora", "Luogo", "Difficoltà", "Accompagnatore", "Status"};
+    DefaultComboBoxModel<String> modelType = new DefaultComboBoxModel<>();
+
+    String[] columnsLesson = {day, "Ora", "Tipo", "Privata", "Maestro", status};
+    String[] columnsRace = {day, "Ora", "Nome", "Stagione"};
+    String[] columnsExcursion = {day, "Ora", "Luogo", "Difficoltà", "Accompagnatore", status};
     String[] columnsBuy = {"Modello", "Caratteristiche", "Data Acquisto", "Prezzo"};
-    String[] columnsRent = {"Modello", "Caratteristiche", "Inizio Noleggio", "Fine Noleggio", "Prezzo al Giorno", "Prezzo Totale", "Status"};
-    String[] columnTypeA = {"Lezioni", "Gare", "Escursioni", "Bici Comprate", "Bici Noleggiate"};
+    String[] columnsRent = {"Modello", "Caratteristiche", "Inizio Noleggio", "Fine Noleggio", "Prezzo al Giorno", "Prezzo Totale", status};
+    String[] columnTypeA = {lezioni, "Gare", "Escursioni", "Bici Comprate", "Bici Noleggiate"};
     String[] columnTypeB = {"Gare", "Escursioni", "Bici Comprate", "Bici Noleggiate"};
 
     DefaultTableModel modelLesson = new DefaultTableModel(columnsLesson, 0){
@@ -72,89 +74,66 @@ public class Profile2000 extends AreaPersonaleController1 {
 
     public Profile2000() {
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Homepage2000().mostra(frame);
-            }
-        });
+        backButton.addActionListener(e -> new Homepage2000().mostra(frame));
 
-        displayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                item((String) typeCombo.getSelectedItem());
-            }
-        });
+        displayButton.addActionListener(e -> item((String) typeCombo.getSelectedItem()));
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String tipo = (String) typeCombo.getSelectedItem();
+        cancelButton.addActionListener(e -> {
+            String tipo = (String) typeCombo.getSelectedItem();
 
-                if(table1.getSelectedRow() != -1){
-                    switch (tipo){
-                        case "Lezioni" :{
-                            if(!AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
-                                AreaPersonaleController1.disdiciLezione(AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getId());
-                                JOptionPane.showMessageDialog(null," La prenotazione della lezione è stata annullata");
-                                setValueLesson();
-                                break;
-                            }else{
-                                JOptionPane.showMessageDialog(null," Non puoi disdire una lezione terminata");
-                                break;
-                            }
-                        }
-                        case "Gare" :{
-                            JOptionPane.showMessageDialog(null," Non puoi disdire una gara");
+            if(table1.getSelectedRow() != -1){
+                switch (tipo){
+                    case "Lezioni" :{
+                        if(!AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
+                            AreaPersonaleController1.disdiciLezione(AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getId());
+                            JOptionPane.showMessageDialog(null," La prenotazione della lezione è stata annullata");
+                            setValueLesson();
+                            break;
+                        }else{
+                            JOptionPane.showMessageDialog(null," Non puoi disdire una lezione terminata");
                             break;
                         }
-                        case "Escursioni" :{
-                            if(!AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
-                                AreaPersonaleController1.disdiciEscursione(AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getId());
-                                JOptionPane.showMessageDialog(null," La prenotazione dell'escursione è stata annullata");
-                                setValueExcursion();
-                                break;
-                            }else{
-                                JOptionPane.showMessageDialog(null," Non puoi disdire una escursione terminata");
-                                break;
-                            }
-                        }
-                        case "Bici Noleggiate" :{
-                            if(!AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getFineNoleggio().isBefore(LocalDateTime.now())){
-                                AreaPersonaleController1.disdiciNoleggio(AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getIdNoleggio());
-                                JOptionPane.showMessageDialog(null," Il noleggio è stato interotto");
-                                setValueRent();
-                                break;
-                            }else{
-                                JOptionPane.showMessageDialog(null," Non puoi disdire un noleggio terminato");
-                                break;
-                            }
-                        }
-                        case "Bici Comprate" :{
-                            JOptionPane.showMessageDialog(null," Non puoi disdire una bici comprata");
-                            break;
-                        }
-                        default:
-                            throw new IllegalArgumentException("Unexpected value: " + tipo);
                     }
-                }else{
-                    JOptionPane.showMessageDialog(null," Selezione cosa disdire! ");
+                    case "Gare" :{
+                        JOptionPane.showMessageDialog(null," Non puoi disdire una gara");
+                        break;
+                    }
+                    case "Escursioni" :{
+                        if(!AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
+                            AreaPersonaleController1.disdiciEscursione(AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getId());
+                            JOptionPane.showMessageDialog(null," La prenotazione dell'escursione è stata annullata");
+                            setValueExcursion();
+                            break;
+                        }else{
+                            JOptionPane.showMessageDialog(null," Non puoi disdire una escursione terminata");
+                            break;
+                        }
+                    }
+                    case "Bici Noleggiate" :{
+                        if(!AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getFineNoleggio().isBefore(LocalDateTime.now())){
+                            AreaPersonaleController1.disdiciNoleggio(AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getIdNoleggio());
+                            JOptionPane.showMessageDialog(null," Il noleggio è stato interotto");
+                            setValueRent();
+                            break;
+                        }else{
+                            JOptionPane.showMessageDialog(null," Non puoi disdire un noleggio terminato");
+                            break;
+                        }
+                    }
+                    case "Bici Comprate" :{
+                        JOptionPane.showMessageDialog(null," Non puoi disdire una bici comprata");
+                        break;
+                    }
+                    default:
+                        throw new IllegalArgumentException("Unexpected value: " + tipo);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null," Selezione cosa disdire! ");
             }
         });
 
-        logOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Login2000().mostra(frame);
-            }
-        });
-        manageUsersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GestisciUtenti2000().mostra(frame);
-            }
-        });
+        logOutButton.addActionListener(e -> new Login2000().mostra(frame));
+        manageUsersButton.addActionListener(e -> new GestisciUtenti2000().mostra(frame));
     }
 
     public void mostra(JFrame frame){
@@ -171,10 +150,10 @@ public class Profile2000 extends AreaPersonaleController1 {
         }
 
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         nomeJLabel.setText(
                 Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
