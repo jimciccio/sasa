@@ -2,7 +2,7 @@ package ferranti.bikerbikus;
 
 import ferranti.bikerbikus.grafico.LoginControllerGrafico;
 import ferranti.bikerbikus.queries.CheckNoleggi;
-import ferranti.bikerbikus.swingGraphic.Login2000;
+import ferranti.bikerbikus.swing.Login2000;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
