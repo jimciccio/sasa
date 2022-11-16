@@ -43,8 +43,8 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-        frame.pack();
         nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
+        frame.pack();
         item();
     }
 
@@ -65,18 +65,12 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
     }
 
 
-    public static void deleteAllRows(final DefaultTableModel model) {
-        for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
-            model.removeRow(i);
-        }
-    }
+
 
     public  void dialogExample(int id) {
         JButton btnOk;
         JButton btnCancel;
         JDialog d;
-
-
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Modify "+ModificaLuogoController1.luoghi.get(id).getNome(), true);
@@ -164,5 +158,11 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         d.setLocationRelativeTo(null);
 
         d.setVisible(true);
+    }
+
+    public static void deleteAllRows(final DefaultTableModel model) {
+        for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
+            model.removeRow(i);
+        }
     }
 }

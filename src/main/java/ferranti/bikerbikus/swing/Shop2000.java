@@ -165,7 +165,7 @@ public class Shop2000 extends ShopController1 {
         btnOk.addActionListener (e -> {
             if(dateField.getText().equals("")){
                 JOptionPane.showMessageDialog(null,"Inserisci una data!");
-            }else if(checkDate(dateField.getText())){
+            }else if(checkDate2(dateField.getText())){
                 LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
 
                 rentBicicletta(id, LocalDate.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth()));
@@ -178,8 +178,8 @@ public class Shop2000 extends ShopController1 {
             }
         });
         gbc.gridwidth = 1;
-        gbc.gridx = 0;
         gbc.gridy = 2;
+        gbc.gridx = 0;
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");
@@ -188,21 +188,17 @@ public class Shop2000 extends ShopController1 {
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
-        gbc.gridx = 1;
         gbc.gridy = 2;
+        gbc.gridx = 1;
         panel.add(btnCancel,gbc);
         d.add(panel);
         d.setSize(400,250);
         d.setLocationRelativeTo(null);
-
         d.setVisible(true);
-
     }
 
-    public boolean checkDate(String stringa){
-
+    public boolean checkDate2(String stringa){
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
         return validator.isValid(stringa);
     }
 }
