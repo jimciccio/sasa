@@ -10,13 +10,10 @@ import ferranti.bikerbikus.utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
 
 public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
     private JPanel panel1;
@@ -71,6 +68,29 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
         });
     }
 
+
+
+    public boolean checkFields(){
+
+        if( masterCombo.getSelectedItem() == null ||
+                hourCombo.getSelectedItem() == null || typeCombo.getSelectedItem() == null || dateField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
+            return false;
+        }else{
+            if(checkDate()){
+                return true;
+            }else{
+                JOptionPane.showMessageDialog(null,"La data inserita è errata");
+                return false;
+            }
+        }
+    }
+
+    public boolean checkDate(){
+        DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
+        return validator.isValid(dateField.getText());
+    }
+
     public void mostra(JFrame frame){
         this.frame=frame;
         frame.setContentPane(panel1);
@@ -90,33 +110,6 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
         hourCombo.setModel(modelHour);
         masterCombo.setModel(modelMaster);
         typeCombo.setModel(modelType);
-    }
-
-    public boolean checkFields(){
-
-        if( masterCombo.getSelectedItem() == null ||
-                hourCombo.getSelectedItem() == null || typeCombo.getSelectedItem() == null || dateField.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
-            return false;
-        }else{
-            if(checkDate()){
-                return true;
-            }else{
-                JOptionPane.showMessageDialog(null,"La data inserita è errata");
-                return false;
-            }
-        }
-    }
-
-    public boolean checkDate(){
-
-        DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
-        if(validator.isValid(dateField.getText()) ){
-            return true;
-        }else{
-            return false;
-        }
     }
 
 }

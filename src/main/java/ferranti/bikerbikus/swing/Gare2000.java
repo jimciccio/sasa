@@ -71,6 +71,13 @@ public class Gare2000 extends GareController1 {
             }
         };
     }
+
+
+    public void item(){
+            super.loadGare();
+            setValue();
+    }
+
     public void mostra(JFrame frame){
         this.frame=frame;
         table1.setModel(model);
@@ -84,11 +91,6 @@ public class Gare2000 extends GareController1 {
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
         item();
-    }
-
-    public void item(){
-            super.loadGare();
-            setValue();
     }
 
     public void search(){

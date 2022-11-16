@@ -150,8 +150,8 @@ public class Shop2000 extends ShopController1 {
         panel.add(dateLabel,gbc);
 
         gbc.gridwidth = 2;
-        gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.gridx = 1;
         panel.add(dateField,gbc);
 
         JLabel formatLabel = new JLabel("(yyyy-mm-dd)");

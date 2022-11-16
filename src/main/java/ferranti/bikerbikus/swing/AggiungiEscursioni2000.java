@@ -104,13 +104,7 @@ public class AggiungiEscursioni2000 extends AggiungiEscursioneController1 {
     }
 
     public boolean checkDate(){
-
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
-        if(validator.isValid(dateField.getText()) ){
-            return true;
-        }else{
-            return false;
-        }
+        return validator.isValid(dateField.getText());
     }
 }

@@ -268,8 +268,8 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
             }
         });
         gbc.gridwidth = 1;
-        gbc.gridx = 0;
         gbc.gridy = 4;
+        gbc.gridx = 0;
         panel.add(btnOk,gbc);
 
         btnCancel = new JButton("Cancel");

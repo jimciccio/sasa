@@ -97,20 +97,7 @@ public class Lezioni2000 extends LezioniController1 {
         };
     }
 
-    public void mostra(JFrame frame){
-        this.frame=frame;
-        table1.setModel(model);
-        frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-        monthBox.setModel(modelCombo);
-        monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
-        yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
-        item();
-    }
+
 
     public void item(){
         if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
@@ -133,6 +120,21 @@ public class Lezioni2000 extends LezioniController1 {
         }else{
             JOptionPane.showMessageDialog(null,"La data inserita non è valida!");
         }
+    }
+
+    public void mostra(JFrame frame){
+        this.frame=frame;
+        table1.setModel(model);
+        frame.setContentPane(panel1);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
+        monthBox.setModel(modelCombo);
+        monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
+        yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
+        item();
     }
 
     public void setValue(Action action1){

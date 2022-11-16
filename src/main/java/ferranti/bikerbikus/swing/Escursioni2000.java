@@ -31,6 +31,7 @@ public class Escursioni2000 extends EscursioniController1 {
     Action join;
 
     JButton button = new JButton();
+    String[] months = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
     String[] columns = {"Giorno", "Ora", "Luogo", "Difficoltà", "Accompagnatore", "Prenotazione"};
     DefaultTableModel model = new DefaultTableModel(columns, 0){
@@ -39,7 +40,6 @@ public class Escursioni2000 extends EscursioniController1 {
             return column == 5;
         }
     };
-    String[] months = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
     DefaultComboBoxModel<String> modelCombo = new DefaultComboBoxModel<>(months);
     JFrame frame;
@@ -103,10 +103,10 @@ public class Escursioni2000 extends EscursioniController1 {
         this.frame=frame;
         table1.setModel(model);
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
         frame.pack();
         frame.setVisible(true);
-        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         monthBox.setModel(modelCombo);
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
