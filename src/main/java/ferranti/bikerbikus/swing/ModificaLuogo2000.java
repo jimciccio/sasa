@@ -69,7 +69,7 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
 
     public  void dialogExample(int id) {
         JButton btnOk;
-        JButton btnCancel;
+        JButton btnCancel2;
         JDialog d;
 
         JFrame f= new JFrame();
@@ -144,15 +144,15 @@ public class ModificaLuogo2000 extends ModificaLuogoController1 {
         gbc.gridy = 3;
         panel.add(btnOk,gbc);
 
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener (e -> {
+        btnCancel2 = new JButton("Cancel");
+        btnCancel2.addActionListener (e -> {
             d.setVisible(false);
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 2;
         gbc.gridy = 3;
-        panel.add(btnCancel,gbc);
+        panel.add(btnCancel2,gbc);
         d.add(panel);
         d.setSize(500,300);
         d.setLocationRelativeTo(null);

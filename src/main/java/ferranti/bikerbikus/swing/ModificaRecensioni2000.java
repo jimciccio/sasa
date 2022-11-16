@@ -88,7 +88,7 @@ public class ModificaRecensioni2000 extends ModificaRecensioneController1 {
 
     public  void dialogExample(int id) {
         JButton btnOk;
-        JButton btnCancel;
+        JButton btnCancel3;
         JDialog d;
 
         JFrame f= new JFrame();
@@ -182,15 +182,15 @@ public class ModificaRecensioni2000 extends ModificaRecensioneController1 {
         panel.add(btnOk,gbc);
 
 
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener (e -> {
+        btnCancel3 = new JButton("Cancel");
+        btnCancel3.addActionListener (e -> {
             d.setVisible(false);
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
         gbc.gridx = 1;
         gbc.gridy = 3;
-        panel.add(btnCancel,gbc);
+        panel.add(btnCancel3,gbc);
         d.add(panel);
         d.setSize(500,300);
         d.setLocationRelativeTo(null);
