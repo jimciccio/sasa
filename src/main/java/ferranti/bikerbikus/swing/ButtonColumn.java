@@ -17,9 +17,9 @@ public class ButtonColumn extends AbstractCellEditor
     private Border originalBorder;
     private Border focusBorder;
 
-    private JButton renderButton;
-    private JButton editButton;
-    private Object editorValue;
+    private JButton renderButton1;
+    private JButton editButton1;
+    private Object editorValue1;
     private boolean isButtonColumnEditor;
     private int type;
     private int buyRent;
@@ -31,11 +31,11 @@ public class ButtonColumn extends AbstractCellEditor
         this.type = type;
         this.buyRent = buyRent;
 
-        renderButton = new JButton();
-        editButton = new JButton();
-        editButton.setFocusPainted( false );
-        editButton.addActionListener( this );
-        originalBorder = editButton.getBorder();
+        renderButton1 = new JButton();
+        editButton1 = new JButton();
+        editButton1.setFocusPainted( false );
+        editButton1.addActionListener( this );
+        originalBorder = editButton1.getBorder();
         setFocusBorder( new LineBorder(Color.BLUE) );
 
         TableColumnModel columnModel = table.getColumnModel();
@@ -53,7 +53,7 @@ public class ButtonColumn extends AbstractCellEditor
     public void setFocusBorder(Border focusBorder)
     {
         this.focusBorder = focusBorder;
-        editButton.setBorder( focusBorder );
+        editButton1.setBorder( focusBorder );
     }
 
     public int getMnemonic()
@@ -65,8 +65,8 @@ public class ButtonColumn extends AbstractCellEditor
     public void setMnemonic(int mnemonic)
     {
         this.mnemonic = mnemonic;
-        renderButton.setMnemonic(mnemonic);
-        editButton.setMnemonic(mnemonic);
+        renderButton1.setMnemonic(mnemonic);
+        editButton1.setMnemonic(mnemonic);
     }
 
     @Override
@@ -75,40 +75,40 @@ public class ButtonColumn extends AbstractCellEditor
     {
         if (value == null)
         {
-            editButton.setText( "" );
-            editButton.setIcon( null );
+            editButton1.setText( "" );
+            editButton1.setIcon( null );
         }else {
             if(type == 0){                              // Lezioni
                 if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
-                    editButton.setText("Elimina");
+                    editButton1.setText("Elimina");
                 } else {
-                    editButton.setText("Prenota");
+                    editButton1.setText("Prenota");
                 }
             }else if(type == 1){                        // Campionati - Stagioni
-                editButton.setText("Dettagli");
+                editButton1.setText("Dettagli");
             }else if(type == 2){
-                editButton.setText("Modifica");       // Modifica Bicicletta
+                editButton1.setText("Modifica");       // Modifica Bicicletta
             }else if(type == 3){
-                editButton.setText("Prenota");        // Gare
+                editButton1.setText("Prenota");        // Gare
             }else if(type == 4){
-                editButton.setText("Promuovi");       // Gestisci user
+                editButton1.setText("Promuovi");       // Gestisci user
 
             }else if(type == 5){                      // Shop
                 if(buyRent==0){
-                    editButton.setText("Compra");
+                    editButton1.setText("Compra");
                 }else{
-                    editButton.setText("Noleggia");
+                    editButton1.setText("Noleggia");
                 }
             }
         }
-        this.editorValue = value;
-        return editButton;
+        this.editorValue1 = value;
+        return editButton1;
     }
 
     @Override
     public Object getCellEditorValue()
     {
-        return editorValue;
+        return editorValue1;
     }
 
     public Component getTableCellRendererComponent(
@@ -116,54 +116,54 @@ public class ButtonColumn extends AbstractCellEditor
     {
         if (isSelected)
         {
-            renderButton.setForeground(table.getSelectionForeground());
-            renderButton.setBackground(table.getSelectionBackground());
+            renderButton1.setForeground(table.getSelectionForeground());
+            renderButton1.setBackground(table.getSelectionBackground());
         }
         else
         {
-            renderButton.setForeground(table.getForeground());
-            renderButton.setBackground(UIManager.getColor("Button.background"));
+            renderButton1.setForeground(table.getForeground());
+            renderButton1.setBackground(UIManager.getColor("Button.background"));
         }
 
         if (hasFocus)
         {
-            renderButton.setBorder( focusBorder );
+            renderButton1.setBorder( focusBorder );
         }
         else
         {
-            renderButton.setBorder( originalBorder );
+            renderButton1.setBorder( originalBorder );
         }
 
         if (value == null)
         {
-            renderButton.setText( "" );
-            renderButton.setIcon( null );
+            renderButton1.setText( "" );
+            renderButton1.setIcon( null );
         }else {
 
             if(type == 0){                              // Lezioni
                 if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
-                    renderButton.setText("Elimina");
+                    renderButton1.setText("Elimina");
                 } else {
-                    renderButton.setText("Prenota");
+                    renderButton1.setText("Prenota");
                 }
             }else if(type == 1){                        // Campionati - Stagioni
-                renderButton.setText("Dettagli");
+                renderButton1.setText("Dettagli");
             }else if(type == 2){
-                renderButton.setText("Modifica");       // Modifica Bicicletta
+                renderButton1.setText("Modifica");       // Modifica Bicicletta
             }else if(type == 3){
-                renderButton.setText("Prenota");        // Gare
+                renderButton1.setText("Prenota");        // Gare
             }else if(type == 4){
-                renderButton.setText("Promuovi");       // Gestisci user
+                renderButton1.setText("Promuovi");       // Gestisci user
 
             }else if(type == 5){                      // Shop
                 if(buyRent==0){
-                    renderButton.setText("Compra");
+                    renderButton1.setText("Compra");
                 }else{
-                    renderButton.setText("Noleggia");
+                    renderButton1.setText("Noleggia");
                 }
             }
         }
-        return renderButton;
+        return renderButton1;
     }
 
     public void actionPerformed(ActionEvent e)
