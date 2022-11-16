@@ -56,8 +56,8 @@ public class Campionati2000 extends CampionatiController1 {
 
     public void mostra(JFrame frame){
 
-        this.frame=frame;
         table1.setModel(model);
+        this.frame=frame;
 
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

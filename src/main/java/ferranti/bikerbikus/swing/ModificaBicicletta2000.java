@@ -283,8 +283,8 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
-        gbc.gridx = 1;
         gbc.gridy = 4;
+        gbc.gridx = 1;
         panel.add(btnCancel,gbc);
         d.add(panel);
         d.setSize(600,600);

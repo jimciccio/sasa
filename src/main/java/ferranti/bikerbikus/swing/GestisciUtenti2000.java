@@ -47,19 +47,14 @@ public class GestisciUtenti2000 extends ManageUsersController1 {
     }
 
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(model);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
+        frame.setVisible(true);
         item();
     }
 

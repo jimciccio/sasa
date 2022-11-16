@@ -23,8 +23,7 @@ public class ButtonColumn extends AbstractCellEditor
     private boolean isButtonColumnEditor;
     private int type;
     private int buyRent;
-
-
+    
     public ButtonColumn(JTable table, Action action, int column, int type, int buyRent )
     {
         this.table = table;
@@ -44,7 +43,6 @@ public class ButtonColumn extends AbstractCellEditor
         columnModel.getColumn(column).setCellEditor( this );
         table.addMouseListener( this );
     }
-
 
     public Border getFocusBorder()
     {
@@ -80,9 +78,6 @@ public class ButtonColumn extends AbstractCellEditor
             editButton.setText( "" );
             editButton.setIcon( null );
         }else {
-
-
-
             if(type == 0){                              // Lezioni
                 if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
                     editButton.setText("Elimina");
@@ -106,7 +101,6 @@ public class ButtonColumn extends AbstractCellEditor
                 }
             }
         }
-
         this.editorValue = value;
         return editButton;
     }
@@ -146,7 +140,6 @@ public class ButtonColumn extends AbstractCellEditor
             renderButton.setIcon( null );
         }else {
 
-
             if(type == 0){                              // Lezioni
                 if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
                     renderButton.setText("Elimina");
@@ -169,24 +162,14 @@ public class ButtonColumn extends AbstractCellEditor
                     renderButton.setText("Noleggia");
                 }
             }
-
         }
-
         return renderButton;
     }
 
-    //
-//  Implement ActionListener interface
-//
-    /*
-     *	The button has been pressed. Stop editing and invoke the custom Action
-     */
     public void actionPerformed(ActionEvent e)
     {
         int row = table.convertRowIndexToModel( table.getEditingRow() );
         fireEditingStopped();
-
-        //  Invoke the Action
 
         ActionEvent event = new ActionEvent(
                 table,
