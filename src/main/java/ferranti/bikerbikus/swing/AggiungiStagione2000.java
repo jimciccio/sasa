@@ -55,24 +55,17 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
     }
 
     public void mostra(JFrame frame){
-
-
         this.frame=frame;
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
 
         loadCampionati();
         modelChampionship.addAll(AggiungiStagioneController1.campionati);
         championshipCombo.setModel(modelChampionship);
-
     }
 
     public boolean checkFields(){

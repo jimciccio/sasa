@@ -54,7 +54,6 @@ public class Escursioni2000 extends EscursioniController1 {
 
         reviewButton.addActionListener(e -> new Recensioni2000().mostra(frame));
 
-
         delete = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -70,7 +69,6 @@ public class Escursioni2000 extends EscursioniController1 {
                         JOptionPane.showMessageDialog(null,"Escursione eliminata con successo! Gli utenti che hanno prenotato l'escursione saranno avvisati.");
                         model.setRowCount(0);
                         item();
-
                     }else{
                         JOptionPane.showMessageDialog(null,"Non è stato possibile eliminare l'escursione.");
                     }
@@ -87,14 +85,12 @@ public class Escursioni2000 extends EscursioniController1 {
                 if(EscursioniController1.escursioni.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"L'escursione è scaduta");
-
                 }else{
                     button.setEnabled(true);
                     if(prenotaEscursione(EscursioniController1.escursioni.get(modelRow).getId())){
                         JOptionPane.showMessageDialog(null,"Escursione prenotata con successo! Gli utenti che hanno prenotato la lezione saranno avvisati.");
                         model.setRowCount(0);
                         item();
-
                     }else{
                         JOptionPane.showMessageDialog(null,"Non è stato possibile prenotare l'escursione.");
                     }
@@ -104,31 +100,21 @@ public class Escursioni2000 extends EscursioniController1 {
     }
 
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(model);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         monthBox.setModel(modelCombo);
-
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
-
         item();
-
     }
 
     public void item(){
-
             loadEscursioni();
             setValue(join, delete);
     }

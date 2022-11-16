@@ -98,29 +98,21 @@ public class Lezioni2000 extends LezioniController1 {
     }
 
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(model);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         monthBox.setModel(modelCombo);
-
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
-
         item();
     }
 
     public void item(){
-
         if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
             super.loadLezioniMaestro();
             setValue(delete);
@@ -131,7 +123,6 @@ public class Lezioni2000 extends LezioniController1 {
     }
 
     public void search(){
-
         if(isNumber(yearsTextField.getText())){
             onActionSpecificMonth(monthBox.getSelectedIndex()+1,Integer.parseInt(yearsTextField.getText()));
             if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
@@ -150,10 +141,8 @@ public class Lezioni2000 extends LezioniController1 {
         yearLabel.setText(Integer.toString(getCurrentYearMonth().getYear()));
 
         for (int i = 0; i < LezioniController1.lezioniController.size(); i++) {
-
             model.addRow(new Object[]{LezioniController1.lezioniController.get(i).getData().getDayOfMonth(), Utils.formatTime(LezioniController1.lezioniController.get(i).getData().getHour(), LezioniController1.lezioniController.get(i).getData().getMinute()),
                     LezioniController1.lezioniController.get(i).getTipo(), Boolean.TRUE.equals(LezioniController1.lezioniController.get(i).isPrivata()) ? "Si" : "No", LezioniController1.lezioniController.get(i).getMaestro(), LezioniController1.lezioniController.get(i).getId()});
-
         }
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, action1, 5, 0, 0);

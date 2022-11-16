@@ -22,9 +22,7 @@ public class Recensioni2000 extends RecensioniController1 {
     private JButton modifyReviewsButton;
     private JButton modifyPlaceButton;
     private JButton addPlaceButton;
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE; // example '2011-12-03'
-
-
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     Action delete;
 
@@ -67,20 +65,15 @@ public class Recensioni2000 extends RecensioniController1 {
     }
 
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(modelPlace);
         table2.setModel(modelReview);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         item();
     }
 
@@ -91,23 +84,18 @@ public class Recensioni2000 extends RecensioniController1 {
 
     public void setValue(){
         deleteAllRows(modelPlace);
-
         for (int i = 0; i < RecensioniController1.luoghi.size(); i++) {
-
             modelPlace.addRow(new Object[]{RecensioniController1.luoghi.get(i).getNome(), RecensioniController1.luoghi.get(i).getDescrizione(),
                     RecensioniController1.luoghi.get(i).getDifficolta(), RecensioniController1.luoghi.get(i).getValutazioneMedia()});
-
         }
         table1.setRowSelectionInterval(0, 0);
     }
 
     public void setValue2(int counterListPlace){
         deleteAllRows(modelReview);
-
         loadRecensioni(RecensioniController1.luoghi.get(counterListPlace).getId());
 
         for (int i = 0; i < RecensioniController1.recensioni.size(); i++) {
-
             modelReview.addRow(new Object[]{RecensioniController1.recensioni.get(i).getUtente().getNome(), RecensioniController1.recensioni.get(i).getRecensioneString(),
                     RecensioniController1.recensioni.get(i).getData(), RecensioniController1.recensioni.get(i).getValutazione()});
         }
@@ -123,7 +111,6 @@ public class Recensioni2000 extends RecensioniController1 {
         JButton btnOk;
         JButton btnCancel;
         JDialog d;
-
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Add a review to "+RecensioniController1.luoghi.get(id).getNome(), true);
@@ -141,8 +128,6 @@ public class Recensioni2000 extends RecensioniController1 {
         JTextField dateField = new JTextField();
         dateField.setSize(75,-1);
         pickerPanel.add(dateField);
-
-
 
         gbc.insets = new Insets(2,2,2,2);
 
@@ -185,14 +170,12 @@ public class Recensioni2000 extends RecensioniController1 {
         gbc.gridy = 2;
         panel.add(starField,gbc);
 
-
         btnOk = new JButton("Ok");
 
         btnOk.addActionListener (e -> {
                 if (dateField.getText().equals("") || descriptionField.getText().equals("") || starField.getText().equals("")) {
 
                     JOptionPane.showMessageDialog(null, "Inserisci tutti i dati!");
-
                 } else {
                     if(checkDate(dateField.getText())) {
                         LocalDate localDate = LocalDate.parse(dateField.getText(), dateFormatter);
@@ -225,13 +208,10 @@ public class Recensioni2000 extends RecensioniController1 {
         d.setSize(500,300);
         d.setLocationRelativeTo(null);
         d.setVisible(true);
-
     }
 
     public boolean checkDate(String stringa){
-
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
         return validator.isValid(stringa);
     }
 }

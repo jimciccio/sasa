@@ -3,8 +3,6 @@ package ferranti.bikerbikus.swing;
 import ferranti.bikerbikus.controllers1.ShopController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
-
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -13,7 +11,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 
 public class Shop2000 extends ShopController1 {
     private JPanel panel1;
@@ -24,7 +21,6 @@ public class Shop2000 extends ShopController1 {
     private JButton addBikeButton;
     private JButton modifyBikeButton;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
 
     Action buy;
     Action rent;
@@ -49,7 +45,6 @@ public class Shop2000 extends ShopController1 {
     };
 
     JFrame frame;
-
 
     public Shop2000() {
 
@@ -79,32 +74,23 @@ public class Shop2000 extends ShopController1 {
     }
 
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(modelBuy);
         table2.setModel(modelRent);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         item();
-
     }
 
     public void item(){
-
             loadBicicletteComprabili();
             loadBicicletteNoleggiabili();
-
             setValue();
     }
-
 
     public void setValue(){
         deleteAllRows(modelBuy);
@@ -131,7 +117,6 @@ public class Shop2000 extends ShopController1 {
 
     }
 
-
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
             model.removeRow(i);
@@ -143,7 +128,6 @@ public class Shop2000 extends ShopController1 {
         JButton btnOk;
         JButton btnCancel;
         JDialog d;
-
 
         JFrame f= new JFrame();
         d = new JDialog(f , "Fino a quando vuoi noleggiare ", true);
@@ -169,7 +153,6 @@ public class Shop2000 extends ShopController1 {
         gbc.gridx = 1;
         gbc.gridy = 0;
         panel.add(dateField,gbc);
-
 
         JLabel formatLabel = new JLabel("(yyyy-mm-dd)");
         gbc.fill = GridBagConstraints.HORIZONTAL;

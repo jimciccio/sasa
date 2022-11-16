@@ -3,7 +3,6 @@ package ferranti.bikerbikus.swing;
 import ferranti.bikerbikus.controllers1.GareController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -73,24 +72,17 @@ public class Gare2000 extends GareController1 {
         };
     }
     public void mostra(JFrame frame){
-
         this.frame=frame;
         table1.setModel(model);
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         monthBox.setModel(modelCombo);
-
         monthBox.setSelectedItem(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         yearsTextField.setText(Integer.toString(getCurrentYearMonth().getYear()));
-
         item();
     }
 

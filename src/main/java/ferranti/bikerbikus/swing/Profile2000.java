@@ -23,8 +23,6 @@ public class Profile2000 extends AreaPersonaleController1 {
     String status = "Status";
     String lezioni = "Lezioni";
 
-
-
     DefaultComboBoxModel<String> modelType = new DefaultComboBoxModel<>();
 
     String[] columnsLesson = {day, "Ora", "Tipo", "Privata", "Maestro", status};
@@ -139,34 +137,25 @@ public class Profile2000 extends AreaPersonaleController1 {
     public void mostra(JFrame frame){
 
         this.frame=frame;
-
         if(UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()){
             table1.setModel(modelRace);
             modelType.addAll(List.of(columnTypeB));
-
         }else{
             table1.setModel(modelLesson);
             modelType.addAll(List.of(columnTypeA));
         }
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         typeCombo.setModel(modelType);
         typeCombo.setSelectedItem(modelType.getElementAt(0));
         item((String) typeCombo.getSelectedItem());
-
     }
 
     public void item(String name){
-
         switch (name){
             case "Lezioni" :{
                 showLezioni();

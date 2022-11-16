@@ -55,28 +55,21 @@ public class Campionati2000 extends CampionatiController1 {
     }
 
     public void mostra(JFrame frame){
-
         table1.setModel(model);
         this.frame=frame;
-
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        nomeJLabel.setText(
-                Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
+        nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         item();
     }
 
     public void item(){
-
             loadStagioni();
             setValue(join);
     }
-
 
     public void setValue(Action action1){
         deleteAllRows(model);
