@@ -118,7 +118,7 @@ public class Recensioni2000 extends RecensioniController1 {
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbc1 = new GridBagConstraints();
         JTextField starField = new JTextField();
 
         JTextArea descriptionField = new JTextArea(8,20);
@@ -129,46 +129,46 @@ public class Recensioni2000 extends RecensioniController1 {
         dateField.setSize(75,-1);
         pickerPanel.add(dateField);
 
-        gbc.insets = new Insets(2,2,2,2);
+        gbc1.insets = new Insets(2,2,2,2);
 
         JLabel descriptionLabel = new JLabel("Description:");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(descriptionLabel,gbc);
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.gridx = 0;
+        gbc1.gridy = 0;
+        panel.add(descriptionLabel,gbc1);
 
-        gbc.gridwidth = 2;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        panel.add(new JScrollPane(descriptionField),gbc);
+        gbc1.gridwidth = 2;
+        gbc1.gridx = 1;
+        gbc1.gridy = 0;
+        panel.add(new JScrollPane(descriptionField),gbc1);
 
         JLabel dateLabel = new JLabel("Date:");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(dateLabel,gbc);
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.gridx = 0;
+        gbc1.gridy = 1;
+        panel.add(dateLabel,gbc1);
 
-        gbc.gridwidth = 2;
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        panel.add(dateField,gbc);
+        gbc1.gridwidth = 2;
+        gbc1.gridx = 1;
+        gbc1.gridy = 1;
+        panel.add(dateField,gbc1);
 
         JLabel formatLabel = new JLabel("(yyyy-mm-dd)");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        panel.add(formatLabel,gbc);
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.gridx = 2;
+        gbc1.gridy = 1;
+        panel.add(formatLabel,gbc1);
 
         JLabel starLabel = new JLabel("Rate:");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(starLabel,gbc);
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.gridx = 0;
+        gbc1.gridy = 2;
+        panel.add(starLabel,gbc1);
 
-        gbc.gridwidth = 2;
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        panel.add(starField,gbc);
+        gbc1.gridwidth = 2;
+        gbc1.gridx = 1;
+        gbc1.gridy = 2;
+        panel.add(starField,gbc1);
 
         btnOk = new JButton("Ok");
 
@@ -190,10 +190,10 @@ public class Recensioni2000 extends RecensioniController1 {
                     }
                 }
             });
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panel.add(btnOk,gbc);
+        gbc1.gridwidth = 1;
+        gbc1.gridx = 0;
+        gbc1.gridy = 3;
+        panel.add(btnOk,gbc1);
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener (e -> {
@@ -201,9 +201,9 @@ public class Recensioni2000 extends RecensioniController1 {
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
 
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        panel.add(btnCancel,gbc);
+        gbc1.gridx = 1;
+        gbc1.gridy = 3;
+        panel.add(btnCancel,gbc1);
         d.add(panel);
         d.setSize(500,300);
         d.setLocationRelativeTo(null);
