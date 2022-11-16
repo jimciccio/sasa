@@ -126,7 +126,7 @@ public class Shop2000 extends ShopController1 {
     public  void dialogExample(int id) {
 
         JButton btnOk;
-        JButton btnCancel;
+        JButton btnCancel1;
         JDialog d;
 
         JFrame f= new JFrame();
@@ -179,8 +179,8 @@ public class Shop2000 extends ShopController1 {
         });
 
 
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener (e -> {
+        btnCancel1 = new JButton("Cancel");
+        btnCancel1.addActionListener (e -> {
             d.setVisible(false);
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
@@ -192,7 +192,7 @@ public class Shop2000 extends ShopController1 {
 
         gbc.gridy = 2;
         gbc.gridx = 1;
-        panel.add(btnCancel,gbc);
+        panel.add(btnCancel1,gbc);
         d.add(panel);
         d.setSize(400,250);
         d.setLocationRelativeTo(null);
