@@ -77,7 +77,7 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
             JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
             return false;
         }else{
-            if(checkDate()){
+            if(checkDate1()){
                 return true;
             }else{
                 JOptionPane.showMessageDialog(null,"La data inserita è errata");
@@ -86,7 +86,7 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
         }
     }
 
-    public boolean checkDate(){
+    public boolean checkDate1(){
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
         return validator.isValid(dateField.getText());
     }
