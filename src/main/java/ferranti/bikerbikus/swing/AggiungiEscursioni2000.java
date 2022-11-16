@@ -94,7 +94,7 @@ public class AggiungiEscursioni2000 extends AggiungiEscursioneController1 {
                     JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
                 return false;
             }else{
-                if(checkDate()){
+                if(checkDate3()){
                     return true;
                 }else{
                     JOptionPane.showMessageDialog(null,"La data inserita è errata");
@@ -103,7 +103,7 @@ public class AggiungiEscursioni2000 extends AggiungiEscursioneController1 {
             }
     }
 
-    public boolean checkDate(){
+    public boolean checkDate3(){
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
         return validator.isValid(dateField.getText());
     }

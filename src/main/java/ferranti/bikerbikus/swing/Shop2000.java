@@ -177,16 +177,18 @@ public class Shop2000 extends ShopController1 {
                 JOptionPane.showMessageDialog(null,"Inserisci una data valida!");
             }
         });
-        gbc.gridwidth = 1;
-        gbc.gridy = 2;
-        gbc.gridx = 0;
-        panel.add(btnOk,gbc);
+
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener (e -> {
             d.setVisible(false);
             d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         });
+
+        gbc.gridwidth = 1;
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        panel.add(btnOk,gbc);
 
         gbc.gridy = 2;
         gbc.gridx = 1;
