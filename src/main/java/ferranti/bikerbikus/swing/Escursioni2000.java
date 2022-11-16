@@ -144,7 +144,6 @@ public class Escursioni2000 extends EscursioniController1 {
         }
 
         ButtonColumnExcursion buttonColumn = new ButtonColumnExcursion(table1, action1, action2, 5, EscursioniController1.escursioni);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     static boolean isNumber(String s)
