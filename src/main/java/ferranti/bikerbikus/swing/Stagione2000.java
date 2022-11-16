@@ -87,7 +87,6 @@ public class Stagione2000 extends StagioneController1 {
                     StagioneController1.gare.get(i).getNomeVincitore(), StagioneController1.gare.get(i).getCognomeVincitore(), StagioneController1.gare.get(i).getId()});
         }
         ButtonColumn buttonColumn = new ButtonColumn(table2, action1, 4, 1, 0);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
         for (int i = 0; i < StagioneController1.utente.size(); i++) {
             modelRank.addRow(new Object[]{StagioneController1.utente.get(i).getPosizioneFinale(), StagioneController1.utente.get(i).getNome(),
                     StagioneController1.utente.get(i).getCognome(), StagioneController1.utente.get(i).getGare(), StagioneController1.utente.get(i).getPunteggio()});

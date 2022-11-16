@@ -116,7 +116,6 @@ public class Gare2000 extends GareController1 {
         }
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, join, 3, 3, 0);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     static boolean isNumber(String s)

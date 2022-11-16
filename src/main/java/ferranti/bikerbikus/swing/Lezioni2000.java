@@ -148,7 +148,6 @@ public class Lezioni2000 extends LezioniController1 {
         }
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, action1, 5, 0, 0);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     static boolean isNumber(String s)

@@ -103,7 +103,6 @@ public class Shop2000 extends ShopController1 {
         }
 
         ButtonColumn buttonColumnBuy = new ButtonColumn(table1, buy, 3, 5, 0);
-        buttonColumnBuy.setMnemonic(KeyEvent.VK_D);
 
         for (int i = 0; i < ShopController1.bicicletteNoleggio.size(); i++) {
 
@@ -113,7 +112,6 @@ public class Shop2000 extends ShopController1 {
         }
 
         ButtonColumn buttonColumnRent = new ButtonColumn(table2, rent, 3, 5, 1);
-        buttonColumnRent.setMnemonic(KeyEvent.VK_D);
 
     }
 

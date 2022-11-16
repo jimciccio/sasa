@@ -99,7 +99,6 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         }
 
         ButtonColumn buttonColumnModifyBuyable = new ButtonColumn(table1, modifyBuyable, 4, 2, 0);
-        buttonColumnModifyBuyable.setMnemonic(KeyEvent.VK_D);
 
         for (int i = 0; i < ModificaBiciclettaController1.bicicletteNoleggiate.size(); i++) {
 
@@ -108,7 +107,6 @@ public class ModificaBicicletta2000 extends ModificaBiciclettaController1 {
         }
 
         ButtonColumn buttonColumnModifyRentable = new ButtonColumn(table2, modifyRentable, 4, 2, 0);
-        buttonColumnModifyRentable.setMnemonic(KeyEvent.VK_D);
     }
 
     public static void deleteAllRows(final DefaultTableModel model) {

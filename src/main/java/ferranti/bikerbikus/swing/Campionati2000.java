@@ -81,7 +81,6 @@ public class Campionati2000 extends CampionatiController1 {
         }
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, action1, 4, 1, 0);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
 

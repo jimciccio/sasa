@@ -4,23 +4,17 @@ import ferranti.bikerbikus.data.UserData;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.table.*;
 
-
 public class ButtonColumn extends AbstractCellEditor
-        implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener
+        implements TableCellRenderer, TableCellEditor, ActionListener
 {
     private JTable table;
     private Action action;
-    private int mnemonic;
-    private Border originalBorder;
-    private Border focusBorder;
 
     private JButton renderButton1;
     private JButton editButton1;
     private Object editorValue1;
-    private boolean isButtonColumnEditor;
     private int type;
     private int buyRent;
     
@@ -35,39 +29,13 @@ public class ButtonColumn extends AbstractCellEditor
         editButton1 = new JButton();
         editButton1.setFocusPainted( false );
         editButton1.addActionListener( this );
-        originalBorder = editButton1.getBorder();
-        setFocusBorder( new LineBorder(Color.BLUE) );
 
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(column).setCellRenderer( this );
         columnModel.getColumn(column).setCellEditor( this );
-        table.addMouseListener( this );
-    }
-
-    public Border getFocusBorder()
-    {
-        return focusBorder;
     }
 
 
-    public void setFocusBorder(Border focusBorder)
-    {
-        this.focusBorder = focusBorder;
-        editButton1.setBorder( focusBorder );
-    }
-
-    public int getMnemonic()
-    {
-        return mnemonic;
-    }
-
-
-    public void setMnemonic(int mnemonic)
-    {
-        this.mnemonic = mnemonic;
-        renderButton1.setMnemonic(mnemonic);
-        editButton1.setMnemonic(mnemonic);
-    }
 
     @Override
     public Component getTableCellEditorComponent(
@@ -112,7 +80,7 @@ public class ButtonColumn extends AbstractCellEditor
     }
 
     public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+            JTable table, Object value1, boolean isSelected, boolean hasFocus, int row, int column)
     {
         if (isSelected)
         {
@@ -125,16 +93,7 @@ public class ButtonColumn extends AbstractCellEditor
             renderButton1.setBackground(UIManager.getColor("Button.background"));
         }
 
-        if (hasFocus)
-        {
-            renderButton1.setBorder( focusBorder );
-        }
-        else
-        {
-            renderButton1.setBorder( originalBorder );
-        }
-
-        if (value == null)
+        if (value1 == null)
         {
             renderButton1.setText( "" );
             renderButton1.setIcon( null );
@@ -178,24 +137,4 @@ public class ButtonColumn extends AbstractCellEditor
         action.actionPerformed(event);
     }
 
-
-    public void mousePressed(MouseEvent e)
-    {
-        if (table.isEditing()
-                &&  table.getCellEditor() == this)
-            isButtonColumnEditor = true;
-    }
-
-    public void mouseReleased(MouseEvent e)
-    {
-        if (isButtonColumnEditor
-                &&  table.isEditing())
-            table.getCellEditor().stopCellEditing();
-
-        isButtonColumnEditor = false;
-    }
-
-    public void mouseClicked(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
 }

@@ -75,7 +75,6 @@ public class GestisciUtenti2000 extends ManageUsersController1 {
         }
 
         ButtonColumn buttonColumn = new ButtonColumn(table1, upgrade, 4,4, 0);
-        buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     public static void deleteAllRows(final DefaultTableModel model) {
