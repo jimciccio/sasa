@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -97,22 +96,17 @@ public class Shop2000 extends ShopController1 {
         deleteAllRows(modelRent);
 
         for (int i = 0; i < ShopController1.bicicletteVendita.size(); i++) {
-
             modelBuy.addRow(new Object[]{ShopController1.bicicletteVendita.get(i).getModello(), ShopController1.bicicletteVendita.get(i).getCaratteristiche(),
                     ShopController1.bicicletteVendita.get(i).getPrezzo(), ShopController1.bicicletteVendita.get(i).getId()});
         }
 
-        ButtonColumn buttonColumnBuy = new ButtonColumn(table1, buy, 3, 5, 0);
+        new ButtonColumn(table1, buy, 3, 5, 0);
 
         for (int i = 0; i < ShopController1.bicicletteNoleggio.size(); i++) {
-
             modelRent.addRow(new Object[]{ShopController1.bicicletteNoleggio.get(i).getModello(), ShopController1.bicicletteNoleggio.get(i).getCaratteristiche(),
                     ShopController1.bicicletteNoleggio.get(i).getPrezzo(), ShopController1.bicicletteNoleggio.get(i).getId()});
-
         }
-
-        ButtonColumn buttonColumnRent = new ButtonColumn(table2, rent, 3, 5, 1);
-
+        new ButtonColumn(table2, rent, 3, 5, 1);
     }
 
     public static void deleteAllRows(final DefaultTableModel model) {

@@ -19,19 +19,27 @@ public class Profile2000 extends AreaPersonaleController1 {
     private JTable table1;
     private JButton logOutButton;
     private JButton manageUsersButton;
-    String day = "Giorno";
-    String status = "Status";
-    String lezioni = "Lezioni";
+    private static final String LEZIONISTRING = "Lezioni";
+    private static final String ESCURSIONISTRING = "Escursioni";
+    private static final String BICICOMPRATESTRING = "Bici Comprate";
+    private static final String BICINOLEGGIATESTRING = "Bici Noleggiate";
+    private static final String GIORNOSTRING = "Giorno";
+    private static final String STATUSSTRING = "Status";
+    private static final String TERMINATEDSTRING = "Terminated";
+    private static final String ACTIVESTRING = "Active";
+
+
+
 
     DefaultComboBoxModel<String> modelType = new DefaultComboBoxModel<>();
 
-    String[] columnsLesson = {day, "Ora", "Tipo", "Privata", "Maestro", status};
-    String[] columnsRace = {day, "Ora", "Nome", "Stagione"};
-    String[] columnsExcursion = {day, "Ora", "Luogo", "Difficoltà", "Accompagnatore", status};
+    String[] columnsLesson = {GIORNOSTRING, "Ora", "Tipo", "Privata", "Maestro", STATUSSTRING};
+    String[] columnsRace = {GIORNOSTRING, "Ora", "Nome", "Stagione"};
+    String[] columnsExcursion = {GIORNOSTRING, "Ora", "Luogo", "Difficoltà", "Accompagnatore", STATUSSTRING};
     String[] columnsBuy = {"Modello", "Caratteristiche", "Data Acquisto", "Prezzo"};
-    String[] columnsRent = {"Modello", "Caratteristiche", "Inizio Noleggio", "Fine Noleggio", "Prezzo al Giorno", "Prezzo Totale", status};
-    String[] columnTypeA = {lezioni, "Gare", "Escursioni", "Bici Comprate", "Bici Noleggiate"};
-    String[] columnTypeB = {"Gare", "Escursioni", "Bici Comprate", "Bici Noleggiate"};
+    String[] columnsRent = {"Modello", "Caratteristiche", "Inizio Noleggio", "Fine Noleggio", "Prezzo al Giorno", "Prezzo Totale", STATUSSTRING};
+    String[] columnTypeA = {LEZIONISTRING, "Gare", ESCURSIONISTRING, BICICOMPRATESTRING, BICINOLEGGIATESTRING};
+    String[] columnTypeB = {"Gare", ESCURSIONISTRING, BICICOMPRATESTRING, BICINOLEGGIATESTRING};
 
     DefaultTableModel modelLesson = new DefaultTableModel(columnsLesson, 0){
         @Override
@@ -81,44 +89,23 @@ public class Profile2000 extends AreaPersonaleController1 {
 
             if(table1.getSelectedRow() != -1){
                 switch (tipo){
-                    case "Lezioni" :{
-                        if(!AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
-                            AreaPersonaleController1.disdiciLezione(AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getId());
-                            JOptionPane.showMessageDialog(null," La prenotazione della lezione è stata annullata");
-                            setValueLesson();
-                            break;
-                        }else{
-                            JOptionPane.showMessageDialog(null," Non puoi disdire una lezione terminata");
-                            break;
-                        }
+                    case LEZIONISTRING:{
+                        call1();
+                        break;
                     }
                     case "Gare" :{
                         JOptionPane.showMessageDialog(null," Non puoi disdire una gara");
                         break;
                     }
-                    case "Escursioni" :{
-                        if(!AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
-                            AreaPersonaleController1.disdiciEscursione(AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getId());
-                            JOptionPane.showMessageDialog(null," La prenotazione dell'escursione è stata annullata");
-                            setValueExcursion();
-                            break;
-                        }else{
-                            JOptionPane.showMessageDialog(null," Non puoi disdire una escursione terminata");
-                            break;
-                        }
+                    case ESCURSIONISTRING:{
+                        call2();
+                        break;
                     }
-                    case "Bici Noleggiate" :{
-                        if(!AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getFineNoleggio().isBefore(LocalDateTime.now())){
-                            AreaPersonaleController1.disdiciNoleggio(AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getIdNoleggio());
-                            JOptionPane.showMessageDialog(null," Il noleggio è stato interotto");
-                            setValueRent();
-                            break;
-                        }else{
-                            JOptionPane.showMessageDialog(null," Non puoi disdire un noleggio terminato");
-                            break;
-                        }
+                    case BICINOLEGGIATESTRING:{
+                        call3();
+                        break;
                     }
-                    case "Bici Comprate" :{
+                    case BICICOMPRATESTRING:{
                         JOptionPane.showMessageDialog(null," Non puoi disdire una bici comprata");
                         break;
                     }
@@ -157,7 +144,7 @@ public class Profile2000 extends AreaPersonaleController1 {
 
     public void item(String name){
         switch (name){
-            case "Lezioni" :{
+            case LEZIONISTRING:{
                 showLezioni();
                 setValueLesson();
                 break;
@@ -167,17 +154,17 @@ public class Profile2000 extends AreaPersonaleController1 {
                 setValueRace();
                 break;
             }
-            case "Escursioni" :{
+            case ESCURSIONISTRING:{
                 showEscursioni();
                 setValueExcursion();
                 break;
             }
-            case "Bici Comprate" :{
+            case BICICOMPRATESTRING:{
                 showBiciComprate();
                 setValueBuy();
                 break;
             }
-            case "Bici Noleggiate" :{
+            case BICINOLEGGIATESTRING:{
                 showBiciNoleggiate();
                 setValueRent();
                 break;
@@ -194,9 +181,8 @@ public class Profile2000 extends AreaPersonaleController1 {
         for (int i = 0; i < AreaPersonaleController1.gare.size(); i++) {
 
             modelRace.addRow(new Object[]{Utils.formatTimeDayMonthYear(AreaPersonaleController1.gare.get(i).getData().getDayOfMonth(), AreaPersonaleController1.gare.get(i).getData().getMonthValue(), AreaPersonaleController1.gare.get(i).getData().getYear()),
-                    AreaPersonaleController1.gare.get(i).getData().getHour()+AreaPersonaleController1.gare.get(i).getData().getMinute(),
+                    Utils.formatTime(AreaPersonaleController1.gare.get(i).getData().getHour(), AreaPersonaleController1.gare.get(i).getData().getMinute()),
                     AreaPersonaleController1.gare.get(i).getStagione().getNome(), AreaPersonaleController1.gare.get(i).getStagione().getCampionato()});
-
         }
     }
 
@@ -207,8 +193,8 @@ public class Profile2000 extends AreaPersonaleController1 {
         for (int i = 0; i < AreaPersonaleController1.lezioni.size(); i++) {
 
             modelLesson.addRow(new Object[]{Utils.formatTimeDayMonthYear(AreaPersonaleController1.lezioni.get(i).getData().getDayOfMonth(), AreaPersonaleController1.lezioni.get(i).getData().getMonthValue(), AreaPersonaleController1.lezioni.get(i).getData().getYear()),
-                    AreaPersonaleController1.lezioni.get(i).getData().getHour()+AreaPersonaleController1.lezioni.get(i).getData().getMinute(),
-                    AreaPersonaleController1.lezioni.get(i).getTipo(), Boolean.TRUE.equals(AreaPersonaleController1.lezioni.get(i).isPrivata()) ? "Si" : "No", AreaPersonaleController1.lezioni.get(i).getMaestro(), AreaPersonaleController1.lezioni.get(i).getData().isBefore(LocalDateTime.now()) ? "Terminated" : "Active"});
+                    Utils.formatTime(AreaPersonaleController1.lezioni.get(i).getData().getHour(), AreaPersonaleController1.lezioni.get(i).getData().getMinute()),
+                    AreaPersonaleController1.lezioni.get(i).getTipo(), Boolean.TRUE.equals(AreaPersonaleController1.lezioni.get(i).isPrivata()) ? "Si" : "No", AreaPersonaleController1.lezioni.get(i).getMaestro(), AreaPersonaleController1.lezioni.get(i).getData().isBefore(LocalDateTime.now()) ? TERMINATEDSTRING : ACTIVESTRING});
         }
     }
 
@@ -220,7 +206,7 @@ public class Profile2000 extends AreaPersonaleController1 {
 
             modelExcursion.addRow(new Object[]{Utils.formatTimeDayMonthYear(AreaPersonaleController1.escursioni.get(i).getData().getDayOfMonth(), AreaPersonaleController1.escursioni.get(i).getData().getMonthValue(), AreaPersonaleController1.escursioni.get(i).getData().getYear()),
                     Utils.formatTime(AreaPersonaleController1.escursioni.get(i).getData().getHour(), AreaPersonaleController1.escursioni.get(i).getData().getMinute()),
-                    AreaPersonaleController1.escursioni.get(i).getLuogo().getNome(), AreaPersonaleController1.escursioni.get(i).getLuogo().getDifficolta(), AreaPersonaleController1.escursioni.get(i).getAccompagnatore(), AreaPersonaleController1.escursioni.get(i).getData().isBefore(LocalDateTime.now()) ? "Terminated" : "Active"});
+                    AreaPersonaleController1.escursioni.get(i).getLuogo().getNome(), AreaPersonaleController1.escursioni.get(i).getLuogo().getDifficolta(), AreaPersonaleController1.escursioni.get(i).getAccompagnatore(), AreaPersonaleController1.escursioni.get(i).getData().isBefore(LocalDateTime.now()) ? TERMINATEDSTRING : ACTIVESTRING});
         }
     }
 
@@ -245,13 +231,43 @@ public class Profile2000 extends AreaPersonaleController1 {
             modelRent.addRow(new Object[]{AreaPersonaleController1.bicicletteNoleggiate.get(i).getModello(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getCaratteristiche(),
                     Utils.formatTimeDayMonthYear(AreaPersonaleController1.bicicletteNoleggiate.get(i).getInizioNoleggio().getDayOfMonth(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getInizioNoleggio().getMonthValue(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getInizioNoleggio().getYear()),
                     Utils.formatTimeDayMonthYear(AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().getDayOfMonth(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().getMonthValue(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().getYear()),
-                    AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzo(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzoFinale(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().isBefore(LocalDateTime.now()) ? "Terminated" : "Active"});
+                    AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzo(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getPrezzoFinale(), AreaPersonaleController1.bicicletteNoleggiate.get(i).getFineNoleggio().isBefore(LocalDateTime.now()) ? TERMINATEDSTRING : ACTIVESTRING});
         }
     }
 
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
             model.removeRow(i);
+        }
+    }
+
+    public void call1(){
+        if(!AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
+            AreaPersonaleController1.disdiciLezione(AreaPersonaleController1.lezioni.get(table1.getSelectedRow()).getId());
+            JOptionPane.showMessageDialog(null," La prenotazione della lezione è stata annullata");
+            setValueLesson();
+        }else{
+            JOptionPane.showMessageDialog(null," Non puoi disdire una lezione terminata");
+        }
+    }
+
+    public void call2(){
+        if(!AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getData().isBefore(LocalDateTime.now())){
+            AreaPersonaleController1.disdiciEscursione(AreaPersonaleController1.escursioni.get(table1.getSelectedRow()).getId());
+            JOptionPane.showMessageDialog(null," La prenotazione dell'escursione è stata annullata");
+            setValueExcursion();
+        }else{
+            JOptionPane.showMessageDialog(null," Non puoi disdire una escursione terminata");
+        }
+    }
+
+    public void call3(){
+        if(!AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getFineNoleggio().isBefore(LocalDateTime.now())){
+            AreaPersonaleController1.disdiciNoleggio(AreaPersonaleController1.bicicletteNoleggiate.get(table1.getSelectedRow()).getIdNoleggio());
+            JOptionPane.showMessageDialog(null," Il noleggio è stato interotto");
+            setValueRent();
+        }else{
+            JOptionPane.showMessageDialog(null," Non puoi disdire un noleggio terminato");
         }
     }
 }

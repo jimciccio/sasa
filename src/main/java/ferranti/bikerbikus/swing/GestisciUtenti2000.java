@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class GestisciUtenti2000 extends ManageUsersController1 {
     private JPanel panel1;
@@ -74,7 +73,7 @@ public class GestisciUtenti2000 extends ManageUsersController1 {
 
         }
 
-        ButtonColumn buttonColumn = new ButtonColumn(table1, upgrade, 4,4, 0);
+        new ButtonColumn(table1, upgrade, 4,4, 0);
     }
 
     public static void deleteAllRows(final DefaultTableModel model) {

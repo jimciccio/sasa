@@ -5,7 +5,6 @@ import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Campionato;
 import ferranti.bikerbikus.models.Stagione;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -36,8 +35,6 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
                 LocalDate localDateStart = LocalDate.parse(dateFieldStart.getText(), dateFormatter);
                 LocalDate localDateEnd = LocalDate.parse(dateFieldEnd.getText(), dateFormatter);
 
-
-
                 Stagione stagione = new Stagione();
                 stagione.setNome(Integer.toString(localDateStart.getYear()));
                 stagione.setDataInizio(LocalDate.of(localDateStart.getYear(), localDateStart.getMonthValue(), localDateStart.getDayOfMonth()));
@@ -53,8 +50,6 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
             }
         });
     }
-
-
 
     public boolean checkFields(){
 
@@ -73,9 +68,7 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
     }
 
     public boolean checkDate(String stringa){
-
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
         return validator.isValid(stringa);
     }
 
@@ -87,7 +80,6 @@ public class AggiungiStagione2000 extends AggiungiStagioneController1 {
         frame.setVisible(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
         nomeJLabel.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " " + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
-
         loadCampionati();
         modelChampionship.addAll(AggiungiStagioneController1.campionati);
         championshipCombo.setModel(modelChampionship);

@@ -69,7 +69,6 @@ public class AggiungiLezioni2000 extends AggiungiLezioneController1 {
     }
 
 
-
     public boolean checkFields(){
 
         if( masterCombo.getSelectedItem() == null ||

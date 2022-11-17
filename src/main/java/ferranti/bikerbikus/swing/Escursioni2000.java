@@ -3,12 +3,10 @@ package ferranti.bikerbikus.swing;
 import ferranti.bikerbikus.controllers1.EscursioniController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -25,7 +23,6 @@ public class Escursioni2000 extends EscursioniController1 {
     private JLabel monthLabel;
     private JLabel yearLabel;
     private JLabel nomeJLabel;
-
 
     Action delete;
     Action join;
@@ -124,7 +121,6 @@ public class Escursioni2000 extends EscursioniController1 {
         if(isNumber(yearsTextField.getText())){
             onActionSpecificMonth(monthBox.getSelectedIndex()+1,Integer.parseInt(yearsTextField.getText()));
                 setValue(join, delete);
-
         }else{
             JOptionPane.showMessageDialog(null,"La data inserita non è valida!");
         }
@@ -137,13 +133,11 @@ public class Escursioni2000 extends EscursioniController1 {
 
 
         for (int i = 0; i < EscursioniController1.escursioni.size(); i++) {
-
             model.addRow(new Object[]{EscursioniController1.escursioni.get(i).getData().getDayOfMonth(), Utils.formatTime(EscursioniController1.escursioni.get(i).getData().getHour(), EscursioniController1.escursioni.get(i).getData().getMinute()),
                     EscursioniController1.escursioni.get(i).getLuogo().getNome(), EscursioniController1.escursioni.get(i).getLuogo().getDifficolta(), EscursioniController1.escursioni.get(i).getAccompagnatore(), EscursioniController1.escursioni.get(i).getId()});
 
         }
-
-        ButtonColumnExcursion buttonColumn = new ButtonColumnExcursion(table1, action1, action2, 5, EscursioniController1.escursioni);
+        new ButtonColumnExcursion(table1, action1, action2, 5, EscursioniController1.escursioni);
     }
 
     static boolean isNumber(String s)
@@ -151,7 +145,6 @@ public class Escursioni2000 extends EscursioniController1 {
         for (int i = 0; i < s.length(); i++)
             if (!Character.isDigit(s.charAt(i)))
                 return false;
-
         return true;
     }
 

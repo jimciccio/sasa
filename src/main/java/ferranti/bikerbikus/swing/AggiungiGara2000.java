@@ -4,7 +4,6 @@ import ferranti.bikerbikus.controllers1.AggiungiGaraController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.*;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -21,7 +20,6 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
     private JComboBox<Stagione> championCombo;
     private JTextField dateField;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
 
     JFrame frame;
 
@@ -45,9 +43,7 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
                 Stagione stagione = (Stagione) championCombo.getSelectedItem();
 
                 Gara gara = new Gara();
-
                 gara.setData(LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), hoursInt,minute));
-
                 gara.setStagione(stagione);
 
                 if (AggiungiGaraController1.onActionConferma(gara)) {
@@ -73,7 +69,6 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
         loadOrari();
         modelHour.addAll(AggiungiGaraController1.orari);
         modelChampion.addAll(AggiungiGaraController1.stagioni);
-
         hourCombo.setModel(modelHour);
         championCombo.setModel(modelChampion);
     }
@@ -94,13 +89,7 @@ public class AggiungiGara2000 extends AggiungiGaraController1 {
             }
     }
     public boolean checkDate(){
-
         DateValidatorUsingLocalDate validator = new DateValidatorUsingLocalDate(dateFormatter);
-
-        if(validator.isValid(dateField.getText()) ){
-            return true;
-        }else{
-            return false;
-        }
+        return validator.isValid(dateField.getText());
     }
 }

@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class Stagione2000 extends StagioneController1 {
 
@@ -45,14 +44,12 @@ public class Stagione2000 extends StagioneController1 {
     public Stagione2000(Stagione stagione) {
 
         this.stagione = stagione;
-
         backButton.addActionListener(e -> new Campionati2000().mostra(frame));
 
         join = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-
                 int modelRow = Integer.parseInt( e.getActionCommand() );
                 dialogExample(StagioneController1.gare.get(modelRow).getId(), modelRow);
             }
@@ -86,7 +83,7 @@ public class Stagione2000 extends StagioneController1 {
             modelRace.addRow(new Object[]{Utils.formatTimeDayMonthYear(StagioneController1.gare.get(i).getData().getDayOfMonth(), StagioneController1.gare.get(i).getData().getMonthValue(), StagioneController1.gare.get(i).getData().getYear()), StagioneController1.gare.get(i).getPartecipanti(),
                     StagioneController1.gare.get(i).getNomeVincitore(), StagioneController1.gare.get(i).getCognomeVincitore(), StagioneController1.gare.get(i).getId()});
         }
-        ButtonColumn buttonColumn = new ButtonColumn(table2, action1, 4, 1, 0);
+        new ButtonColumn(table2, action1, 4, 1, 0);
         for (int i = 0; i < StagioneController1.utente.size(); i++) {
             modelRank.addRow(new Object[]{StagioneController1.utente.get(i).getPosizioneFinale(), StagioneController1.utente.get(i).getNome(),
                     StagioneController1.utente.get(i).getCognome(), StagioneController1.utente.get(i).getGare(), StagioneController1.utente.get(i).getPunteggio()});

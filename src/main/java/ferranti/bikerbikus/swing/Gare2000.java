@@ -56,7 +56,6 @@ public class Gare2000 extends GareController1 {
                 if(GareController1.gare.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"La gara è scaduta");
-
                 }else{
                     button.setEnabled(true);
                     if(prenotaGara(GareController1.gare.get(modelRow).getId())){
@@ -93,7 +92,6 @@ public class Gare2000 extends GareController1 {
     }
 
     public void search(){
-
         if(isNumber(yearsTextField.getText())){
             onActionSpecificMonth(monthBox.getSelectedIndex()+1,Integer.parseInt(yearsTextField.getText()));
             item();
@@ -108,13 +106,11 @@ public class Gare2000 extends GareController1 {
         yearLabel.setText(Integer.toString(getCurrentYearMonth().getYear()));
 
         for (int i = 0; i < GareController1.gare.size(); i++) {
-
             model.addRow(new Object[]{Utils.uppercase(GareController1.gare.get(i).getData().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " "
                     + GareController1.gare.get(i).getData().getDayOfMonth(), Utils.formatTime(GareController1.gare.get(i).getData().getHour(), GareController1.gare.get(i).getData().getMinute()),
                     GareController1.gare.get(i).getStagione(), GareController1.gare.get(i).getId()});
         }
-
-        ButtonColumn buttonColumn = new ButtonColumn(table1, join, 3, 3, 0);
+        new ButtonColumn(table1, join, 3, 3, 0);
     }
 
     static boolean isNumber(String s)

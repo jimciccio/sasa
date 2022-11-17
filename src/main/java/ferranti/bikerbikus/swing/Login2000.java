@@ -17,7 +17,6 @@ public class Login2000 extends JFrame{
     JFrame frame;
 
     public Login2000() {
-
         loginJButton.addActionListener(e -> {
             if( LoginController1.onActionLogin(emailJField.getText(), String.valueOf(passwordJField.getPassword()))){
                 new Homepage2000().mostra(frame);
@@ -25,7 +24,6 @@ public class Login2000 extends JFrame{
                 showMessageDialog(null, "Qualcosa è andato storto");
             }
         });
-
         registerJButton.addActionListener(e -> new Register2000().mostra(frame));
     }
 

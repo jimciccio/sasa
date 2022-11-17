@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -59,7 +58,6 @@ public class Lezioni2000 extends LezioniController1 {
                 if(LezioniController1.lezioniController.get(modelRow).getData().isBefore(LocalDateTime.now())){
                     button.setEnabled(false);
                     JOptionPane.showMessageDialog(null,"La lezione è scaduta");
-
                 }else{
                     button.setEnabled(true);
                     if(eliminaLezione(LezioniController1.lezioniController.get(modelRow).getId())){
@@ -146,8 +144,7 @@ public class Lezioni2000 extends LezioniController1 {
             model.addRow(new Object[]{LezioniController1.lezioniController.get(i).getData().getDayOfMonth(), Utils.formatTime(LezioniController1.lezioniController.get(i).getData().getHour(), LezioniController1.lezioniController.get(i).getData().getMinute()),
                     LezioniController1.lezioniController.get(i).getTipo(), Boolean.TRUE.equals(LezioniController1.lezioniController.get(i).isPrivata()) ? "Si" : "No", LezioniController1.lezioniController.get(i).getMaestro(), LezioniController1.lezioniController.get(i).getId()});
         }
-
-        ButtonColumn buttonColumn = new ButtonColumn(table1, action1, 5, 0, 0);
+        new ButtonColumn(table1, action1, 5, 0, 0);
     }
 
     static boolean isNumber(String s)

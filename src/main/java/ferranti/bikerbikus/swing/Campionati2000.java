@@ -8,9 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
 
 public class Campionati2000 extends CampionatiController1 {
     private JPanel panel1;
@@ -20,7 +17,6 @@ public class Campionati2000 extends CampionatiController1 {
     private JLabel nomeJLabel;
 
     Action join;
-
 
     JButton button = new JButton();
 
@@ -34,11 +30,9 @@ public class Campionati2000 extends CampionatiController1 {
 
     JFrame frame;
 
-
     public Campionati2000() {
 
         backButton.addActionListener(e -> new Homepage2000().mostra(frame));
-
 
         addSeason.addActionListener(e -> new AggiungiStagione2000().mostra(frame));
 
@@ -46,10 +40,8 @@ public class Campionati2000 extends CampionatiController1 {
         {
             public void actionPerformed(ActionEvent e)
             {
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-
+                int modelRow = Integer.parseInt( e.getActionCommand() );
                 new Stagione2000(CampionatiController1.stagioni.get(modelRow)).mostra(frame);
-
             }
         };
     }
@@ -75,14 +67,11 @@ public class Campionati2000 extends CampionatiController1 {
         deleteAllRows(model);
 
         for (int i = 0; i < CampionatiController1.stagioni.size(); i++) {
-
             model.addRow(new Object[]{CampionatiController1.stagioni.get(i).getCampionato().getNome(), CampionatiController1.stagioni.get(i).getNome(), CampionatiController1.stagioni.get(i).getDataInizio(),
                     CampionatiController1.stagioni.get(i).getDataFine(), CampionatiController1.stagioni.get(i).getId()});
         }
-
-        ButtonColumn buttonColumn = new ButtonColumn(table1, action1, 4, 1, 0);
+        new ButtonColumn(table1, action1, 4, 1, 0);
     }
-
 
     public static void deleteAllRows(final DefaultTableModel model) {
         for( int i = model.getRowCount() - 1; i >= 0; i-- ) {

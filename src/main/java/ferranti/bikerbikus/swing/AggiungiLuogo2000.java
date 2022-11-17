@@ -3,10 +3,8 @@ package ferranti.bikerbikus.swing;
 import ferranti.bikerbikus.controllers1.ModificaLuogoController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.utils.Utils;
-
 import javax.swing.*;
 import java.awt.*;
-
 
 public class AggiungiLuogo2000 extends ModificaLuogoController1 {
     private JPanel panel1;
@@ -26,11 +24,9 @@ public class AggiungiLuogo2000 extends ModificaLuogoController1 {
         addButton.addActionListener(e -> {
 
             if(checkFields()){
-
                 onActionConferma(nameField.getText(), descriptionField.getText(), difficultyField.getText());
                 JOptionPane.showMessageDialog(null,"Luogo creato con successo!");
                 new Recensioni2000().mostra(frame);
-
             }else{
                 JOptionPane.showMessageDialog(null,"Inserisci tutti i valori!");
             }
@@ -48,12 +44,6 @@ public class AggiungiLuogo2000 extends ModificaLuogoController1 {
     }
 
     public boolean checkFields(){
-
-        if( nameField.getText().equals("") || descriptionField.getText().equals("") || difficultyField.getText().equals("")){
-
-            return false;
-        }else{
-            return true;
-        }
+        return !nameField.getText().equals("") && !descriptionField.getText().equals("") && !difficultyField.getText().equals("");
     }
 }
