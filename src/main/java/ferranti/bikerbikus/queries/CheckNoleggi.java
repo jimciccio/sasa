@@ -13,7 +13,7 @@ public class CheckNoleggi {
     }
 
     public static boolean checkNoleggi() {
-        String sql = "UPDATE BicicletteNoleggiabili i LEFT JOIN BicicletteNoleggiate e ON i.Id = e.idBicicletta SET noleggiabile = 1 WHERE dataFineNoleggio < ?";
+        String sql = "UPDATE BicicletteNoleggiabili i LEFT JOIN BicicletteNoleggiate e ON i.Id = e.IdBicicletta SET Noleggiabile = 1 WHERE DataFineNoleggio < ?";
         try (Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));

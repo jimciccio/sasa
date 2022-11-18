@@ -28,9 +28,6 @@ public class Profile2000 extends AreaPersonaleController1 {
     private static final String TERMINATEDSTRING = "Terminated";
     private static final String ACTIVESTRING = "Active";
 
-
-
-
     DefaultComboBoxModel<String> modelType = new DefaultComboBoxModel<>();
 
     String[] columnsLesson = {GIORNOSTRING, "Ora", "Tipo", "Privata", "Maestro", STATUSSTRING};

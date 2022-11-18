@@ -59,6 +59,7 @@ public class Shop2000 extends ShopController1 {
             {
                 int modelRow = Integer.parseInt( e.getActionCommand() );
                 ShopController1.buyBicicletta(modelRow);
+                JOptionPane.showMessageDialog(null,"Bicicletta comprata con successo");
             }
         };
 
@@ -164,7 +165,7 @@ public class Shop2000 extends ShopController1 {
                 setValue();
                 d.setVisible(false);
                 d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
-
+                JOptionPane.showMessageDialog(null,"Bicicletta noleggiata con successo");
             }else{
                 JOptionPane.showMessageDialog(null,"Inserisci una data valida!");
             }

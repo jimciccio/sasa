@@ -12,12 +12,12 @@ public class ButtonColumnExcursion extends AbstractCellEditor
         implements TableCellRenderer, TableCellEditor, ActionListener
 {
     private JTable table;
-    private Action join;
-    private Action delete;
+    private transient Action join;
+    private transient Action delete;
     private JButton renderButton;
     private JButton editButton;
-    private Object editorValue;
-    List<Escursione> escursioni;
+    private transient Object editorValue;
+    transient List<Escursione> escursioni;
 
     public ButtonColumnExcursion(JTable table, Action join, Action delete, int column, List<Escursione> escursioni)
     {
