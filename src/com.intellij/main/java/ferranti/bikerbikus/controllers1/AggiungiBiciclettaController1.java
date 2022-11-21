@@ -8,6 +8,7 @@ public class AggiungiBiciclettaController1 {
 
     protected AggiungiBiciclettaController1(){}
 
+int a;
     public static boolean onActionConfermaNuova(BiciclettaVendita bicicletta) {
         boolean expression = false;
                     if(AggiungiBiciclettaQuery.insertBiciclettaComprabile(bicicletta)) {
