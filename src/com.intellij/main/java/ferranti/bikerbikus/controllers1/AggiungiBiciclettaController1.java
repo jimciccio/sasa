@@ -6,7 +6,6 @@ import ferranti.bikerbikus.queries.AggiungiBiciclettaQuery;
 
 public class AggiungiBiciclettaController1 {
 
-
     protected AggiungiBiciclettaController1(){}
 
     public static boolean onActionConfermaNuova(BiciclettaVendita bicicletta) {

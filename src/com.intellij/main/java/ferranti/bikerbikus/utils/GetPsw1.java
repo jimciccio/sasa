@@ -13,7 +13,7 @@ public class GetPsw1 {
         String psw = null;
         FileReader file = null;
         try {
-            file = new FileReader("src/main/resources/connInfo/psw1.txt");
+            file = new FileReader("src/com.intellij/main/resources/connInfo/psw1.txt");
         } catch (FileNotFoundException e) {
             e.getMessage();
         }

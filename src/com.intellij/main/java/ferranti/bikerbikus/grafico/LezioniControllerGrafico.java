@@ -7,6 +7,7 @@ import ferranti.bikerbikus.models.TipoLezione;
 import ferranti.bikerbikus.models.Utente;
 import ferranti.bikerbikus.utils.LoadScene;
 import ferranti.bikerbikus.utils.Utils;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -26,7 +27,7 @@ public class LezioniControllerGrafico extends LezioniController1{
     final Object controller = this;
 
     protected static final ObservableList<Lezione> lezioni = FXCollections.observableArrayList(LezioniController1.lezioniController);
-
+    protected static final ObservableList<Button> bottoni = FXCollections.observableArrayList();
 
     @FXML
     HBox toolbar;
@@ -93,9 +94,15 @@ public class LezioniControllerGrafico extends LezioniController1{
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
             lezioni.addAll(LezioniController1.lezioniController);
         });
+
+
+
+
+
         setItem();
         setItem1();
         setTable();
+        item3();
 
         lezioni.addListener(new ListChangeListener() { //add an event listerer for the observable list
             @Override
@@ -108,12 +115,12 @@ public class LezioniControllerGrafico extends LezioniController1{
     public void setItem(){
         colGiorno.setCellValueFactory(new PropertyValueFactory<>("data"));
         colOrario.setCellFactory(param -> new TableCell<>() {
-                @Override
-                protected void updateItem(LocalDateTime item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
+                    @Override
+                    protected void updateItem(LocalDateTime item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
+                    }
                 }
-            }
         );
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         colGiorno.setCellFactory(param -> new TableCell<>() {
@@ -210,4 +217,12 @@ public class LezioniControllerGrafico extends LezioniController1{
             new Alert(Alert.AlertType.ERROR, "Non è stato possibile prenotare la lezione", ButtonType.OK).show();
         }
     }
+
+
+    public void item3(){
+
+
+    }
+
+
 }
