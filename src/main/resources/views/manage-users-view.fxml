@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" style="-fx-background-color: #d2f2cd;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER" maxHeight="60" minHeight="60"
+              spacing="8" style="-fx-padding: 8px; -fx-background-color: #95CA74;">
+            <children>
+                <Button fx:id="btnBack"
+                        style="-fx-cursor: hand; -fx-background-color: transparent;">
+                    <tooltip>
+                        <Tooltip text="Area Personale" />
+                    </tooltip>
+                    <graphic>
+                        <ImageView fitHeight="50.0" preserveRatio="true">
+                            <Image url="@../images/back.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Label text="Gestisci Utenti">
+                    <font>
+                        <Font size="34.0" />
+                    </font>
+                </Label>
+                <HBox maxWidth="Infinity" alignment="CENTER_LEFT"
+                      style="-fx-background-radius: 4; -fx-padding: 0 4; -fx-background-color: #6aaf3f;"
+                      HBox.hgrow="ALWAYS">
+                    <Label style="-fx-padding: 0 16 0 0;" fx:id="lblUserName">
+                        <font>
+                            <Font size="34" />
+                        </font>
+                    </Label>
+                    <Label
+                            style="-fx-background-radius: 4; -fx-padding: 0 8; -fx-background-color: #d8da94;"
+                            fx:id="lblTipoUtente">
+                        <font>
+                            <Font size="16" />
+                        </font>
+                    </Label>
+                </HBox>
+            </children>
+        </HBox>
+        <VBox VBox.vgrow="ALWAYS" spacing="8">
+            <children>
+                <HBox style="-fx-padding: 16;" alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <VBox style="-fx-padding: 16;" alignment="CENTER" minWidth="600">
+                        <Label text="Modifica Utenti"
+                               alignment="CENTER">
+                            <font>
+                                <Font size="34.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <StackPane alignment="CENTER" VBox.vgrow="ALWAYS" minWidth="1000">
+                                <TableView style="-fx-selection-bar: lightgrey;" fx:id="tableUtenti">
+                                    <columns>
+                                        <TableColumn fx:id="colNome" style="-fx-alignment: CENTER;" text="Nome" />
+                                        <TableColumn fx:id="colCognome" style="-fx-alignment: CENTER;" text="Cognome" />
+                                        <TableColumn fx:id="colEmail" style="-fx-alignment: CENTER;" text="Email" />
+                                        <TableColumn fx:id="colTipo" style="-fx-alignment: CENTER;" text="Tipo" />
+                                        <TableColumn fx:id="colUpgrade" style="-fx-alignment: CENTER;" text="Promuovi" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </StackPane>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

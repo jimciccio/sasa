@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" style="-fx-background-color: #d2f2cd;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER" maxHeight="60" minHeight="60"
+              spacing="8" style="-fx-padding: 8px; -fx-background-color: #95CA74;">
+            <children>
+                <Button fx:id="btnBackAggB"
+                        style="-fx-cursor: hand; -fx-background-color: transparent;">
+                    <tooltip>
+                        <Tooltip text="Shop" />
+                    </tooltip>
+                    <graphic>
+                        <ImageView fitHeight="50.0" preserveRatio="true">
+                            <Image url="@../images/back.png" />
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Label text="Aggiungi Bicicletta">
+                    <font>
+                        <Font size="34.0" />
+                    </font>
+                </Label>
+                <HBox maxWidth="Infinity" alignment="CENTER_LEFT"
+                      style="-fx-background-radius: 4; -fx-padding: 0 4; -fx-background-color: #6aaf3f;"
+                      HBox.hgrow="ALWAYS">
+                    <Label style="-fx-padding: 0 16 0 0;" fx:id="lblUserName">
+                        <font>
+                            <Font size="34" />
+                        </font>
+                    </Label>
+                    <Label
+                            style="-fx-background-radius: 4; -fx-padding: 0 8; -fx-background-color: #d8da94;"
+                            fx:id="lblTipoUtente">
+                        <font>
+                            <Font size="16" />
+                        </font>
+                    </Label>
+                </HBox>
+            </children>
+        </HBox>
+        <VBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="8">
+            <children>
+                <HBox style="-fx-padding: 16;" alignment="CENTER" minWidth="800">
+                    <VBox spacing="8">
+                        <GridPane vgap="8" hgap="8">
+                            <Text text="Inserisci Bicicletta Nuova" GridPane.columnIndex="0"
+                                  GridPane.rowIndex="0" GridPane.columnSpan="2">
+                                <font>
+                                    <Font size="34" />
+                                </font>
+                            </Text>
+                            <Label style="-fx-font-weight: bold" text="Modello:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtModelloNuovo" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="1" />
+                            <Label style="-fx-font-weight: bold" text="Caratteristiche:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtCaratteristicheNuove" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="2" />
+                        </GridPane>
+                        <GridPane vgap="8" hgap="16" >
+                            <Label style="-fx-font-weight: bold" text="Prezzo:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="50" fx:id="txtPrezzoNuovo" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="0" />
+                            <Label style="-fx-font-weight: bold" text="Quantità:"
+                                   GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtDisponibili" GridPane.columnIndex="3"
+                                       GridPane.rowIndex="0" />
+                            <Button maxWidth="Infinity" fx:id="btnConfermaNuovaAggB"
+                                    text="Conferma" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    GridPane.columnSpan="4" />
+                        </GridPane>
+                    </VBox>
+                </HBox>
+                <HBox style="-fx-padding: 16;" alignment="CENTER" minWidth="800">
+                    <VBox spacing="8">
+                        <GridPane vgap="8" hgap="8">
+                            <Text text="Inserisci Bicicletta Noleggiabile" GridPane.columnIndex="0"
+                                  GridPane.rowIndex="0" GridPane.columnSpan="2">
+                                <font>
+                                    <Font size="34" />
+                                </font>
+                            </Text>
+                            <Label style="-fx-font-weight: bold" text="Modello:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtModelloNoleggiabile" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="1" />
+                            <Label style="-fx-font-weight: bold" text="Caratteristiche:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtCaratteristicheNoleggiabile" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="2" />
+                            <Label style="-fx-font-weight: bold" text="Prezzo/Giorno:"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                <font>
+                                    <Font size="16" />
+                                </font>
+                            </Label>
+                            <TextField maxWidth="Infinity" fx:id="txtPrezzoNoleggiabile" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="3" />
+                            <Button maxWidth="Infinity" fx:id="btnConfermaNoleggiabile"
+                                    text="Conferma" GridPane.columnIndex="0" GridPane.rowIndex="5"
+                                    GridPane.columnSpan="2" />
+                        </GridPane>
+                    </VBox>
+                    </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
