@@ -1,10 +1,8 @@
 package com.intellij.bikerbikus;
 
 public class B extends A {
-    B() {
-        super();
-        throw new IllegalStateException("Utility class");
-    }
+
+    protected B(){}
     public static void b(){
         System.out.println("da b chiamo a");
         strigona();
