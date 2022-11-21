@@ -24,6 +24,7 @@ public class AggiungiGaraControllerGrafico extends AggiungiGaraController1{
     protected static final ObservableList<LocalTime> orari = FXCollections.observableArrayList(AggiungiGaraController1.loadOrari());
     protected static final ObservableList<Stagione> stagioni = FXCollections.observableArrayList(AggiungiGaraController1.loadStagioni());
 
+
     @FXML
     ComboBox<LocalTime> cmbOrario;
     @FXML
