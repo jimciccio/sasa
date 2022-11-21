@@ -6,5 +6,6 @@ public class I1 extends H1{
     public static void i(){
         h();
         i++;
+		TableCell tab = new TableCell<>();
     }
 }
