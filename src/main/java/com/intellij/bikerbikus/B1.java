@@ -1,8 +1,8 @@
 package com.intellij.bikerbikus;
 
-public class B extends A {
+public class B1 extends A1 {
 
-    protected B(){}
+    protected B1(){}
     public static void b(){
         System.out.println("da b chiamo a");
         strigona();
