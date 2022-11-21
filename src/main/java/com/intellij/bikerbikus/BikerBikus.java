@@ -42,7 +42,7 @@ public class BikerBikus extends Application {
             new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
         }
         stage.getScene().setRoot(parent);
-        G1.g();
+        I1.i();
         btnFirst.setOnAction(event -> new LoginControllerGrafico().showScene(stage));
         btnSecond.setOnAction(event -> {
 

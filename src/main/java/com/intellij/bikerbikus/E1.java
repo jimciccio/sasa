@@ -2,9 +2,9 @@ package com.intellij.bikerbikus;
 
 public class E1 extends D1 {
     protected E1(){}
-
+    private static int e=0;
     public static void e(){
-        System.out.println("da e chiamo d");
         d();
+        e++;
     }
 }
