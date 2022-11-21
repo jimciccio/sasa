@@ -1,62 +1,25 @@
 package com.intellij.bikerbikus;
 
-import com.intellij.bikerbikus.grafico.LoginControllerGrafico;
-import com.intellij.bikerbikus.queries.CheckNoleggi;
-import com.intellij.bikerbikus.swing.Login2000;
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import com.intellij.bikerbikus.models.Lezione;
+import com.intellij.bikerbikus.utils.Utils;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 
-import javax.swing.*;
-import java.io.IOException;
+import java.time.LocalDateTime;
 
-public class BikerBikus extends Application {
-    private Parent parent;
-    @FXML
-    Button btnFirst;
-    @FXML
-    Button btnSecond;
+public class I1{
+    protected I1(){}
+    private static int i=0;
+    public static void i(){
+        i++;
+        TableColumn<Lezione, LocalDateTime> colOrario = null;
 
-
-    @Override
-    public void start(Stage stage) {
-
-        stage.setMaximized(true);
-        stage.setTitle("BikerBikus");
-        stage.setScene(new Scene(new Pane()));
-        stage.show();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/choose-your-graphic-view.fxml"));
-        fxmlLoader.setController(this);
-        CheckNoleggi.checkNoleggi();
-        try {
-            parent = fxmlLoader.load();
-        } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
-        }
-        stage.getScene().setRoot(parent);
-        I1.i();
-        btnFirst.setOnAction(event -> new LoginControllerGrafico().showScene(stage));
-        btnSecond.setOnAction(event -> {
-
-            try {
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-            } catch(Exception ignored){}
-            JFrame fram = new JFrame();
-            new Login2000().mostra(fram);
-            stage.close();
-        });
-
-
-    }
-    public static void main(String[] args) {
-        launch();
-    }
+        colOrario.setCellFactory(param -> new TableCell<>() {
+                    @Override
+                    protected void updateItem(LocalDateTime item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
+                    }
+                }
+        );    }
 }
