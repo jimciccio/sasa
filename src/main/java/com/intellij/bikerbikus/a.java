@@ -1,8 +1,10 @@
 package com.intellij.bikerbikus;
 
-public class a {
+public class A {
 
-    public int numero=2;
+    A() {
+        throw new IllegalStateException("Utility class");
+    }
     public static void strigona(){
         System.out.println("sono a");
     }
