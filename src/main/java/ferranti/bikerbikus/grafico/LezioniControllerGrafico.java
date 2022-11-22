@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.time.LocalDateTime;
@@ -62,6 +63,11 @@ public class LezioniControllerGrafico extends LezioniController1{
     TableColumn<Lezione, Utente> colMaestro;
     @FXML
     TableColumn<Lezione, Integer> colPrenotazione;
+    @FXML
+    ListView<Button> listView1;
+
+    private ObservableList<Button> buttons =
+            FXCollections.observableArrayList();
 
     public void showScene(Stage stage) {
         LoadScene loadScene = new LoadScene();
@@ -84,6 +90,10 @@ public class LezioniControllerGrafico extends LezioniController1{
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
             lezioni.addAll(LezioniController1.lezioniController);
+
+
+            addName();
+            listView1.setItems(buttons);
         });
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
         btnPrevMonth.setOnAction(event -> {
@@ -92,10 +102,18 @@ public class LezioniControllerGrafico extends LezioniController1{
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
             lezioni.addAll(LezioniController1.lezioniController);
+
+
+            addName();
+            listView1.setItems(buttons);
         });
         setItem();
         setItem1();
         setTable();
+        addName();
+        listView1.setItems(buttons);
+
+
 
         lezioni.addListener(new ListChangeListener() { //add an event listerer for the observable list
             @Override
@@ -103,6 +121,19 @@ public class LezioniControllerGrafico extends LezioniController1{
                 System.out.println("Changes found ...  "); // Show a message that a change occured
             }
         });
+    }
+
+    void addName() {
+        System.out.println("eila");
+
+        for(int i=0; i<LezioniController1.lezioniController.size();i++) {
+            Button b = new Button("ciaone");
+            buttons.add(b);
+            System.out.println("aggiunto bottone"+i);
+            b.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    (event -> b.setText("schiacciatp")));
+        }
+
     }
 
     public void setItem(){
