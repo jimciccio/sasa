@@ -1,7 +1,6 @@
 package ferranti.bikerbikus.controllers1;
 
 
-import ferranti.bikerbikus.queries.CheckNoleggi;
 import ferranti.bikerbikus.queries.RegisterQuery;
 
 public class RegisterController1 {

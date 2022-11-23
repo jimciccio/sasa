@@ -3,8 +3,6 @@ package ferranti.bikerbikus.controllers1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.*;
 import ferranti.bikerbikus.queries.AreaPersonaleQuery;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

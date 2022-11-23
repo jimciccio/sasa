@@ -47,7 +47,10 @@ public class BikerBikus extends Application {
 
             try {
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-            } catch(Exception ignored){}
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+
             JFrame fram = new JFrame();
             new Login2000().mostra(fram);
             stage.close();

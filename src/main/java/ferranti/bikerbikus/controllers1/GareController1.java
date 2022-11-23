@@ -31,7 +31,6 @@ public class GareController1 {
     public YearMonth onActionSpecificMonth(int mese, int anno) {
         currentYearMonth= currentYearMonth.withMonth(mese);
         currentYearMonth= currentYearMonth.withYear(anno);
-        System.out.println("in controller"+ currentYearMonth.getMonth()+currentYearMonth.getYear());
         loadGare();
 
         return currentYearMonth;

@@ -2,7 +2,6 @@ package ferranti.bikerbikus.grafico;
 
 import ferranti.bikerbikus.controllers1.AggiungiBiciclettaController1;
 import ferranti.bikerbikus.data.UserData;
-import ferranti.bikerbikus.models.Bicicletta;
 import ferranti.bikerbikus.models.BiciclettaNoleggio;
 import ferranti.bikerbikus.models.BiciclettaVendita;
 import ferranti.bikerbikus.utils.LoadScene;

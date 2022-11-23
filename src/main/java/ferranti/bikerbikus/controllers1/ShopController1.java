@@ -27,17 +27,17 @@ public class ShopController1 {
         bicicletteNoleggio.addAll(ShopQuery.findBicicletteNoleggiabili());
     }
 
-    public static List loadBiciclette(String id) {
+    public static void loadBiciclette(String id) {
         switch (id) {
             case "tabNuove": {
                 bicicletteVendita.clear();
                 bicicletteVendita.addAll(ShopQuery.findBicicletteComprabili());
-                return bicicletteVendita;
+                return;
             }
             case "tabNoleggiate": {
                 bicicletteNoleggio.clear();
                 bicicletteNoleggio.addAll(ShopQuery.findBicicletteNoleggiabili());
-                return bicicletteNoleggio;
+                return;
             }
 
             default:

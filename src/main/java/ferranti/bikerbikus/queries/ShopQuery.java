@@ -1,6 +1,5 @@
 package ferranti.bikerbikus.queries;
 
-import ferranti.bikerbikus.models.Bicicletta;
 import ferranti.bikerbikus.models.BiciclettaNoleggio;
 import ferranti.bikerbikus.models.BiciclettaVendita;
 import ferranti.bikerbikus.utils.Constants;

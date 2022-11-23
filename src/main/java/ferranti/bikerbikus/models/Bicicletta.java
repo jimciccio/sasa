@@ -1,6 +1,5 @@
 package ferranti.bikerbikus.models;
 
-import java.time.LocalDateTime;
 
 public class Bicicletta {
 
@@ -13,7 +12,7 @@ public class Bicicletta {
     public Bicicletta() {
     }
 
-    public Bicicletta(int id, String modello, String caratteristiche, int prezzo) {
+    public Bicicletta(int id, String modello, String caratteristiche) {
         this.id = id;
         this.modello = modello;
         this.caratteristiche = caratteristiche;

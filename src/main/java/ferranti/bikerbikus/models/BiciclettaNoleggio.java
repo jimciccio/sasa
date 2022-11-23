@@ -14,7 +14,6 @@ public class BiciclettaNoleggio extends Bicicletta{
 
     private int noleggiabile;
     private int manutenzione;
-    private String status;
 
 
     public BiciclettaNoleggio() {
@@ -94,6 +93,7 @@ public class BiciclettaNoleggio extends Bicicletta{
 
 
     public String getStatus(){
+        String status;
         if(noleggiabile==1){
             if(manutenzione==1){
                 status="Manutenzione";
@@ -107,6 +107,5 @@ public class BiciclettaNoleggio extends Bicicletta{
             return status;
         }
     }
-
 
 }
