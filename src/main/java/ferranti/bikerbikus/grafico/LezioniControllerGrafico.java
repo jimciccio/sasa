@@ -96,13 +96,7 @@ public class LezioniControllerGrafico extends LezioniController1{
         setItem();
         setItem1();
         setTable();
-
-        lezioni.addListener(new ListChangeListener() { //add an event listerer for the observable list
-            @Override
-            public void onChanged(ListChangeListener.Change c) { //Method that will execute when any changes occured
-                System.out.println("Changes found ...  "); // Show a message that a change occured
-            }
-        });
+        
     }
 
     public void setItem(){
