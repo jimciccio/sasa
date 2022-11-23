@@ -131,11 +131,6 @@
 						</TableView>
 
 					</StackPane>
-					<StackPane alignment="TOP_LEFT">
-						<GridPane xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
-							<ListView fx:id="listView1" VBox.vgrow="ALWAYS"/>
-						</GridPane>
-					</StackPane>
 				</HBox>
 			</children>
 		</VBox>
