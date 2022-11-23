@@ -15,7 +15,7 @@ public class BiciclettaVendita extends Bicicletta{
     public BiciclettaVendita() {
     }
 
-    public BiciclettaVendita(int idAcquisto, String modello, String caratteristiche, int prezzo) {
+    public BiciclettaVendita(int idAcquisto, int prezzo) {
         this.idAcquisto = idAcquisto;
         this.prezzo = prezzo;
     }
