@@ -8,7 +8,6 @@ import ferranti.bikerbikus.models.Utente;
 import ferranti.bikerbikus.utils.LoadScene;
 import ferranti.bikerbikus.utils.Utils;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -96,7 +95,7 @@ public class LezioniControllerGrafico extends LezioniController1{
         setItem();
         setItem1();
         setTable();
-        
+
     }
 
     public void setItem(){
