@@ -1,7 +1,5 @@
 package ferranti.bikerbikus.models;
 
-import javafx.scene.control.Button;
-
 import java.time.LocalDate;
 
 public class Stagione {
