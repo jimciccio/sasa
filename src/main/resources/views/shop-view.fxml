@@ -76,49 +76,64 @@
         </HBox>
 
         <VBox style="-fx-padding: 32;" VBox.vgrow="ALWAYS">
-            <TabPane styleClass="floating" prefWidth="800" prefHeight="700"
-                     style="-fx-color: #95ca74;" fx:id="tabPaneBici"
-                     tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0"
-                     GridPane.rowIndex="6" GridPane.columnSpan="2">
-                <tabs>
-                    <Tab fx:id="tabNuove" text="Compra" >
-                        <TableView style="-fx-selection-bar: lightgrey;"
-                                   fx:id="tableNuove">
-                            <columns>
-                                <TableColumn fx:id="colModello"
-                                             style="-fx-alignment: CENTER;" text="Modello" />
-                                <TableColumn fx:id="colCaratteristiche"
-                                             style="-fx-alignment: CENTER;" text="Caratteristiche" />
-                                <TableColumn fx:id="colPrezzo"
-                                             style="-fx-alignment: CENTER;" text="Prezzo" />
-                                <TableColumn fx:id="colCompra"
-                                             style="-fx-alignment: CENTER;" text="Compra" />
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                            </columnResizePolicy>
+            <children>
+                <HBox style="-fx-padding: 16;" alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <VBox style="-fx-padding: 16;" alignment="CENTER" minWidth="600">
+                        <Label text="Compra Bicicletta"
+                               alignment="CENTER">
+                            <font>
+                                <Font size="34.0" />
+                            </font>
+                        </Label>
+                            <StackPane alignment="CENTER" HBox.hgrow="ALWAYS">
+                                 <TableView style="-fx-selection-bar: lightgrey;"
+                                       fx:id="tableNuove">
+                                    <columns>
+                                         <TableColumn fx:id="colModello"
+                                                    style="-fx-alignment: CENTER;" text="Modello" />
+                                        <TableColumn fx:id="colCaratteristiche"
+                                                     style="-fx-alignment: CENTER;" text="Caratteristiche" />
+                                        <TableColumn fx:id="colPrezzo"
+                                                     style="-fx-alignment: CENTER;" text="Prezzo" />
+                                        <TableColumn fx:id="colCompra"
+                                                     style="-fx-alignment: CENTER;" text="Compra" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                            </StackPane>
+                    </VBox>
+                    <VBox style="-fx-padding: 16;" alignment="CENTER" minWidth="600">
+                        <Label text="Noleggia Bicicletta"
+                               alignment="CENTER">
+                            <font>
+                                <Font size="34.0" />
+                            </font>
+                        </Label>
+                        <StackPane alignment="CENTER" HBox.hgrow="ALWAYS">
+
+                            <TableView style="-fx-selection-bar: lightgrey;"
+                                       fx:id="tableNoleggiate">
+                                <columns>
+                                    <TableColumn fx:id="colModelloNoleggio"
+                                                 style="-fx-alignment: CENTER;" text="Modello" />
+                                    <TableColumn fx:id="colCaratteristicheNoleggio"
+                                                 style="-fx-alignment: CENTER;" text="Caratteristiche" />
+                                    <TableColumn fx:id="colPrezzoNoleggio"
+                                                 style="-fx-alignment: CENTER;" text="Prezzo" />
+                                    <TableColumn fx:id="colNoleggio"
+                                                 style="-fx-alignment: CENTER;" text="Noleggia" />
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
                         </TableView>
-                    </Tab>
-                    <Tab fx:id="tabNoleggiate" text="Noleggia">
-                        <TableView style="-fx-selection-bar: lightgrey;"
-                                   fx:id="tableNoleggiate">
-                            <columns>
-                                <TableColumn fx:id="colModelloNoleggio"
-                                             style="-fx-alignment: CENTER;" text="Modello" />
-                                <TableColumn fx:id="colCaratteristicheNoleggio"
-                                             style="-fx-alignment: CENTER;" text="Caratteristiche" />
-                                <TableColumn fx:id="colPrezzoNoleggio"
-                                             style="-fx-alignment: CENTER;" text="Prezzo" />
-                                <TableColumn fx:id="colNoleggio"
-                                             style="-fx-alignment: CENTER;" text="Noleggia" />
-                            </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                            </columnResizePolicy>
-                        </TableView>
-                    </Tab>
-                </tabs>
-            </TabPane>
+                    </StackPane>
+                    </VBox>
+                </HBox>
+            </children>
+
         </VBox>
     </children>
 </VBox>

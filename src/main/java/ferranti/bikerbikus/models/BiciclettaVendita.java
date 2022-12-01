@@ -1,5 +1,7 @@
 package ferranti.bikerbikus.models;
 
+import javafx.scene.control.Button;
+
 import java.time.LocalDateTime;
 
 public class BiciclettaVendita extends Bicicletta{
@@ -8,6 +10,8 @@ public class BiciclettaVendita extends Bicicletta{
     private int idUtente;
     private LocalDateTime dataAcquisto;
     private int prezzo;
+    private Button button;
+
 
     private int disponibili;
 
@@ -59,6 +63,14 @@ public class BiciclettaVendita extends Bicicletta{
 
     public void setDisponibili(int disponibili) {
         this.disponibili = disponibili;
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
     }
 
 }

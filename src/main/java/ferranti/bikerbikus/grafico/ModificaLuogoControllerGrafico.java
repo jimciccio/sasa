@@ -1,5 +1,6 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanLuoghi;
 import ferranti.bikerbikus.controllers1.ModificaLuogoController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Luoghi;
@@ -15,38 +16,37 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.controlsfx.control.Rating;
+
+import java.util.List;
 
 public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
 
     private Parent parent;
     final Object controller = this;
 
-    protected static final ObservableList<Luoghi> luoghi = FXCollections.observableArrayList(ModificaLuogoController1.luoghi);
+    protected static final ObservableList<BeanLuoghi> luog = FXCollections.observableArrayList();
 
     @FXML
     Button btnBack;
     @FXML
     Label lblUserName;
     @FXML
-    TableView<Luoghi> tableLuoghi;
+    TableView<BeanLuoghi> tableLuoghi;
     @FXML
-    TableColumn<Luoghi, String> colDescrizione;
+    TableColumn<String, String> colDescrizione;
     @FXML
-    TableColumn<Luoghi, Integer> colDifficolta;
+    TableColumn<BeanLuoghi, Integer> colDifficolta;
     @FXML
-    TableColumn<Luoghi, Double> colValutazioneMedia;
+    TableColumn<BeanLuoghi, Double> colValutazioneMedia;
     @FXML
-    TableColumn<Luoghi, Integer> colModifica;
+    TableColumn<BeanLuoghi, Integer> colModifica;
     @FXML
     Label lblTipoUtente;
     @FXML
     Button btnProfile;
     @FXML
-    TableColumn<Luoghi, String> colNomeLuogo;
+    TableColumn<BeanLuoghi, String> colNomeLuogo;
     @FXML
     TextField txtNome;
     @FXML
@@ -64,70 +64,29 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
                 + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         lblTipoUtente.setText(UserData.getInstance().getUser().getTipoUtente().getNome());
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
-        colDescrizione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                Text text = new Text(item);
-                text.setWrappingWidth(300);
-                text.wrappingWidthProperty().bind(getTableColumn().widthProperty().subtract(20));
-                text.setStyle("-fx-text-alignment:justify;");
-                setGraphic(text);
-            }
-        });
+
         colNomeLuogo.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colValutazioneMedia.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                final HBox box = new HBox();
-                box.setMaxHeight(20);
-                box.setMaxWidth(30);
-                final Rating rating = new Rating(5);
-                rating.setPartialRating(true);
-                rating.setMaxWidth(20);
-                rating.setScaleY(0.6);
-                rating.setScaleX(0.6);
-                rating.setMouseTransparent(true);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    box.getChildren().add(rating);
-                    rating.setRating(item);
-                }
-                setGraphic(item == null ? null : box);
-            }
-        });
-        colDescrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));
-        colValutazioneMedia.setCellValueFactory(new PropertyValueFactory<>("valutazioneMedia"));
+        colDescrizione.setCellValueFactory(new PropertyValueFactory<>("buttonDescrizione"));
+        colValutazioneMedia.setCellValueFactory(new PropertyValueFactory<>("star"));
         colDifficolta.setCellValueFactory(new PropertyValueFactory<>("difficolta"));
         setItem1();
         setItem();
     }
 
     public void setItem1(){
-        colModifica.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnModifica = new Button("Modifica");
-                btnModifica.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnModifica.setOnAction(event -> modificaLuogo(getTableRow().getIndex(),item));
-                }
-                setGraphic(item == null ? null : btnModifica);
-            }
-        });
-        colModifica.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        colModifica.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableLuoghi.setRowFactory(tv -> {
-            TableRow<Luoghi> row = new TableRow<>();
+            TableRow<BeanLuoghi> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY
                         && event.getClickCount() == 1) {
-                        row.getItem();
+                    row.getItem();
                 }
             });
             return row ;
         });
-        tableLuoghi.setItems(luoghi);
+        tableLuoghi.setItems(luog);
     }
 
     public void setItem(){
@@ -147,9 +106,10 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
                 }
             }
         });
-        luoghi.clear();
         ModificaLuogoController1.loadLuoghi();
-        luoghi.addAll(ModificaLuogoController1.luoghi);
+
+        copy(luoghi);
+        createButton();
     }
 
 
@@ -218,12 +178,40 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
 
             if (dialogButton == loginButtonType) {
                 ModificaLuogoController1.modLuogo(idLuogo, nome.getText(),descrizione.getText(),Integer.parseInt(difficolta.getText()));
-                luoghi.clear();
-                luoghi.addAll(ModificaLuogoController1.luoghi);
             }
             return null;
         });
         dialog.showAndWait();
+    }
+
+    public static void showDescription(int item){
+
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Descrizione");
+
+        ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
+
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(false);
+
+        TextArea txtArea = new TextArea();
+        txtArea.setWrapText(true);
+        txtArea.setEditable(false);
+        txtArea.setText(luog.get(item).getDescrizione());
+        grid.add(txtArea, 0, 0);
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> null);
+        dialog.show();
+
     }
 
     public static String controlloa(String a, String a1){
@@ -245,6 +233,35 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
             return c1;
         }else{
             return c;
+        }
+    }
+
+    public void createButton(){
+        for(int i = 0; i< luog.size(); i++) {
+            Button b = new Button("Modifica");
+            Button c = new Button("Descrizione");
+            b.setPrefSize(150, 20);
+            luog.get(i).setButton(b);
+            luog.get(i).setButtonDescrizione(c);
+
+            int finalI = i;
+            b.setOnAction(event -> modificaLuogo(finalI,luog.get(finalI).getId()));
+            int finalI1 = i;
+            c.setOnAction(event -> showDescription(finalI1));
+        }
+    }
+
+    public void copy(List<Luoghi> l){
+        for(int i=0; i<l.size();i++){
+            BeanLuoghi bean = new BeanLuoghi();
+
+            bean.setId(l.get(i).getId());
+            bean.setNome(l.get(i).getNome());
+            bean.setDescrizione(l.get(i).getDescrizione());
+
+            bean.setDifficolta(l.get(i).getDifficolta());
+            bean.setStar(l.get(i).getValutazioneMedia());
+            luog.add(bean);
         }
     }
 }

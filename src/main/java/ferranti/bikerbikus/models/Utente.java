@@ -1,6 +1,7 @@
 package ferranti.bikerbikus.models;
 
 import ferranti.bikerbikus.utils.Utils;
+import javafx.scene.control.Button;
 
 public class Utente {
 
@@ -10,6 +11,8 @@ public class Utente {
     private String email;
     private String password;
     private TipoUtente tipoUtente;
+    private Button button;
+
 
     public Utente() {
     }
@@ -74,5 +77,13 @@ public class Utente {
     @Override
     public String toString() {
     	return Utils.uppercase(nome) + " " + Utils.uppercase(cognome);
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
     }
 }

@@ -52,23 +52,13 @@ public class ManageUsersControllerGrafico extends ManageUsersController1{
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoUtente"));
-        colUpgrade.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button("Promuovi");
-                btnPrenota.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnPrenota.setOnAction(event -> upgrade(item));
-                }
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colUpgrade.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        colUpgrade.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableUtenti.setItems(utenti);
         utenti.clear();
         loadUtenti();
         utenti.addAll(ManageUsersController1.utenti);
+        createButton();
     }
 
     public static void upgrade(int item){
@@ -85,10 +75,21 @@ public class ManageUsersControllerGrafico extends ManageUsersController1{
                 utenti.clear();
                 ManageUsersController1.upgradeUser(item);
                 utenti.addAll(ManageUsersController1.utenti);
+                createButton();
             }
             return null;
         });
-
         dialog.showAndWait();
+    }
+
+    public static void createButton(){
+        for(int i = 0; i< ManageUsersController1.utenti.size(); i++) {
+            Button b = new Button("Promuovi");
+            b.setPrefSize(150, 20);
+            utenti.get(i).setButton(b);
+
+            int finalI = i;
+            b.setOnAction(event -> upgrade(utenti.get(finalI).getId()));
+        }
     }
 }

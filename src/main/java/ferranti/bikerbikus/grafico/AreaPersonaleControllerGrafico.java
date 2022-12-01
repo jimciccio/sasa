@@ -1,5 +1,7 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanEscursioni;
+import ferranti.bikerbikus.BeanLezioni;
 import ferranti.bikerbikus.controllers1.AreaPersonaleController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.*;
@@ -18,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
@@ -26,9 +29,9 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     private static final String CANCEL_1 = "Disdici";
     final Object controller = this;
 
-    protected static final ObservableList<Lezione> lezioni = FXCollections.observableArrayList();
+    protected static final ObservableList<BeanLezioni> lezioni = FXCollections.observableArrayList();
     protected static final ObservableList<Gara> gare = FXCollections.observableArrayList();
-    protected static final ObservableList<Escursione> escursioni = FXCollections.observableArrayList();
+    protected static final ObservableList<BeanEscursioni> escursioni = FXCollections.observableArrayList();
     protected static final ObservableList<BiciclettaVendita> bicicletteComprate = FXCollections.observableArrayList();
     protected static final ObservableList<BiciclettaNoleggio> bicicletteNoleggiate = FXCollections.observableArrayList();
 
@@ -56,43 +59,43 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     @FXML
     TabPane tabPanePrenotazioni;
     @FXML
-    TableView<Lezione> tableLezioni;
+    TableView<BeanLezioni> tableLezioni;
     @FXML
-    TableColumn<Lezione, LocalDateTime> colGiornoLezione;
+    TableColumn<BeanLezioni, LocalDateTime> colGiornoLezione;
     @FXML
-    TableColumn<Lezione, LocalDateTime> colOrarioLezione;
+    TableColumn<BeanLezioni, LocalDateTime> colOrarioLezione;
     @FXML
-    TableColumn<Lezione, TipoLezione> colTipoLezione;
+    TableColumn<BeanLezioni, TipoLezione> colTipoLezione;
     @FXML
-    TableColumn<Lezione, Boolean> colPrivataLezione;
+    TableColumn<BeanLezioni, Boolean> colPrivataLezione;
     @FXML
-    TableColumn<Lezione, Utente> colMaestroLezione;
+    TableColumn<BeanLezioni, Utente> colMaestroLezione;
     @FXML
-    TableColumn<Lezione, Integer> colDisdiciLezione;
+    TableColumn<BeanLezioni, Integer> colDisdiciLezione;
     @FXML
     TableView<Gara> tableGare;
     @FXML
-    TableColumn<Gara, LocalDateTime> colGiornoGara;
+    TableColumn<Gara, String> colGiornoGara;
     @FXML
-    TableColumn<Gara, LocalDateTime> colOrarioGara;
+    TableColumn<Gara, String> colOrarioGara;
     @FXML
-    TableColumn<Gara, Stagione> colCampionatoGara;
+    TableColumn<Gara, String> colCampionatoGara;
     @FXML
-    TableColumn<Gara, Stagione> colStagioneGara;
+    TableColumn<Gara, String> colStagioneGara;
     @FXML
-    TableView<Escursione> tableEscursioni;
+    TableView<BeanEscursioni> tableEscursioni;
     @FXML
-    TableColumn<Escursione, LocalDateTime> colGiornoEscursione;
+    TableColumn<BeanEscursioni, LocalDateTime> colGiornoEscursione;
     @FXML
-    TableColumn<Escursione, LocalDateTime> colOrarioEscursione;
+    TableColumn<BeanEscursioni, LocalDateTime> colOrarioEscursione;
     @FXML
-    TableColumn<Escursione, Luoghi> colLuogoEscursione;
+    TableColumn<BeanEscursioni, Luoghi> colLuogoEscursione;
     @FXML
-    TableColumn<Escursione, Luoghi> colDifficoltaEscursione;
+    TableColumn<BeanEscursioni, Luoghi> colDifficoltaEscursione;
     @FXML
-    TableColumn<Escursione, Utente> colAccompagnatoreEscursione;
+    TableColumn<BeanEscursioni, Utente> colAccompagnatoreEscursione;
     @FXML
-    TableColumn<Escursione, Integer> colDisdiciEscursione;
+    TableColumn<BeanEscursioni, Integer> colDisdiciEscursione;
     @FXML
     TableView<BiciclettaVendita> tableBicicletteComprate;
     @FXML
@@ -100,7 +103,7 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     @FXML
     TableColumn<BiciclettaVendita, String> colCaratteristiche;
     @FXML
-    TableColumn<BiciclettaVendita, LocalDateTime> colDataAcquisto;
+    TableColumn<BiciclettaVendita, String> colDataAcquisto;
     @FXML
     TableColumn<BiciclettaVendita, Integer> colPrezzo;
     @FXML
@@ -110,9 +113,9 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     @FXML
     TableColumn<BiciclettaNoleggio, String> colCaratteristicheNoleggio;
     @FXML
-    TableColumn<BiciclettaNoleggio, LocalDateTime> colInizioNoleggio;
+    TableColumn<BiciclettaNoleggio, String> colInizioNoleggio;
     @FXML
-    TableColumn<BiciclettaNoleggio, LocalDateTime> colFineNoleggio;
+    TableColumn<BiciclettaNoleggio, String> colFineNoleggio;
     @FXML
     TableColumn<BiciclettaNoleggio, Integer> colPrezzoGiorno;
     @FXML
@@ -145,30 +148,12 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
         });
        tabPanePrenotazioni.getSelectionModel().selectedItemProperty()
                 .addListener((ov, oldTab, newTab) ->  selected(tabPanePrenotazioni.getSelectionModel().getSelectedItem().getId()));
-        colGiornoLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colGiornoLezione.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colOrarioLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
-            }
-        });
-        colOrarioLezione.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colTipoLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(TipoLezione item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome());
-            }
-        });
-        colTipoLezione.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+
+        colGiornoLezione.setCellValueFactory(new PropertyValueFactory<>("giornoString"));
+
+        colOrarioLezione.setCellValueFactory(new PropertyValueFactory<>("oraString"));
+
+        colTipoLezione.setCellValueFactory(new PropertyValueFactory<>("tipoString"));
         setItem();
         setItem1();
         setItem2();
@@ -179,53 +164,14 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     }
 
     public void setItem(){
-        colPrivataLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if(item == null){
-                    setText("");
-                }else{
-                    setText(Boolean.TRUE.equals(item) ? "Si" : "No");
-                }
-            }
-        });
-        colPrivataLezione.setCellValueFactory(new PropertyValueFactory<>("privata"));
-        colMaestroLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Utente item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome() + " " + item.getCognome());
-            }
-        });
+
+        colPrivataLezione.setCellValueFactory(new PropertyValueFactory<>("privataString"));
         colMaestroLezione.setCellValueFactory(new PropertyValueFactory<>("maestro"));
     }
 
     public void setItem1(){
-        colDisdiciLezione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnDisdiciLezione = new Button(CANCEL_1);
-                btnDisdiciLezione.setPrefSize(150, 20);
-                btnDisdiciLezione.setOnAction(event -> {
 
-                    Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare la prenotazione?",
-                            ButtonType.NO, ButtonType.YES).showAndWait();
-                    if (option.isPresent() && option.get() == ButtonType.YES) {
-                        lezioni.clear();
-                        AreaPersonaleController1.disdiciLezione(item);
-                        lezioni.addAll(AreaPersonaleController1.lezioni);
-                    }
-
-                });
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnDisdiciLezione.setDisable(getTableRow().getItem().getData().isBefore(LocalDateTime.now()));
-                }
-                setGraphic(item == null ? null : btnDisdiciLezione);
-            }
-        });
-        colDisdiciLezione.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colDisdiciLezione.setCellValueFactory(new PropertyValueFactory<>("buttonLezione"));
     }
 
     public void setItem2(){
@@ -235,122 +181,35 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
             tableLezioni.setItems( lezioni);
 
         }
-        colGiornoGara.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colGiornoGara.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colOrarioGara.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
-            }
-        });
-        colOrarioGara.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colCampionatoGara.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Stagione item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getCampionato().getNome());
-            }
-        });
-        colCampionatoGara
-                .setCellValueFactory(cellData -> new SimpleObjectProperty<Stagione>(cellData.getValue().getStagione()));
+        colGiornoGara.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
+        colOrarioGara.setCellValueFactory(cellData -> new SimpleObjectProperty<>(Utils.formatTime(cellData.getValue().getData().getHour(), cellData.getValue().getData().getMinute())));
 
-        colStagioneGara.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Stagione item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome());
-            }
-        });
-        colStagioneGara.setCellValueFactory(new PropertyValueFactory<>("stagione"));
+
+        colCampionatoGara.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStagione().getCampionato().getNome()));
+
+
+        colStagioneGara.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStagione().getNome()));
+
     }
 
     public void setItem3(){
         tableGare.setItems( gare);
-        colGiornoEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colGiornoEscursione.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colOrarioEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
-            }
-        });
-        colOrarioEscursione.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colLuogoEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Luoghi item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome());
-            }
-        });
+
+        colGiornoEscursione.setCellValueFactory(new PropertyValueFactory<>("giornoString"));
+        colOrarioEscursione.setCellValueFactory(new PropertyValueFactory<>("oraString"));
         colLuogoEscursione.setCellValueFactory(new PropertyValueFactory<>("luogo"));
-        colDifficoltaEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Luoghi item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : String.valueOf(item.getDifficolta()));
-            }
-        });
-        colDifficoltaEscursione.setCellValueFactory(new PropertyValueFactory<>("luogo"));
-        colAccompagnatoreEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Utente item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome() + " " + item.getCognome());
-            }
-        });
-        colAccompagnatoreEscursione.setCellValueFactory(new PropertyValueFactory<>("accompagnatore"));
+        colDifficoltaEscursione.setCellValueFactory(new PropertyValueFactory<>("difficoltaString"));
+        colAccompagnatoreEscursione.setCellValueFactory(new PropertyValueFactory<>("accompagnatoreString"));
     }
 
     public void setItem4(){
-        colDisdiciEscursione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnDisdiciEscursione = new Button(CANCEL_1);
-                btnDisdiciEscursione.setPrefSize(150, 20);
-                btnDisdiciEscursione.setOnAction(event -> {
 
-                    Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare la prenotazione?",
-                            ButtonType.NO, ButtonType.YES).showAndWait();
-                    if (option.isPresent() && option.get() == ButtonType.YES) {
-                        escursioni.clear();
-                        AreaPersonaleController1.disdiciEscursione(item);
-                        escursioni.addAll(AreaPersonaleController1.escursioni);
-                    }
-                });
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnDisdiciEscursione.setDisable(getTableRow().getItem().getData().isBefore(LocalDateTime.now()));
-
-                }
-                setGraphic(item == null ? null :btnDisdiciEscursione);
-            }
-        });
-        colDisdiciEscursione.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colDisdiciEscursione.setCellValueFactory(new PropertyValueFactory<>("buttonEscursione"));
         tableEscursioni.setItems( escursioni);
         colModello.setCellValueFactory(new PropertyValueFactory<>("modello"));
         colCaratteristiche.setCellValueFactory(new PropertyValueFactory<>("caratteristiche"));
-        colDataAcquisto.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colDataAcquisto.setCellValueFactory(new PropertyValueFactory<>("dataAcquisto"));
+
+        colDataAcquisto.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDataAcquisto().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
         colPrezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
         tableBicicletteComprate.setItems(bicicletteComprate);
         colModelloNoleggio.setCellValueFactory(new PropertyValueFactory<>("modello"));
@@ -359,51 +218,20 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
     }
 
     public void setItem4Bis(){
-        colInizioNoleggio.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colInizioNoleggio.setCellValueFactory(new PropertyValueFactory<>("InizioNoleggio"));
+
+        colInizioNoleggio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getInizioNoleggio().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
+
     }
 
     public void setItem5(){
-        colFineNoleggio.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colFineNoleggio.setCellValueFactory(new PropertyValueFactory<>("FineNoleggio"));
+
+        colFineNoleggio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFineNoleggio().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
+
         colPrezzoGiorno.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
         colPrezzoTotale.setCellValueFactory(new PropertyValueFactory<>("prezzoFinale"));
         tableBicicletteNoleggiate.setItems( bicicletteNoleggiate);
-        colDisdiciNoleggio.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnDisdiciNoleggio = new Button(CANCEL_1);
-                btnDisdiciNoleggio.setPrefSize(150, 20);
-                btnDisdiciNoleggio.setOnAction(event -> {
 
-                    Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare il noleggio?",
-                            ButtonType.NO, ButtonType.YES).showAndWait();
-                    if (option.isPresent() && option.get() == ButtonType.YES) {
-                        bicicletteNoleggiate.clear();
-                        AreaPersonaleController1.disdiciNoleggio(item);
-                        bicicletteNoleggiate.addAll(AreaPersonaleController1.bicicletteNoleggiate);
-                    }
-                });
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnDisdiciNoleggio.setDisable(getTableRow().getItem().getFineNoleggio().isBefore(LocalDateTime.now()));
-                }
-                setGraphic(item == null ? null :btnDisdiciNoleggio);
-            }
-        });
-        colDisdiciNoleggio.setCellValueFactory(new PropertyValueFactory<>("idNoleggio"));
+        colDisdiciNoleggio.setCellValueFactory(new PropertyValueFactory<>("button"));
         selected(tabPanePrenotazioni.getSelectionModel().getSelectedItem().getId());
     }
 
@@ -412,7 +240,8 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
             case "tabLezioni": {
                 lezioni.clear();
                 AreaPersonaleController1.showLezioni();
-                lezioni.addAll(AreaPersonaleController1.lezioni);
+                copyLezioni(AreaPersonaleController1.lezioni);
+                createButtonLezioni();
                 return;
             }
             case "tabGare": {
@@ -424,7 +253,8 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
             case "tabEscursioni": {
                 escursioni.clear();
                 AreaPersonaleController1.showEscursioni();
-                escursioni.addAll(AreaPersonaleController1.escursioni);
+                copyEscursioni(AreaPersonaleController1.escursioni);
+                createButtonEscursioni();
                 return;
             }
             case "tabBicicletteComprate": {
@@ -437,10 +267,114 @@ public class AreaPersonaleControllerGrafico extends AreaPersonaleController1{
                 bicicletteNoleggiate.clear();
                 AreaPersonaleController1.showBiciNoleggiate();
                 bicicletteNoleggiate.addAll(AreaPersonaleController1.bicicletteNoleggiate);
+                createButtonNoleggio();
                 return;
             }
             default:
                 throw new IllegalArgumentException("Unexpected value: " + id);
+        }
+    }
+
+
+    public void createButtonLezioni(){
+        for(int i = 0; i< AreaPersonaleController1.lezioni.size(); i++) {
+            Button b = new Button(CANCEL_1);
+            b.setPrefSize(150, 20);
+            lezioni.get(i).setButtonLezione(b);
+
+            int finalI = i;
+            b.setDisable(lezioni.get(i).getData().isBefore(LocalDateTime.now()));
+            b.setOnAction(event -> disdiciLezione(lezioni.get(finalI).getId()));
+
+            b.setOnAction(event -> {
+
+                Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare la prenotazione?",
+                        ButtonType.NO, ButtonType.YES).showAndWait();
+                if (option.isPresent() && option.get() == ButtonType.YES) {
+                    AreaPersonaleController1.disdiciLezione(lezioni.get(finalI).getId());
+                    lezioni.clear();
+                    copyLezioni(AreaPersonaleController1.lezioni);
+                    createButtonLezioni();
+                }
+            });
+        }
+    }
+
+    public void copyLezioni(List<Lezione> l){
+        for(int i=0; i<l.size();i++){
+            BeanLezioni bean = new BeanLezioni();
+
+            bean.setId(l.get(i).getId());
+            bean.setData(l.get(i).getData());
+            bean.setDateString(l.get(i).getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
+            bean.setMaestro(l.get(i).getMaestro());
+            bean.setTipoString(l.get(i).getTipo().getNome());
+            bean.setOraString(Utils.formatTime(l.get(i).getData().getHour(), l.get(i).getData().getMinute()));
+            bean.setGiornoString(l.get(i).getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
+            bean.setPrivataString(Boolean.TRUE.equals(l.get(i).isPrivata()) ? "Si" : "No");
+            bean.setEliminata(l.get(i).getEliminata());
+            lezioni.add(bean);
+        }
+    }
+
+    public void createButtonEscursioni(){
+        for(int i = 0; i< AreaPersonaleController1.escursioni.size(); i++) {
+            Button b = new Button(CANCEL_1);
+            b.setPrefSize(150, 20);
+            escursioni.get(i).setButtonEscursione(b);
+
+            int finalI = i;
+            b.setDisable(escursioni.get(i).getData().isBefore(LocalDateTime.now()));
+                    b.setOnAction(event -> {
+                        Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare la prenotazione?",
+                                ButtonType.NO, ButtonType.YES).showAndWait();
+                        if (option.isPresent() && option.get() == ButtonType.YES) {
+                            AreaPersonaleController1.disdiciEscursione(escursioni.get(finalI).getId());
+                            escursioni.clear();
+                            copyEscursioni(AreaPersonaleController1.escursioni);
+                            createButtonEscursioni();
+                        }
+                    });
+        }
+    }
+
+    public void copyEscursioni(List<Escursione> l){
+        for(int i=0; i<l.size();i++){
+            BeanEscursioni bean = new BeanEscursioni();
+
+            bean.setId(l.get(i).getId());
+            bean.setData(l.get(i).getData());
+            bean.setLuogo(l.get(i).getLuogo());
+            bean.setAccompagnatore(l.get(i).getAccompagnatore());
+
+            bean.setGiornoString(l.get(i).getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
+            bean.setOraString(Utils.formatTime(l.get(i).getData().getHour(), l.get(i).getData().getMinute()));
+            bean.setDifficoltaString(String.valueOf(l.get(i).getLuogo().getDifficolta()));
+            bean.setAccompagnatoreString(l.get(i).getAccompagnatore().getNome() + " " + l.get(i).getAccompagnatore().getCognome());
+            escursioni.add(bean);
+        }
+    }
+
+    public static void createButtonNoleggio(){
+
+        for(int i = 0; i< AreaPersonaleController1.bicicletteNoleggiate.size(); i++) {
+            Button noleggia = new Button(CANCEL_1);
+            noleggia.setPrefSize(150, 20);
+            bicicletteNoleggiate.get(i).setButton(noleggia);
+
+            int finalI = i;
+            noleggia.setOnAction(event -> {
+
+                Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Confermi di voler annullare il noleggio?",
+                        ButtonType.NO, ButtonType.YES).showAndWait();
+                if (option.isPresent() && option.get() == ButtonType.YES) {
+                    bicicletteNoleggiate.clear();
+                    AreaPersonaleController1.disdiciNoleggio(AreaPersonaleController1.bicicletteNoleggiate.get(finalI).getIdNoleggio());
+                    bicicletteNoleggiate.addAll(AreaPersonaleController1.bicicletteNoleggiate);
+                    createButtonNoleggio();
+                }
+            });
+            noleggia.setDisable(AreaPersonaleController1.bicicletteNoleggiate.get(finalI).getFineNoleggio().isBefore(LocalDateTime.now()));
         }
     }
 }

@@ -8,7 +8,7 @@ public class Escursione {
 	private LocalDateTime data;
 	private Luoghi luogo;
 	private Utente accompagnatore;
-	
+
 	public Escursione() {}
 
 	public Escursione(int id, LocalDateTime data, Luoghi luogo, Utente accompagnatore) {

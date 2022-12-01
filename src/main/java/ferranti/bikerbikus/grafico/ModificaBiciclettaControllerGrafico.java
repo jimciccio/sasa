@@ -23,7 +23,7 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
 
     private Parent parent;
     final Object controller = this;
-    String modStr ="Modifica";
+    static String modStr ="Modifica";
 
     protected static final ObservableList<LocalTime> orari = FXCollections.observableArrayList(ModificaBiciclettaController1.orari);
     protected static final ObservableList<BiciclettaVendita> bicicletteVendita = FXCollections.observableArrayList(ModificaBiciclettaController1.loadModelli());
@@ -72,57 +72,16 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
         colCaratteristiche.setCellValueFactory(new PropertyValueFactory<>("caratteristiche"));
         colPrezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
         colDisponibili.setCellValueFactory(new PropertyValueFactory<>("disponibili"));
-        colModifica.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button(modStr);
-                btnPrenota.setPrefSize(150, 20);
-                btnPrenota.setOnAction(event -> modifyBiciclettaNuova(getTableRow().getIndex()));
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colModifica.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        colModifica.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableBiciclette.setItems(bicicletteVendita);
         colModelloNoleggiate.setCellValueFactory(new PropertyValueFactory<>("modello"));
         colCaratteristicheNoleggiate.setCellValueFactory(new PropertyValueFactory<>("caratteristiche"));
         colPrezzoNoleggiate.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
-        colPrenotazioneNoleggiate.setCellFactory(param -> new TableCell<>() {
 
-            @Override
-            public void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (!isEmpty()) {
-                    switch (item){
-                        case "Manutenzione":
-                            this.setStyle("-fx-text-fill: red");
-                            break;
-                        case "Noleggiabile":
-                            this.setStyle("-fx-text-fill: green");
-                            break;
-                        case "Noleggiata":
-                            this.setStyle("-fx-text-fill: orange");
-                            break;
-                        default:
-                            this.setStyle("-fx-text-fill: grey");
-                    }
-                }
-                setText(item);
-            }
-        });
         colPrenotazioneNoleggiate.setCellValueFactory(new PropertyValueFactory<>("status"));
-        colModificaNoleggiate.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button(modStr);
-                btnPrenota.setPrefSize(150, 20);
-                btnPrenota.setOnAction(event -> modifyBiciclettaNoleggiata(getTableRow().getIndex()));
 
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colModificaNoleggiate.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colModificaNoleggiate.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableBicicletteNoleggiate.setItems(bicicletteNoleggiate);
         bicicletteVendita.clear();
         bicicletteNoleggiate.clear();
@@ -132,6 +91,8 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
 
         bicicletteVendita.addAll(ModificaBiciclettaController1.bicicletteVendita);
         bicicletteNoleggiate.addAll(ModificaBiciclettaController1.bicicletteNoleggiate);
+        createButtonVendita();
+        createButtonNoleggio();
     }
 
 
@@ -197,6 +158,7 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
 
                 bicicletteVendita.clear();
                 bicicletteVendita.addAll(ModificaBiciclettaController1.bicicletteVendita);
+                createButtonVendita();
             }
             return null;
         });
@@ -237,7 +199,7 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
         });
     }
 
-    public static void modifyBiciclettaNoleggiata(int item){
+    public  void modifyBiciclettaNoleggiata(int item){
 
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Modifica la Bicicletta");
@@ -296,6 +258,7 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
                 ModificaBiciclettaController1.modBiciNoleggiata(ModificaBiciclettaController1.bicicletteNoleggiate.get(item).getId(), modello.getText(), caratteristiche.getText(), Integer.parseInt(prezzo.getText()), manutenzione.isSelected());
                 bicicletteNoleggiate.clear();
                 bicicletteNoleggiate.addAll(ModificaBiciclettaController1.bicicletteNoleggiate);
+                createButtonNoleggio();
             }
             return null;
         });
@@ -334,5 +297,37 @@ public class ModificaBiciclettaControllerGrafico extends ModificaBiciclettaContr
                 loginButton.setDisable(true);
             }
         });
+    }
+
+    public static void createButtonVendita(){
+        for(int i = 0; i< ModificaBiciclettaController1.bicicletteVendita.size(); i++) {
+            Button b = new Button(modStr);
+            b.setPrefSize(150, 20);
+            bicicletteVendita.get(i).setButton(b);
+
+            int finalI = i;
+            b.setOnAction(event -> modifyBiciclettaNuova(finalI));
+        }
+    }
+
+    public  void createButtonNoleggio(){
+        for(int i = 0; i< ModificaBiciclettaController1.bicicletteNoleggiate.size(); i++) {
+            Button b = new Button(modStr);
+            b.setPrefSize(150, 20);
+            bicicletteNoleggiate.get(i).setButton(b);
+
+            int finalI = i;
+            b.setOnAction(event -> modifyBiciclettaNoleggiata(finalI));
+
+            if(bicicletteNoleggiate.get(i).getNoleggiabile()==1){
+                if(bicicletteNoleggiate.get(i).getManutenzione()==1){
+                    bicicletteNoleggiate.get(i).setStatus("Manutenzione");
+                }else{
+                    bicicletteNoleggiate.get(i).setStatus("Noleggiabile");
+                }
+            }else{
+                bicicletteNoleggiate.get(i).setStatus("Noleggiata");
+            }
+        }
     }
 }

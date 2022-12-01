@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -50,14 +49,6 @@ public class AggiungiEscursioneControllerGrafico extends AggiungiEscursioneContr
         lblUserName.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " "
                 + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         lblTipoUtente.setText(UserData.getInstance().getUser().getTipoUtente().getNome());
-        dpGiorno.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                LocalDate today = LocalDate.now().plusDays(1);
-                setDisable(empty || date.compareTo(today) < 0);
-            }
-        });
         AggiungiEscursioneController1.loadOrari();
         cmbOrario.setItems(orari);
         AggiungiEscursioneController1.loadAccompagnatori();

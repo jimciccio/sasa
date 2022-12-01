@@ -1,5 +1,7 @@
 package ferranti.bikerbikus.models;
 
+import javafx.scene.control.Button;
+
 import java.time.LocalDate;
 
 public class Stagione {
@@ -9,6 +11,7 @@ public class Stagione {
 	private LocalDate dataInizio;
 	private LocalDate dataFine;
 	private Campionato campionato;
+
 
 	public Stagione() {
 	}
@@ -66,4 +69,6 @@ public class Stagione {
 	public String toString() {
 		return "Campionato " + campionato.getNome() + " - Stagione " + nome;
 	}
+
+
 }

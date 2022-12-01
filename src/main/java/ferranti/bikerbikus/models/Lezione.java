@@ -10,7 +10,7 @@ public class Lezione {
 	private TipoLezione tipo;
 	private boolean privata;
 	private int eliminata;
-	
+
 	public Lezione() {
 	}
 
@@ -68,4 +68,5 @@ public class Lezione {
 	public void setEliminata(int eliminata) {
 		this.eliminata = eliminata;
 	}
+
 }

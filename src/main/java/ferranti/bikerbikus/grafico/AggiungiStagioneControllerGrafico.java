@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.time.LocalDate;
 
 public class AggiungiStagioneControllerGrafico extends AggiungiStagioneController1{
 
@@ -47,23 +46,7 @@ public class AggiungiStagioneControllerGrafico extends AggiungiStagioneControlle
         AggiungiStagioneController1.loadCampionati();
         cmbCampionato.setItems(campionati);
         dpInizio.setDisable(false);
-        dpInizio.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today) < 0);
-                dpFine.setDisable(false);
-                dpFine.setDayCellFactory(picker -> new DateCell() {
-                    @Override
-                    public void updateItem(LocalDate date, boolean empty) {
-                        super.updateItem(date, empty);
-                        LocalDate today = LocalDate.now();
-                        setDisable(empty || date.compareTo(today) < 0 || date.compareTo(dpInizio.getValue().plusDays(1)) < 0);
-                    }
-                });
-            }
-        });
+        dpFine.setDisable(false);
 
         btnConferma.setOnAction(event ->
         {

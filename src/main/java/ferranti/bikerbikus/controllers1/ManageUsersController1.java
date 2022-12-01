@@ -22,4 +22,5 @@ public class ManageUsersController1 {
                 ManageUsersQuery.upgradeUser(item);
                 loadUtenti();
     }
+
 }

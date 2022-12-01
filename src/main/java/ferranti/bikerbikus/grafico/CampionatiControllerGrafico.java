@@ -1,5 +1,6 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanStagione;
 import ferranti.bikerbikus.controllers1.CampionatiController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Campionato;
@@ -16,15 +17,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class CampionatiControllerGrafico extends CampionatiController1{
 
     private Parent parent;
     final Object controller = this;
 
-    protected static final ObservableList<Stagione> stagioni = FXCollections.observableArrayList(CampionatiController1.loadStagioni());
+    protected static final ObservableList<BeanStagione> stagioni = FXCollections.observableArrayList();
 
 
     @FXML
@@ -40,17 +41,17 @@ public class CampionatiControllerGrafico extends CampionatiController1{
     @FXML
     Button btnProfile;
     @FXML
-    TableView<Stagione> tableStagioni;
+    TableView<BeanStagione> tableStagioni;
     @FXML
-    TableColumn<Stagione, Campionato> colCampionato;
+    TableColumn<BeanStagione, Campionato> colCampionato;
     @FXML
-    TableColumn<Stagione, String> colStagione;
+    TableColumn<BeanStagione, String> colStagione;
     @FXML
-    TableColumn<Stagione, LocalDate> colDataInizio;
+    TableColumn<BeanStagione, String> colDataInizio;
     @FXML
-    TableColumn<Stagione, LocalDate> colDataFine;
+    TableColumn<BeanStagione, String> colDataFine;
     @FXML
-    TableColumn<Stagione, Stagione> colDettagli;
+    TableColumn<BeanStagione, Button> colDettagli;
 
     public void showScene(Stage stage) {
         LoadScene loadScene = new LoadScene();
@@ -65,43 +66,44 @@ public class CampionatiControllerGrafico extends CampionatiController1{
             toolbar.getChildren().remove(btnAddSeason);
         }
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
-        colCampionato.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Campionato item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome());
-            }
-        });
+
         colCampionato.setCellValueFactory(
-                cellData -> new SimpleObjectProperty<Campionato>(cellData.getValue().getCampionato()));
+                cellData -> new SimpleObjectProperty<>(cellData.getValue().getCampionato()));
         colStagione.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDataInizio.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colDataInizio.setCellValueFactory(new PropertyValueFactory<>("dataInizio"));
-        colDataFine.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colDataFine.setCellValueFactory(new PropertyValueFactory<>("dataFine"));
-        colDettagli.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Stagione item, boolean empty) {
-                super.updateItem(item, empty);
-                final Hyperlink hyperlink = new Hyperlink("Dettagli");
-                hyperlink.setOnAction(event -> new StagioneControllerGrafico(item).showScene(stage));
-                setGraphic(item == null ? null : hyperlink);
-            }
-        });
-        colDettagli.setCellValueFactory(cellData -> new SimpleObjectProperty<Stagione>(cellData.getValue()));
+
+        colDataInizio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDataInizio().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
+
+        colDataFine.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDataFine().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
+
+        colDettagli.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getButtonStagione()));
+
+
         tableStagioni.setItems(stagioni);
         CampionatiController1.loadStagioni();
+        copyStagioni(CampionatiController1.stagioni);
+        createButton(stage);
+    }
+
+    public void createButton(Stage stage){
+        for(int i = 0; i< CampionatiController1.stagioni.size(); i++) {
+            Button b = new Button("Dettagli");
+            b.setPrefSize(150, 20);
+            stagioni.get(i).setButtonStagione(b);
+            int finalI = i;
+            b.setOnAction(event -> new StagioneControllerGrafico(stagioni.get(finalI)).showScene(stage));
+        }
+    }
+
+    public void copyStagioni(List<Stagione> l){
+        for(int i=0; i<l.size();i++){
+            BeanStagione bean = new BeanStagione();
+
+            bean.setId(l.get(i).getId());
+            bean.setNome(l.get(i).getNome());
+            bean.setDataInizio(l.get(i).getDataInizio());
+            bean.setDataFine(l.get(i).getDataFine());
+            bean.setCampionato(l.get(i).getCampionato());
+            stagioni.add(bean);
+        }
     }
 }

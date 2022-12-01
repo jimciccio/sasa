@@ -1,5 +1,7 @@
 package ferranti.bikerbikus.models;
 
+import javafx.scene.control.Button;
+
 import java.time.LocalDateTime;
 
 public class BiciclettaNoleggio extends Bicicletta{
@@ -14,6 +16,10 @@ public class BiciclettaNoleggio extends Bicicletta{
 
     private int noleggiabile;
     private int manutenzione;
+    private Button button;
+    private String status;
+
+
 
 
     public BiciclettaNoleggio() {
@@ -91,21 +97,21 @@ public class BiciclettaNoleggio extends Bicicletta{
         this.manutenzione = manutenzione;
     }
 
-
-    public String getStatus(){
-        String status;
-        if(noleggiabile==1){
-            if(manutenzione==1){
-                status="Manutenzione";
-                return status;
-            }else{
-                status="Noleggiabile";
-                return status;
-            }
-        }else{
-            status="Noleggiata";
-            return status;
-        }
+    public Button getButton() {
+        return button;
     }
 
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status1) {
+
+        this.status = status1;
+    }
 }

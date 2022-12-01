@@ -46,7 +46,7 @@ public class StagioneControllerGrafico extends StagioneController1{
     @FXML
     TableView<GaraExtended> tableGare;
     @FXML
-    TableColumn<GaraExtended, LocalDateTime> colData;
+    TableColumn<GaraExtended, String> colData;
     @FXML
     TableColumn<GaraExtended, Integer> colPartecipanti;
     @FXML
@@ -81,28 +81,14 @@ public class StagioneControllerGrafico extends StagioneController1{
         lblTipoUtente.setText(UserData.getInstance().getUser().getTipoUtente().getNome());
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
         lblNome.setText("Campionato " + stagione.getCampionato().getNome() + " - Stagione " + stagione.getNome());
-        colData.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colData.setCellValueFactory(new PropertyValueFactory<>("data"));
+
+        colData.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN))));
         colPartecipanti.setCellValueFactory(new PropertyValueFactory<>("partecipanti"));
         colNomeVincitore.setCellValueFactory(new PropertyValueFactory<>("nomeVincitore"));
         colCognomeVincitore.setCellValueFactory(new PropertyValueFactory<>("cognomeVincitore"));
-        colDettagli.setCellValueFactory(cellData -> new SimpleObjectProperty<GaraExtended>(cellData.getValue()));
-        colDettagli.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(GaraExtended item, boolean empty) {
-                super.updateItem(item, empty);
-                final Hyperlink hyperlink = new Hyperlink("Dettagli");
-                hyperlink.setOnAction(event -> showDetails(item,item.getData()));
-                setGraphic(item == null ? null : hyperlink);
-            }
-        });
+        colDettagli.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableGare.setItems(gare);
+
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
         colPosizione.setCellValueFactory(new PropertyValueFactory<>("posizioneFinale"));
@@ -117,10 +103,10 @@ public class StagioneControllerGrafico extends StagioneController1{
         utente.addAll(StagioneController1.utente);
         colPunti.setSortType(TableColumn.SortType.DESCENDING);
         tableClassifica.getSortOrder().add(colPunti);
+        createButton();
     }
 
     public static void showDetails(GaraExtended idGara, LocalDateTime dataGara) {
-
 
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Gara del " + dataGara.getDayOfMonth()+"-"+dataGara.getMonthValue()+"-"+dataGara.getYear());
@@ -193,6 +179,17 @@ public class StagioneControllerGrafico extends StagioneController1{
             tabGara.getSortOrder().add(colPosizione);
         }else{
             new Alert(Alert.AlertType.ERROR, "Non è possibile visualizzare la classifica.", ButtonType.OK).show();
+        }
+    }
+
+    public void createButton(){
+        for(int i = 0; i< StagioneControllerGrafico.gare.size(); i++) {
+            Button b = new Button("Dettagli");
+            b.setPrefSize(150, 20);
+            gare.get(i).setButton(b);
+            int finalI = i;
+            b.setOnAction(event -> showDetails(gare.get(finalI),gare.get(finalI).getData()));
+
         }
     }
 }

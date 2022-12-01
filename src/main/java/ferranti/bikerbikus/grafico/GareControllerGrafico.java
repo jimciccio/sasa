@@ -1,11 +1,12 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanGare;
 import ferranti.bikerbikus.controllers1.GareController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Gara;
-import ferranti.bikerbikus.models.Stagione;
 import ferranti.bikerbikus.utils.LoadScene;
 import ferranti.bikerbikus.utils.Utils;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,14 +17,16 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 public class GareControllerGrafico extends GareController1{
 
     private Parent parent;
     final Object controller = this;
+    Stage stag;
 
-    protected static final ObservableList<Gara> gare = FXCollections.observableArrayList(GareController1.gare);
+    protected static final ObservableList<BeanGare> gare = FXCollections.observableArrayList();
 
     @FXML
     HBox toolbar;
@@ -46,19 +49,20 @@ public class GareControllerGrafico extends GareController1{
     @FXML
     Label lblAnno;
     @FXML
-    TableView<Gara> tableGare;
+    TableView<BeanGare> tableGare;
     @FXML
-    TableColumn<Gara, LocalDateTime> colGiorno;
+    TableColumn<BeanGare, String> colGiorno;
     @FXML
-    TableColumn<Gara, LocalDateTime> colOrario;
+    TableColumn<BeanGare, String> colOrario;
     @FXML
-    TableColumn<Gara, Stagione> colStagione;
+    TableColumn<BeanGare, Hyperlink> colStagione;
     @FXML
-    TableColumn<Gara, Integer> colPrenotazione;
+    TableColumn<BeanGare, Button> colPrenotazione;
 
     public void showScene(Stage stage) {
         LoadScene loadScene = new LoadScene();
         loadScene.load(stage,parent,controller, "/views/gare-view.fxml");
+        stag=stage;
         lblMese.setText(
                 Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
         lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
@@ -76,7 +80,8 @@ public class GareControllerGrafico extends GareController1{
             super.onActionPrevMonth();
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
-            gare.addAll(GareController1.gare);
+            copyGare(GareController1.gare);
+            createButton();
 
         });
         btnNextMonth.setOnAction(event -> {
@@ -84,69 +89,60 @@ public class GareControllerGrafico extends GareController1{
             super.onActionNextMonth();
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
-            gare.addAll(GareController1.gare);
+            copyGare(GareController1.gare);
+            createButton();
         });
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
-        colGiorno.setCellValueFactory(new PropertyValueFactory<>("data"));
+        colGiorno.setCellValueFactory(cellData -> new SimpleObjectProperty<>(Utils.uppercase(cellData.getValue().getData().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " "
+                + cellData.getValue().getData().getDayOfMonth()));
 
-        colGiorno.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? ""
-                        : Utils.uppercase(item.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " "
-                        + item.getDayOfMonth());
-            }
-        });
-        colOrario.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
-            }
-        });
-        colOrario.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colStagione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Stagione item, boolean empty) {
-                super.updateItem(item, empty);
-                final Hyperlink hyperlink = new Hyperlink(item == null ? "" : item.toString());
-                hyperlink.setOnAction(event -> new StagioneControllerGrafico(item).showScene(stage));
-                setGraphic(item == null ? null : hyperlink);
-            }
-        });
+        colOrario.setCellValueFactory(cellData -> new SimpleObjectProperty<>(Utils.formatTime(cellData.getValue().getData().getHour(), cellData.getValue().getData().getMinute())));
 
-        colStagione.setCellValueFactory(new PropertyValueFactory<>("stagione"));
-        setItem();
-    }
-
-    public void setItem(){
-
-        colPrenotazione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button("Prenota");
-                btnPrenota.setPrefSize(150, 20);
-                btnPrenota.setOnAction(event -> {
-                    if(prenotaGara(item)){
-                        gare.clear();
-                        new Alert(Alert.AlertType.CONFIRMATION, "Prenotazione effettuata con successo!", ButtonType.OK).show();
-                        gare.addAll(GareController1.gare);
-                    }else{
-                        new Alert(Alert.AlertType.ERROR, "Non è stato possibile prenotare la gara.", ButtonType.OK).show();
-                    }
-                });
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnPrenota.setDisable(getTableRow().getItem().getData().isBefore(LocalDateTime.now()));
-                }
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colPrenotazione.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colStagione.setCellValueFactory(new PropertyValueFactory<>("link"));
+        colPrenotazione.setCellValueFactory(new PropertyValueFactory<>("buttonGara"));
         tableGare.setItems(gare);
         gare.clear();
         super.loadGare();
-        gare.addAll(GareController1.gare);
+        copyGare(GareController1.gare);
+        createButton();
+    }
+
+
+
+    public void createButton(){
+        for(int i = 0; i< GareController1.gare.size(); i++) {
+            Button b = new Button("Prenota");
+            b.setPrefSize(150, 20);
+
+            int finalI = i;
+            b.setDisable(gare.get(i).getData().isBefore(LocalDateTime.now()));
+            gare.get(i).setButtonGara(b);
+            b.setOnAction(event -> {
+                if(prenotaGara(gare.get(finalI).getId())){
+                    gare.clear();
+                    new Alert(Alert.AlertType.CONFIRMATION, "Prenotazione effettuata con successo!", ButtonType.OK).show();
+                    copyGare(GareController1.gare);
+                    createButton();
+                }else{
+                    new Alert(Alert.AlertType.ERROR, "Non è stato possibile prenotare la gara.", ButtonType.OK).show();
+                }
+            });
+
+            Hyperlink hyperlink = new Hyperlink(gare.get(i).getStagione().toString());
+            hyperlink.setOnAction(event -> new StagioneControllerGrafico(gare.get(finalI).getStagione()).showScene(stag));
+            gare.get(i).setLink(hyperlink);
+
+        }
+    }
+
+    public void copyGare(List<Gara> l){
+        for(int i=0; i<l.size();i++){
+            BeanGare bean = new BeanGare();
+
+            bean.setId(l.get(i).getId());
+            bean.setStagione(l.get(i).getStagione());
+            bean.setData(l.get(i).getData());
+            gare.add(bean);
+        }
     }
 }

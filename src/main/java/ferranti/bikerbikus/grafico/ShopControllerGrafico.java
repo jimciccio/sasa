@@ -18,13 +18,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import java.time.LocalDate;
 
 public class ShopControllerGrafico extends ShopController1{
 
     private Parent parent;
     final Object controller = this;
-    String compra = "Compra";
 
     protected static final ObservableList<BiciclettaVendita> bicicletteVendita = FXCollections.observableArrayList(ShopController1.bicicletteVendita);
     protected static final ObservableList<BiciclettaNoleggio> bicicletteNoleggio = FXCollections.observableArrayList(ShopController1.bicicletteNoleggio);
@@ -44,8 +42,7 @@ public class ShopControllerGrafico extends ShopController1{
     Button btnModify;
     @FXML
     Button btnProfile;
-    @FXML
-    TabPane tabPaneBici;
+
     @FXML
     TableView<BiciclettaVendita> tableNuove;
     @FXML
@@ -74,20 +71,14 @@ public class ShopControllerGrafico extends ShopController1{
         lblUserName.setText(Utils.uppercase(UserData.getInstance().getUser().getNome()) + " "
                 + Utils.uppercase(UserData.getInstance().getUser().getCognome()));
         lblTipoUtente.setText(UserData.getInstance().getUser().getTipoUtente().getNome());
-        tabPaneBici.widthProperty().addListener((observable, oldValue, newValue) -> {
-            tabPaneBici
-                    .setTabMinWidth(tabPaneBici.getWidth() / tabPaneBici.getTabs().size() - 20);
-            tabPaneBici
-                    .setTabMaxWidth(tabPaneBici.getWidth() / tabPaneBici.getTabs().size() - 20);
-        });
-        tabPaneBici.getSelectionModel().selectedItemProperty()
-                .addListener((ov, oldTab, newTab) -> {
+
                     bicicletteVendita.clear();
                     bicicletteNoleggio.clear();
-                    ShopController1.loadBiciclette(tabPaneBici.getSelectionModel().getSelectedItem().getId());
+                    loadBicicletteComprabili();
+                    loadBicicletteNoleggiabili();
                     bicicletteVendita.addAll(ShopController1.bicicletteVendita);
                     bicicletteNoleggio.addAll(ShopController1.bicicletteNoleggio);
-                });
+
         if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
             btnAddItemShop.setOnAction(event -> new AggiungiBiciclettaControllerGrafico().showScene(stage));
             btnModify.setOnAction(event -> new ModificaBiciclettaControllerGrafico().showScene(stage));
@@ -96,52 +87,29 @@ public class ShopControllerGrafico extends ShopController1{
             toolbar.getChildren().remove(btnModify);
         }
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
+
         colModello.setCellValueFactory(new PropertyValueFactory<>("modello"));
         colCaratteristiche.setCellValueFactory(new PropertyValueFactory<>("caratteristiche"));
         colPrezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
-        colCompra.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button(compra);
-                btnPrenota.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                        btnPrenota.setText(compra);
-                        btnPrenota.setOnAction(event -> buy(getTableRow().getIndex()));
-                }
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colCompra.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tableNuove.setItems(bicicletteVendita);
+        colCompra.setCellValueFactory(new PropertyValueFactory<>("button"));
+
         colModelloNoleggio.setCellValueFactory(new PropertyValueFactory<>("modello"));
         colCaratteristicheNoleggio.setCellValueFactory(new PropertyValueFactory<>("caratteristiche"));
         colPrezzoNoleggio.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
-        item();
+        colNoleggio.setCellValueFactory(new PropertyValueFactory<>("button"));
 
+        tableNuove.setItems(bicicletteVendita);
         tableNoleggiate.setItems(bicicletteNoleggio);
+
         bicicletteVendita.clear();
         bicicletteNoleggio.clear();
-        ShopController1.loadBiciclette(tabPaneBici.getSelectionModel().getSelectedItem().getId());
+
         bicicletteVendita.addAll(ShopController1.bicicletteVendita);
+        bicicletteNoleggio.addAll(ShopController1.bicicletteNoleggio);
+        createButton();
     }
 
-    public  void item(){
-        colNoleggio.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button(compra);
-                btnPrenota.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnPrenota.setText("Noleggia");
-                    btnPrenota.setOnAction(event -> rent(getTableRow().getIndex()));
-                }
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colNoleggio.setCellValueFactory(new PropertyValueFactory<>("id"));
-    }
+
 
     public static void buy(int item){
 
@@ -165,6 +133,7 @@ public class ShopControllerGrafico extends ShopController1{
                     bicicletteVendita.clear();
                     new Alert(Alert.AlertType.CONFIRMATION, "Acquisto effettuato con successo.", ButtonType.OK).show();
                     bicicletteVendita.addAll(ShopController1.bicicletteVendita);
+                    createButton();
                 }else{
                     new Alert(Alert.AlertType.ERROR, "Non è stato possibile effettuare l'acquisto.", ButtonType.OK).show();
                 }
@@ -198,14 +167,6 @@ public class ShopControllerGrafico extends ShopController1{
 
         picker.valueProperty().addListener((observable, oldValue, newValue) -> loginButton.setDisable(false));
 
-        picker.setDayCellFactory(picker1 -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today) < 0);
-            }
-        });
 
         dialog.getDialogPane().setContent(grid);
 
@@ -218,6 +179,7 @@ public class ShopControllerGrafico extends ShopController1{
                     bicicletteNoleggio.clear();
                     new Alert(Alert.AlertType.CONFIRMATION, "Noleggio effettuato con successo.", ButtonType.OK).show();
                     bicicletteNoleggio.addAll(ShopController1.bicicletteNoleggio);
+                    createButton();
                 }else{
                     new Alert(Alert.AlertType.ERROR, "Non è stato possibile effettuare il noleggio.", ButtonType.OK).show();
                 }
@@ -226,5 +188,24 @@ public class ShopControllerGrafico extends ShopController1{
         });
 
         dialog.showAndWait();
+    }
+
+
+    public static void createButton(){
+        for(int i = 0; i< ShopController1.bicicletteVendita.size(); i++) {
+            Button compra = new Button("Compra");
+            compra.setPrefSize(150, 20);
+            bicicletteVendita.get(i).setButton(compra);
+            int finalI = i;
+            compra.setOnAction(event -> buy(finalI));
+        }
+        for(int i = 0; i< ShopController1.bicicletteNoleggio.size(); i++) {
+            Button noleggia = new Button("Noleggia");
+            noleggia.setPrefSize(150, 20);
+            bicicletteNoleggio.get(i).setButton(noleggia);
+
+            int finalI = i;
+            noleggia.setOnAction(event -> rent(finalI));
+        }
     }
 }

@@ -1,11 +1,12 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanLuoghi;
+import ferranti.bikerbikus.BeanRecensioni;
 import ferranti.bikerbikus.controllers1.RecensioniController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Luoghi;
 import ferranti.bikerbikus.models.Recensione;
 import ferranti.bikerbikus.models.Utente;
-import ferranti.bikerbikus.queries.LuoghiQuery;
 import ferranti.bikerbikus.utils.Constants;
 import ferranti.bikerbikus.utils.LoadScene;
 import ferranti.bikerbikus.utils.Utils;
@@ -22,12 +23,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 import static ferranti.bikerbikus.controllers1.ModificaRecensioneController1.roundToHalf;
 
@@ -36,8 +35,8 @@ public class RecensioniControllerGrafico extends RecensioniController1{
     private Parent parent;
     final Object controller = this;
 
-    protected static final ObservableList<Recensione> recensioni = FXCollections.observableArrayList(RecensioniController1.recensioni);
-    protected static final ObservableList<Luoghi> luoghi = FXCollections.observableArrayList(RecensioniController1.loadLuoghi());
+    protected static final ObservableList<BeanRecensioni> recensioni = FXCollections.observableArrayList();
+    protected static final ObservableList<BeanLuoghi> luoghi = FXCollections.observableArrayList();
 
     @FXML
     HBox toolbar;
@@ -56,27 +55,27 @@ public class RecensioniControllerGrafico extends RecensioniController1{
     @FXML
     Button btnAddPlace;
     @FXML
-    TableView<Luoghi> tableLuoghi;
+    TableView<BeanLuoghi> tableLuoghi;
     @FXML
-    TableColumn<Luoghi, String> colNomeLuogo;
+    TableColumn<BeanLuoghi, String> colNomeLuogo;
     @FXML
-    TableColumn<Luoghi, String> colDescrizione;
+    TableColumn<BeanLuoghi, String> colDescrizione;
     @FXML
-    TableColumn<Luoghi, Integer> colDifficolta;
+    TableColumn<BeanLuoghi, Integer> colDifficolta;
     @FXML
-    TableColumn<Luoghi, Double> colValutazioneMedia;
+    TableColumn<BeanLuoghi, Double> colValutazioneMedia;
     @FXML
-    TableColumn<Luoghi, Integer> colRecensisciButton;
+    TableColumn<BeanLuoghi, Integer> colRecensisciButton;
     @FXML
-    TableView<Recensione> tableRecensioni;
+    TableView<BeanRecensioni> tableRecensioni;
     @FXML
-    TableColumn<Recensione, Utente> colNomeUtente;
+    TableColumn<BeanRecensioni, Utente> colNomeUtente;
     @FXML
-    TableColumn<Recensione, String> colRecensione;
+    TableColumn<BeanRecensioni, String> colRecensione;
     @FXML
-    TableColumn<Recensione, LocalDate> colData;
+    TableColumn<BeanRecensioni, String> colData;
     @FXML
-    TableColumn<Recensione, Double> colValutazione;
+    TableColumn<BeanRecensioni, Double> colValutazione;
 
     public void showScene(Stage stage) {
         LoadScene loadScene = new LoadScene();
@@ -93,83 +92,29 @@ public class RecensioniControllerGrafico extends RecensioniController1{
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
         btnModifyRecensioni.setOnAction(event -> new ModificaRecensioneControllerGrafico().showScene(stage));
         colNomeLuogo.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colDescrizione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                Text text = new Text(item);
-                text.setStyle("-fx-text-alignment:justify;");
-                text.setWrappingWidth(300);
-                text.wrappingWidthProperty().bind(getTableColumn().widthProperty().subtract(20));
-                setGraphic(text);
-            }
-        });
-        colDescrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));
-        colValutazioneMedia.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                final HBox box = new HBox();
-                box.setMaxWidth(30);
-                box.setMaxHeight(20);
-                final Rating ratingAverage = new Rating(5);
-                ratingAverage.setPartialRating(true);
-                ratingAverage.setMaxWidth(20);
-                ratingAverage.setScaleX(0.6);
-                ratingAverage.setScaleY(0.6);
-                ratingAverage.setMouseTransparent(true);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    box.getChildren().add(ratingAverage);
-                    ratingAverage.setRating(item);
-                }
-                setGraphic(item == null ? null : box);
-            }
-        });
-        colValutazioneMedia.setCellValueFactory(new PropertyValueFactory<>("valutazioneMedia"));
+        colDescrizione.setCellValueFactory(new PropertyValueFactory<>("buttonDescrizione"));
+        colValutazioneMedia.setCellValueFactory(new PropertyValueFactory<>("star"));
         colDifficolta.setCellValueFactory(new PropertyValueFactory<>("difficolta"));
-        setItem();
         setItemBis();
-        setItem1();
+        colValutazione.setCellValueFactory(new PropertyValueFactory<>("star"));
         tableRecensioni.setItems(recensioni);
         recensioni.clear();
         luoghi.clear();
-        luoghi.addAll(RecensioniController1.luoghi);
-        LuoghiQuery.insertValutazioneForAll();
         RecensioniController1.loadLuoghi();
+        copy(RecensioniController1.luoghi);
+        createButton();
         tableLuoghi.getSelectionModel().selectFirst();
         RecensioniController1.loadRecensioni(tableLuoghi.getItems().get(0).getId());
-        recensioni.addAll(RecensioniController1.recensioni);
         lblNome.setText(tableLuoghi.getItems().get(0).getNome());
+        copyRecensioni(RecensioniController1.recensioni);
+        createButton2();
 
-    }
-
-    public void setItem(){
-        colRecensisciButton.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnRecensisci = new Button("Recensisci");
-                btnRecensisci.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-
-                        btnRecensisci.setOnAction(event -> {
-                                    if(getTableRow().getItem().getNome().equals(lblNome.getText())){
-                                        onActionRecensisci(item, getTableRow().getItem().getNome(), getTableRow().getIndex());
-                                    }else {
-                                        method(item);
-                                        onActionRecensisci(item, getTableRow().getItem().getNome(), getTableRow().getIndex());
-                                    }
-                                    });
-                }
-                setGraphic(item == null ? null : btnRecensisci);
-            }
-        });
     }
 
     public void setItemBis(){
-        colRecensisciButton.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colRecensisciButton.setCellValueFactory(new PropertyValueFactory<>("button"));
         tableLuoghi.setRowFactory(tv -> {
-            TableRow<Luoghi> row = new TableRow<>();
+            TableRow<BeanLuoghi> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (! row.isEmpty() && event.getButton()== MouseButton.PRIMARY
                         && event.getClickCount() == 1) {
@@ -177,63 +122,20 @@ public class RecensioniControllerGrafico extends RecensioniController1{
                     lblNome.setText(tableLuoghi.getItems().get(row.getIndex()).getNome());
                     RecensioniController1.loadRecensioni(clickedRow.getId());
                     recensioni.clear();
-                    recensioni.addAll(RecensioniController1.recensioni);
+                    copyRecensioni(RecensioniController1.recensioni);
+                    createButton2();
                 }
             });
             return row ;
         });
         tableLuoghi.setItems(luoghi);
         colNomeUtente.setCellValueFactory(new PropertyValueFactory<>("utente"));
-        colRecensione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                Text text = new Text(item);
-                text.setStyle("-fx-text-alignment:justify;");
-                text.setWrappingWidth(300);
-                text.wrappingWidthProperty().bind(getTableColumn().widthProperty().subtract(20));
-                setGraphic(text);
-            }
-        });
-        colRecensione.setCellValueFactory(new PropertyValueFactory<>("recensioneString"));
-        colData.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
-            }
-        });
-        colData.setCellValueFactory(new PropertyValueFactory<>("data"));
+        colRecensione.setCellValueFactory(new PropertyValueFactory<>("buttonRecensione"));
+        colData.setCellValueFactory(new PropertyValueFactory<>("dateString"));
     }
 
-    public void setItem1(){
-        colValutazione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                final HBox box = new HBox();
-                box.setMaxWidth(30);
-                box.setMaxHeight(20);
-                final Rating rating = new Rating(5);
-                rating.setPartialRating(true);
-                rating.setMaxWidth(20);
-                rating.setScaleX(0.6);
-                rating.setScaleY(0.6);
-                rating.setMouseTransparent(true);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    box.getChildren().add(rating);
-                    rating.setRating(item);
-                }
-                setGraphic(item == null ? null : box);
-            }
-        });
-        colValutazione.setCellValueFactory(new PropertyValueFactory<>("valutazione"));
-    }
 
-    public void method(int id) {
-        Executors.newSingleThreadExecutor().submit(() -> RecensioniController1.loadRecensioni(id));
 
-    }
     public  void onActionRecensisci(int idLuogo, String nomeLuogo, int selectedIndex) {
 
         Dialog<String> dialog = new Dialog<>();
@@ -277,7 +179,6 @@ public class RecensioniControllerGrafico extends RecensioniController1{
         DatePicker picker = new DatePicker();
 
         grid.setMinSize(400,400);
-
         grid.add(lblNomeLuogo, 0, 0);
         grid.add(labelRecensione, 0, 1);
         grid.add(txtArea, 0, 2);
@@ -292,9 +193,14 @@ public class RecensioniControllerGrafico extends RecensioniController1{
         dialog.setResultConverter(dialogButton -> {
             if(dialogButton == loginButtonType){
                 if(RecensioniController1.recensisciLuogo(idLuogo, txtArea.getText(), picker.getValue(), rating.getRating())){
-                    recensioni.clear();
                     new Alert(Alert.AlertType.CONFIRMATION, "Recensione effettuata con successo!", ButtonType.OK).show();
-                    recensioni.addAll(RecensioniController1.recensioni);
+                    recensioni.clear();
+                    luoghi.clear();
+                    copyRecensioni(RecensioniController1.recensioni);
+                    createButton2();
+                    RecensioniController1.loadLuoghi();
+                    copy(RecensioniController1.luoghi);
+                    createButton();
                 }else{
                     new Alert(Alert.AlertType.ERROR, "Non è stato possibile inserire la tua recensione. Riprova pi tardi.", ButtonType.OK).show();
                 }
@@ -311,7 +217,6 @@ public class RecensioniControllerGrafico extends RecensioniController1{
                 loginButton.setDisable(true);
             }
         });
-
         picker.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             loginButton.setDisable(false);
             if(txtArea.getText().isBlank() || newValue.isBlank() || rating.getRating() == 0){
@@ -325,5 +230,122 @@ public class RecensioniControllerGrafico extends RecensioniController1{
                 loginButton.setDisable(true);
             }
         });
+    }
+
+    public void createButton(){
+        for(int i = 0; i< luoghi.size(); i++) {
+            Button b = new Button("Recensisci");
+            Button c = new Button("Descrizione");
+            b.setPrefSize(150, 20);
+            luoghi.get(i).setButton(b);
+            luoghi.get(i).setButtonDescrizione(c);
+
+            int finalI2 = i;
+            b.setOnAction(event -> onActionRecensisci(luoghi.get(finalI2).getId(), luoghi.get(finalI2).getNome(), finalI2));
+
+            int finalI1 = i;
+            c.setOnAction(event -> showDescription(finalI1));
+        }
+    }
+
+    public void createButton2(){
+        for(int i = 0; i< recensioni.size(); i++) {
+            Button b = new Button("Recensione");
+            b.setPrefSize(150, 20);
+            recensioni.get(i).setButtonRecensione(b);
+
+            int finalI2 = i;
+            b.setOnAction(event -> showRecensione(finalI2));
+        }
+    }
+
+    public void copy(List<Luoghi> l){
+        for(int i=0; i<l.size();i++){
+            BeanLuoghi bean = new BeanLuoghi();
+
+            bean.setId(l.get(i).getId());
+            bean.setNome(l.get(i).getNome());
+            bean.setDescrizione(l.get(i).getDescrizione());
+
+            bean.setDifficolta(l.get(i).getDifficolta());
+            bean.setValutazioneMedia(l.get(i).getValutazioneMedia());
+            bean.setStar(l.get(i).getValutazioneMedia());
+            luoghi.add(bean);
+        }
+    }
+
+    public void copyRecensioni(List<Recensione> l){
+        for(int i=0; i<l.size();i++){
+            BeanRecensioni bean = new BeanRecensioni();
+
+            bean.setId(l.get(i).getId());
+            bean.setUtente(l.get(i).getUtente());
+            bean.setRecensioneString(l.get(i).getRecensioneString());
+
+            bean.setDateString(l.get(i).getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
+
+            bean.setStar(l.get(i).getValutazione());
+            recensioni.add(bean);
+        }
+    }
+
+    public static void showDescription(int item){
+
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Descrizione");
+
+        ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
+
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(false);
+
+        TextArea txtArea = new TextArea();
+        txtArea.setWrapText(true);
+        txtArea.setEditable(false);
+        txtArea.setText(luoghi.get(item).getDescrizione());
+        grid.add(txtArea, 0, 0);
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> null);
+        dialog.show();
+
+    }
+
+    public static void showRecensione(int item){
+
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Recensione");
+
+        ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
+
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(false);
+
+        TextArea txtArea = new TextArea();
+        txtArea.setWrapText(true);
+        txtArea.setEditable(false);
+        txtArea.setText(recensioni.get(item).getRecensioneString());
+        grid.add(txtArea, 0, 0);
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> null);
+        dialog.show();
+
     }
 }

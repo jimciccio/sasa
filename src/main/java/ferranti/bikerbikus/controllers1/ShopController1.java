@@ -27,23 +27,6 @@ public class ShopController1 {
         bicicletteNoleggio.addAll(ShopQuery.findBicicletteNoleggiabili());
     }
 
-    public static void loadBiciclette(String id) {
-        switch (id) {
-            case "tabNuove": {
-                bicicletteVendita.clear();
-                bicicletteVendita.addAll(ShopQuery.findBicicletteComprabili());
-                return;
-            }
-            case "tabNoleggiate": {
-                bicicletteNoleggio.clear();
-                bicicletteNoleggio.addAll(ShopQuery.findBicicletteNoleggiabili());
-                return;
-            }
-
-            default:
-                throw new IllegalArgumentException("Unexpected value: " + id);
-        }
-    }
 
     public static boolean buyBicicletta(int item){
 

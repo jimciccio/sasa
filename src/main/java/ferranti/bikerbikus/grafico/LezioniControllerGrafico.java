@@ -1,10 +1,12 @@
 package ferranti.bikerbikus.grafico;
 
+import ferranti.bikerbikus.BeanLezioni;
 import ferranti.bikerbikus.controllers1.LezioniController1;
 import ferranti.bikerbikus.data.UserData;
 import ferranti.bikerbikus.models.Lezione;
 import ferranti.bikerbikus.models.TipoLezione;
 import ferranti.bikerbikus.models.Utente;
+import ferranti.bikerbikus.utils.Constants;
 import ferranti.bikerbikus.utils.LoadScene;
 import ferranti.bikerbikus.utils.Utils;
 import javafx.collections.FXCollections;
@@ -16,7 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 public class LezioniControllerGrafico extends LezioniController1{
@@ -24,7 +28,7 @@ public class LezioniControllerGrafico extends LezioniController1{
     private Parent parent;
     final Object controller = this;
 
-    protected static final ObservableList<Lezione> lezioni = FXCollections.observableArrayList(LezioniController1.lezioniController);
+    protected static final ObservableList<BeanLezioni> lezioni = FXCollections.observableArrayList();
 
 
     @FXML
@@ -48,19 +52,20 @@ public class LezioniControllerGrafico extends LezioniController1{
     @FXML
     Label lblAnno;
     @FXML
-    TableView<Lezione> tableLezioni;
+    TableView<BeanLezioni> tableLezioni;
     @FXML
-    TableColumn<Lezione, LocalDateTime> colGiorno;
+    TableColumn<BeanLezioni, LocalDateTime> colGiorno;
     @FXML
-    TableColumn<Lezione, LocalDateTime> colOrario;
+    TableColumn<BeanLezioni, LocalDateTime> colOrario;
     @FXML
-    TableColumn<Lezione, TipoLezione> colTipo;
+    TableColumn<BeanLezioni, TipoLezione> colTipo;
     @FXML
-    TableColumn<Lezione, Boolean> colPrivata;
+    TableColumn<BeanLezioni, String> colPrivata;
     @FXML
-    TableColumn<Lezione, Utente> colMaestro;
+    TableColumn<BeanLezioni, Utente> colMaestro;
     @FXML
-    TableColumn<Lezione, Integer> colPrenotazione;
+    TableColumn<BeanLezioni, Button> colPrenotazione;
+
 
     public void showScene(Stage stage) {
         LoadScene loadScene = new LoadScene();
@@ -73,16 +78,18 @@ public class LezioniControllerGrafico extends LezioniController1{
         lblTipoUtente.setText(UserData.getInstance().getUser().getTipoUtente().getNome());
         if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
             btnAddLezione.setOnAction(event -> new AggiungiLezioneControllerGrafico().showScene(stage));
-            colPrenotazione.setText("Elimina");
         } else {
             toolbar.getChildren().remove(btnAddLezione);
         }
+
         btnNextMonth.setOnAction(event -> {
             lezioni.clear();
             super.onActionNextMonth();
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
-            lezioni.addAll(LezioniController1.lezioniController);
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
+
         });
         btnProfile.setOnAction(event -> new AreaPersonaleControllerGrafico().showScene(stage));
         btnPrevMonth.setOnAction(event -> {
@@ -90,97 +97,36 @@ public class LezioniControllerGrafico extends LezioniController1{
             super.onActionPrevMonth();
             lblMese.setText(Utils.uppercase(getCurrentYearMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())));
             lblAnno.setText(Integer.toString(getCurrentYearMonth().getYear()));
-            lezioni.addAll(LezioniController1.lezioniController);
-        });
-        setItem();
-        setItem1();
-        setTable();
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
 
-    }
+        });
 
-    public void setItem(){
-        colGiorno.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colOrario.setCellFactory(param -> new TableCell<>() {
-                    @Override
-                    protected void updateItem(LocalDateTime item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(item == null ? "" : Utils.formatTime(item.getHour(), item.getMinute()));
-                    }
-                }
-        );
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-        colGiorno.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? ""
-                        : Utils.uppercase(item.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " "
-                        + item.getDayOfMonth());
-            }
-        });
-        colOrario.setCellValueFactory(new PropertyValueFactory<>("data"));
-        colTipo.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(TipoLezione item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome());
-            }
-        });
-    }
-
-    public void setItem1(){
-        colPrivata.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if(item == null){
-                    setText("");
-                }else{
-                    setText(Boolean.TRUE.equals(item) ? "Si" : "No");
-                }
-            }
-        });
-        colPrivata.setCellValueFactory(new PropertyValueFactory<>("privata"));
-        colMaestro.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Utente item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(item == null ? "" : item.getNome() + " " + item.getCognome());
-            }
-        });
+        colGiorno.setCellValueFactory(new PropertyValueFactory<>("giornoString"));
+        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoString"));
+        colOrario.setCellValueFactory(new PropertyValueFactory<>("oraString"));
+        colPrivata.setCellValueFactory(new PropertyValueFactory<>("privataString"));
         colMaestro.setCellValueFactory(new PropertyValueFactory<>("maestro"));
-
+        setTable();
+        createButton();
     }
+
+
 
     public void setTable(){
-        colPrenotazione.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                final Button btnPrenota = new Button("Prenota");
-                btnPrenota.setPrefSize(150, 20);
-                if (getTableRow() != null && getTableRow().getItem() != null) {
-                    btnPrenota.setDisable(getTableRow().getItem().getData().isBefore(LocalDateTime.now()));
-                    if(getTableRow().getItem().getMaestro().getId() == UserData.getInstance().getUser().getId()){
-                        btnPrenota.setText("Elimina");
-                        btnPrenota.setOnAction(event -> item1(item));
-                    }else{
-                        btnPrenota.setOnAction(event -> item2(item));
-                    }
-                }
-                setGraphic(item == null ? null : btnPrenota);
-            }
-        });
-        colPrenotazione.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        colPrenotazione.setCellValueFactory(new PropertyValueFactory<>("buttonLezione"));
         tableLezioni.setItems(lezioni);
         if (UserData.getInstance().isMaestro() || UserData.getInstance().isMaestroAvanzato()) {
             lezioni.clear();
             super.loadLezioniMaestro();
-            lezioni.addAll(LezioniController1.lezioniController);
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
         } else {
             lezioni.clear();
             super.loadLezioni();
-            lezioni.addAll(LezioniController1.lezioniController);
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
         }
     }
 
@@ -188,7 +134,8 @@ public class LezioniControllerGrafico extends LezioniController1{
         if(eliminaLezione(item)){
             lezioni.clear();
             new Alert(Alert.AlertType.CONFIRMATION, "Lezione eliminata con successo! Gli utenti che hanno prenotato la lezione saranno avvisati.", ButtonType.OK).show();
-            lezioni.addAll(LezioniController1.lezioniController);
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
         }else{
             new Alert(Alert.AlertType.ERROR, "Non è stato possibile eliminare la lezione.", ButtonType.OK).show();
         }
@@ -198,9 +145,45 @@ public class LezioniControllerGrafico extends LezioniController1{
         if(prenotaLezione(item)){
             lezioni.clear();
             new Alert(Alert.AlertType.CONFIRMATION, "Prenotazione effettuata con successo!", ButtonType.OK).show();
-            lezioni.addAll(LezioniController1.lezioniController);
+            copyLezioni(LezioniController1.lezioniController);
+            createButton();
         }else{
             new Alert(Alert.AlertType.ERROR, "Non è stato possibile prenotare la lezione", ButtonType.OK).show();
+        }
+    }
+
+    public void createButton(){
+        for(int i=0; i<LezioniController1.lezioniController.size();i++) {
+            Button b = new Button("Prenota");
+            b.setPrefSize(150, 20);
+            lezioni.get(i).setButtonLezione(b);
+
+            int finalI = i;
+            b.setDisable(lezioni.get(i).getData().isBefore(LocalDateTime.now()));
+            if(lezioni.get(i).getMaestro().getId() == UserData.getInstance().getUser().getId()){
+                b.setText("Elimina");
+                b.setOnAction(event -> item1(lezioni.get(finalI).getId()));
+            }else{
+                b.setOnAction(event -> item2(lezioni.get(finalI).getId()));
+            }
+        }
+    }
+
+    public void copyLezioni(List<Lezione> l){
+        for(int i=0; i<l.size();i++){
+            BeanLezioni bean = new BeanLezioni();
+
+            bean.setId(l.get(i).getId());
+            bean.setData(l.get(i).getData());
+            bean.setDateString(l.get(i).getData().format(DateTimeFormatter.ofPattern(Constants.DEFAULT_DATE_PATTERN)));
+            bean.setMaestro(l.get(i).getMaestro());
+            bean.setTipoString(l.get(i).getTipo().getNome());
+            bean.setOraString(Utils.formatTime(l.get(i).getData().getHour(), l.get(i).getData().getMinute()));
+            bean.setGiornoString(Utils.uppercase(l.get(i).getData().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())) + " " + l.get(i).getData().getDayOfMonth());
+
+            bean.setPrivataString(Boolean.TRUE.equals(l.get(i).isPrivata()) ? "Si" : "No");
+            bean.setEliminata(l.get(i).getEliminata());
+            lezioni.add(bean);
         }
     }
 }

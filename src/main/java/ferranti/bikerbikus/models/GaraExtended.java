@@ -1,11 +1,15 @@
 package ferranti.bikerbikus.models;
 
+import javafx.scene.control.Button;
+
 public class GaraExtended extends Gara {
 
 	private int partecipanti;
 	private String nomeVincitore;
 	private String cognomeVincitore;
-	
+	private Button button;
+
+
 	public GaraExtended() {
 		
 	}
@@ -38,5 +42,13 @@ public class GaraExtended extends Gara {
 
 	public void setCognomeVincitore(String cognomeVincitore) {
 		this.cognomeVincitore = cognomeVincitore;
+	}
+
+	public Button getButton() {
+		return button;
+	}
+
+	public void setButton(Button button) {
+		this.button = button;
 	}
 }
