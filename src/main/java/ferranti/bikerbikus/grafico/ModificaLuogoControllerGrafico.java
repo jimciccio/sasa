@@ -187,19 +187,19 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
     public static void showDescription(int item){
 
 
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Descrizione");
+        Dialog<String> dialogDescription = new Dialog<>();
+        dialogDescription.setTitle("Descrizione");
 
         ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
 
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+        dialogDescription.getDialogPane().getButtonTypes().addAll(loginButtonType);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 10, 10, 10));
 
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        Node loginButton = dialogDescription.getDialogPane().lookupButton(loginButtonType);
         loginButton.setDisable(false);
 
         TextArea txtArea = new TextArea();
@@ -207,10 +207,10 @@ public class ModificaLuogoControllerGrafico extends ModificaLuogoController1{
         txtArea.setEditable(false);
         txtArea.setText(luog.get(item).getDescrizione());
         grid.add(txtArea, 0, 0);
-        dialog.getDialogPane().setContent(grid);
+        dialogDescription.getDialogPane().setContent(grid);
 
-        dialog.setResultConverter(dialogButton -> null);
-        dialog.show();
+        dialogDescription.setResultConverter(dialogButton -> null);
+        dialogDescription.show();
 
     }
 
