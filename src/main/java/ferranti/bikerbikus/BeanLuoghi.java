@@ -34,16 +34,16 @@ public class BeanLuoghi extends Luoghi {
 
     public void setStar(Double star1) {
 
-                final HBox box = new HBox();
-                box.setMaxHeight(20);
-                box.setMaxWidth(30);
+                final HBox boxStar = new HBox();
+                boxStar.setMaxHeight(20);
+                boxStar.setMaxWidth(30);
                 Rating rating = new Rating(5);
                 rating.setPartialRating(true);
                 rating.setMaxWidth(20);
                 rating.setScaleY(0.6);
                 rating.setScaleX(0.6);
                 rating.setMouseTransparent(true);
-                box.getChildren().add(rating);
+                boxStar.getChildren().add(rating);
                 rating.setRating(star1);
 
         this.star = rating;

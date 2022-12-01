@@ -292,19 +292,19 @@ public class RecensioniControllerGrafico extends RecensioniController1{
     public static void showDescription(int item){
 
 
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Descrizione");
+        Dialog<String> dialog1 = new Dialog<>();
+        dialog1.setTitle("Descrizione");
 
         ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
 
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+        dialog1.getDialogPane().getButtonTypes().addAll(loginButtonType);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 10, 10, 10));
 
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        Node loginButton = dialog1.getDialogPane().lookupButton(loginButtonType);
         loginButton.setDisable(false);
 
         TextArea txtArea = new TextArea();
@@ -312,29 +312,29 @@ public class RecensioniControllerGrafico extends RecensioniController1{
         txtArea.setEditable(false);
         txtArea.setText(luoghi.get(item).getDescrizione());
         grid.add(txtArea, 0, 0);
-        dialog.getDialogPane().setContent(grid);
+        dialog1.getDialogPane().setContent(grid);
 
-        dialog.setResultConverter(dialogButton -> null);
-        dialog.show();
+        dialog1.setResultConverter(dialogButton -> null);
+        dialog1.show();
 
     }
 
     public static void showRecensione(int item){
 
 
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Recensione");
+        Dialog<String> dialogRecensione = new Dialog<>();
+        dialogRecensione.setTitle("Recensione");
 
         ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.LEFT);
 
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+        dialogRecensione.getDialogPane().getButtonTypes().addAll(loginButtonType);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 10, 10, 10));
 
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        Node loginButton = dialogRecensione.getDialogPane().lookupButton(loginButtonType);
         loginButton.setDisable(false);
 
         TextArea txtArea = new TextArea();
@@ -342,10 +342,10 @@ public class RecensioniControllerGrafico extends RecensioniController1{
         txtArea.setEditable(false);
         txtArea.setText(recensioni.get(item).getRecensioneString());
         grid.add(txtArea, 0, 0);
-        dialog.getDialogPane().setContent(grid);
+        dialogRecensione.getDialogPane().setContent(grid);
 
-        dialog.setResultConverter(dialogButton -> null);
-        dialog.show();
+        dialogRecensione.setResultConverter(dialogButton -> null);
+        dialogRecensione.show();
 
     }
 }
